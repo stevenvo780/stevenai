@@ -1,54 +1,121 @@
 @import "tailwindcss";
 
-:root {
-  --background: #0a0f1a;
-  --foreground: #e2e8f0;
-  --teal: #0d9488;
-  --teal-light: #14b8a6;
-  --gold: #d4a017;
-  --gold-light: #f0c040;
-  --card-bg: #111827;
-  --card-border: #1f2d3d;
-  --muted: #64748b;
+/* ============================================================
+   BRAND TOKENS — teal + dorado (canónico, modo oscuro)
+   Fuente de verdad: docs/05-activos/brand-tokens.md
+   ============================================================ */
+:root,
+[data-theme="dark"] {
+  --bg: #0A0F1A;
+  --surface: #0F1726;
+  --surface-2: #16213A;
+  --border: #243049;
+  --text: #E9EEF6;
+  --text-muted: #A2B3C9;
+  --primary: #2DD4BF;
+  --primary-strong: #14B8A6;
+  --on-primary: #07241F;
+  --accent: #F0C453;
+  --accent-strong: #E0A82E;
+  --on-accent: #231A05;
+  --link: #5EEAD4;
+  --ring: #2DD4BF;
+  --success: #34D399;
+  --warning: #FBBF24;
+  --danger: #F87171;
+}
+
+[data-theme="light"] {
+  --bg: #FBFAF6;
+  --surface: #FFFFFF;
+  --surface-2: #F4F1E9;
+  --border: #E5DFD2;
+  --text: #14202E;
+  --text-muted: #51606F;
+  --primary: #0F766E;
+  --primary-strong: #115E59;
+  --on-primary: #FFFFFF;
+  --accent: #B5791A;
+  --accent-strong: #9A6712;
+  --on-accent: #FFFFFF;
+  --link: #0F766E;
+  --ring: #0F766E;
+  --success: #0F766E;
+  --warning: #92610A;
+  --danger: #B42318;
+}
+
+/* Aliases de compatibilidad (mapean nombres legacy → tokens canónicos) */
+:root,
+[data-theme="dark"],
+[data-theme="light"] {
+  --background: var(--bg);
+  --foreground: var(--text);
+  --teal: var(--primary-strong);
+  --teal-light: var(--primary);
+  --gold: var(--accent-strong);
+  --gold-light: var(--accent);
+  --card-bg: var(--surface);
+  --card-border: var(--border);
+  --muted: var(--text-muted);
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --color-teal: var(--teal);
-  --color-teal-light: var(--teal-light);
-  --color-gold: var(--gold);
-  --color-gold-light: var(--gold-light);
-  --color-card-bg: var(--card-bg);
-  --color-card-border: var(--card-border);
-  --color-muted: var(--muted);
+  --color-background: var(--bg);
+  --color-foreground: var(--text);
+  --color-teal: var(--primary-strong);
+  --color-teal-light: var(--primary);
+  --color-gold: var(--accent-strong);
+  --color-gold-light: var(--accent);
+  --color-card-bg: var(--surface);
+  --color-card-border: var(--border);
+  --color-muted: var(--text-muted);
+  --color-brand-primary: var(--primary);
+  --color-brand-accent: var(--accent);
+  --color-brand-success: var(--success);
+  --color-brand-warning: var(--warning);
+  --color-brand-danger: var(--danger);
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
+  background: var(--bg);
+  color: var(--text);
   font-family: 'Inter', system-ui, -apple-system, sans-serif;
 }
 
+
+/* ============================================================
+   Gradients
+   ============================================================ */
 .gradient-teal {
-  background: linear-gradient(135deg, #0d9488 0%, #0f766e 100%);
+  background: linear-gradient(135deg, var(--primary-strong) 0%, #0d6d65 100%);
 }
 
 .gradient-gold {
-  background: linear-gradient(135deg, #d4a017 0%, #b8860b 100%);
+  background: linear-gradient(135deg, var(--accent-strong) 0%, #b8860b 100%);
 }
 
+/* ============================================================
+   Glow utilities (teal only — no purple/cyan ad-hoc)
+   ============================================================ */
 .card-glow {
-  box-shadow: 0 0 20px rgba(13, 148, 136, 0.15), 0 1px 3px rgba(0,0,0,0.5);
+  box-shadow: 0 0 20px rgba(45, 212, 191, 0.12), 0 1px 3px rgba(0, 0, 0, 0.5);
 }
 
 .card-glow-gold {
-  box-shadow: 0 0 20px rgba(212, 160, 23, 0.15), 0 1px 3px rgba(0,0,0,0.5);
+  box-shadow: 0 0 20px rgba(240, 196, 83, 0.12), 0 1px 3px rgba(0, 0, 0, 0.5);
 }
 
+/* ============================================================
+   Runtime badges — todos sobre brand tokens, WCAG AA
+   GPU  → acento dorado oscuro (fondo #231A05 + texto #F0C453 = ~11:1)
+   API  → surface-2 + primary (#2DD4BF sobre #16213A = ~9.8:1)
+   CPU  → success (#34D399 sobre #0F1726 = ~9.2:1)
+   ============================================================ */
 .badge-gpu {
-  background: linear-gradient(90deg, #7c3aed, #4f46e5);
-  color: white;
+  background: var(--on-accent);        /* #231A05 */
+  color: var(--accent);                /* #F0C453 */
+  border: 1px solid var(--accent-strong);
   font-size: 0.7rem;
   padding: 2px 8px;
   border-radius: 99px;
@@ -57,8 +124,9 @@ body {
 }
 
 .badge-api {
-  background: linear-gradient(90deg, #0891b2, #0e7490);
-  color: white;
+  background: var(--surface-2);        /* #16213A */
+  color: var(--primary);               /* #2DD4BF */
+  border: 1px solid var(--primary-strong);
   font-size: 0.7rem;
   padding: 2px 8px;
   border-radius: 99px;
@@ -67,8 +135,9 @@ body {
 }
 
 .badge-local {
-  background: linear-gradient(90deg, #059669, #047857);
-  color: white;
+  background: #0a2b1e;                 /* dark green surface */
+  color: var(--success);               /* #34D399 */
+  border: 1px solid #1a5c3a;
   font-size: 0.7rem;
   padding: 2px 8px;
   border-radius: 99px;
@@ -76,21 +145,35 @@ body {
   letter-spacing: 0.03em;
 }
 
+/* ============================================================
+   Mermaid wrapper
+   ============================================================ */
 .mermaid-wrapper {
-  background: #111827;
-  border: 1px solid #1f2d3d;
+  background: var(--surface);
+  border: 1px solid var(--border);
   border-radius: 12px;
   padding: 1.5rem;
   overflow-x: auto;
 }
 
+/* ============================================================
+   Tag chips (stack tech)
+   ============================================================ */
 .tag {
   display: inline-block;
-  background: #1f2d3d;
-  color: #94a3b8;
-  border: 1px solid #2d3f55;
+  background: var(--surface-2);
+  color: var(--text-muted);
+  border: 1px solid var(--border);
   border-radius: 6px;
   font-size: 0.72rem;
   padding: 2px 8px;
   font-family: monospace;
+}
+
+/* ============================================================
+   Focus visible — brand ring
+   ============================================================ */
+:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
 }

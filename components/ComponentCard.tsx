@@ -9,14 +9,14 @@ interface ComponentCardProps {
 const colorAccent: Record<AIComponent["color"], string> = {
   teal: "border-t-[var(--teal)]",
   gold: "border-t-[var(--gold)]",
-  purple: "border-t-purple-500",
-  cyan: "border-t-cyan-500",
+  purple: "border-t-[var(--accent)]",
+  cyan: "border-t-[var(--teal-light)]",
 };
 
 const statusDot: Record<AIComponent["status"], string> = {
-  "live-local": "bg-green-500",
-  "demo-pending": "bg-yellow-500",
-  available: "bg-blue-400",
+  "live-local": "bg-[var(--success)]",
+  "demo-pending": "bg-[var(--warning)]",
+  available: "bg-[var(--primary)]",
 };
 
 export default function ComponentCard({ component }: ComponentCardProps) {
@@ -35,7 +35,7 @@ export default function ComponentCard({ component }: ComponentCardProps) {
           />
         </div>
         <p className="text-[var(--muted)] text-xs mb-3 italic">{component.tagline}</p>
-        <p className="text-sm text-[var(--foreground)]/80 mb-4 line-clamp-3">
+        <p className="text-sm text-[var(--foreground)] mb-4 line-clamp-3">
           {component.description}
         </p>
         <div className="flex flex-wrap gap-1 mb-4">

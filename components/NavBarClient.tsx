@@ -32,7 +32,7 @@ export default function NavBarClient() {
               href={link.href}
               className={`px-3 py-1.5 rounded-lg text-sm font-medium whitespace-nowrap transition-colors ${
                 pathname === link.href
-                  ? "bg-[var(--teal)] text-white"
+                  ? "bg-[var(--surface-2)] text-[var(--primary)]"
                   : "text-[var(--muted)] hover:text-[var(--foreground)] hover:bg-[var(--card-bg)]"
               }`}
             >

@@ -68,15 +68,15 @@ const layers = [
 const colorTextMap: Record<string, string> = {
   teal: "text-[var(--teal-light)]",
   gold: "text-[var(--gold-light)]",
-  purple: "text-purple-400",
-  cyan: "text-cyan-400",
+  purple: "text-[var(--accent)]",
+  cyan: "text-[var(--teal-light)]",
 };
 
 const colorBorderMap: Record<string, string> = {
   teal: "border-[var(--teal)]",
   gold: "border-[var(--gold)]",
-  purple: "border-purple-500",
-  cyan: "border-cyan-500",
+  purple: "border-[var(--accent-strong)]",
+  cyan: "border-[var(--teal)]",
 };
 
 export default function ArchitecturePage() {
@@ -123,7 +123,7 @@ export default function ArchitecturePage() {
               </h3>
               <ul className="space-y-1">
                 {layer.items.map((item) => (
-                  <li key={item} className="text-sm text-[var(--foreground)]/80 flex gap-2">
+                  <li key={item} className="text-sm text-[var(--foreground)] flex gap-2">
                     <span className={colorTextMap[layer.color]}>—</span>
                     {item}
                   </li>

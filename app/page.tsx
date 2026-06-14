@@ -27,15 +27,15 @@ export default function Home() {
             <span className="text-[var(--muted)] ml-2">componentes</span>
           </div>
           <div className="bg-[var(--card-bg)] border border-[var(--card-border)] rounded-lg px-4 py-2">
-            <span className="text-2xl font-bold text-purple-400">{gpuCount}</span>
+            <span className="text-2xl font-bold text-[var(--accent)]">{gpuCount}</span>
             <span className="text-[var(--muted)] ml-2">GPU locales</span>
           </div>
           <div className="bg-[var(--card-bg)] border border-[var(--card-border)] rounded-lg px-4 py-2">
-            <span className="text-2xl font-bold text-cyan-400">{apiCount}</span>
+            <span className="text-2xl font-bold text-[var(--primary)]">{apiCount}</span>
             <span className="text-[var(--muted)] ml-2">via API</span>
           </div>
           <div className="bg-[var(--card-bg)] border border-[var(--card-border)] rounded-lg px-4 py-2">
-            <span className="text-2xl font-bold text-green-400">{cpuCount}</span>
+            <span className="text-2xl font-bold text-[var(--success)]">{cpuCount}</span>
             <span className="text-[var(--muted)] ml-2">CPU local</span>
           </div>
         </div>
@@ -70,11 +70,11 @@ export default function Home() {
       {/* Legend */}
       <section className="mt-10 flex flex-wrap gap-6 text-xs text-[var(--muted)] justify-center">
         <div className="flex items-center gap-2">
-          <span className="w-2 h-2 rounded-full bg-green-400" />
+          <span className="w-2 h-2 rounded-full bg-[var(--success)]" />
           Codigo disponible en GitHub
         </div>
         <div className="flex items-center gap-2">
-          <span className="w-2 h-2 rounded-full bg-yellow-500" />
+          <span className="w-2 h-2 rounded-full bg-[var(--warning)]" />
           Demo GPU pendiente de hosting
         </div>
         <div className="flex items-center gap-2">

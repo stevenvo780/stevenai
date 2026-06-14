@@ -27,21 +27,21 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 const colorBorder: Record<string, string> = {
   teal: "border-[var(--teal)]",
   gold: "border-[var(--gold)]",
-  purple: "border-purple-500",
-  cyan: "border-cyan-500",
+  purple: "border-[var(--accent-strong)]",
+  cyan: "border-[var(--teal)]",
 };
 
 const colorText: Record<string, string> = {
   teal: "text-[var(--teal-light)]",
   gold: "text-[var(--gold-light)]",
-  purple: "text-purple-400",
-  cyan: "text-cyan-400",
+  purple: "text-[var(--accent)]",
+  cyan: "text-[var(--teal-light)]",
 };
 
 const statusDot: Record<string, string> = {
-  "live-local": "bg-green-500",
-  "demo-pending": "bg-yellow-500",
-  available: "bg-blue-400",
+  "live-local": "bg-[var(--success)]",
+  "demo-pending": "bg-[var(--warning)]",
+  available: "bg-[var(--primary)]",
 };
 
 export default async function ComponentPage({ params }: PageProps) {
@@ -102,16 +102,16 @@ export default async function ComponentPage({ params }: PageProps) {
         <h2 className="text-sm font-semibold text-[var(--muted)] uppercase tracking-wider mb-3">
           Descripcion
         </h2>
-        <p className="text-[var(--foreground)]/90 leading-relaxed">{component.longDescription}</p>
+        <p className="text-[var(--foreground)] leading-relaxed">{component.longDescription}</p>
       </section>
 
       {/* Hardware requirements if present */}
       {component.hardwareRequirements && (
-        <section className="bg-purple-950/20 border border-purple-800/30 rounded-xl p-5 mb-6">
-          <h2 className="text-sm font-semibold text-purple-400 uppercase tracking-wider mb-2">
+        <section className="bg-[var(--surface-2)] border border-[var(--border)] rounded-xl p-5 mb-6">
+          <h2 className="text-sm font-semibold text-[var(--accent)] uppercase tracking-wider mb-2">
             Requisitos de hardware
           </h2>
-          <p className="text-purple-300/80 text-sm font-mono">{component.hardwareRequirements}</p>
+          <p className="text-[var(--text-muted)] text-sm font-mono">{component.hardwareRequirements}</p>
         </section>
       )}
 
@@ -125,7 +125,7 @@ export default async function ComponentPage({ params }: PageProps) {
             {component.capabilities.map((cap) => (
               <li key={cap} className="flex items-start gap-2 text-sm">
                 <span className={`mt-1 ${colorText[component.color]}`}>—</span>
-                <span className="text-[var(--foreground)]/80">{cap}</span>
+                <span className="text-[var(--foreground)]">{cap}</span>
               </li>
             ))}
           </ul>
