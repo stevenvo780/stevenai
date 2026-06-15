@@ -19,36 +19,36 @@ export default function MermaidDiagram({ chart, id }: MermaidDiagramProps) {
         // overrides that silently kill node label contrast.
         theme: "base",
         themeVariables: {
-          // --- canvas & backgrounds ---
-          background: "#0F1726",
-          mainBkg: "#16213A",           // default node fill (dark navy)
-          nodeBorder: "#2DD4BF",        // teal brand border
-          clusterBkg: "#0F1726",        // subgraph background
-          clusterBorder: "#2DD4BF",
+          // --- canvas & backgrounds --- Cloud Atlas palette
+          background: "#0f1c20",
+          mainBkg: "#11211f",           // default node fill (dark teal-near-black)
+          nodeBorder: "#43b5a6",        // teal brand border
+          clusterBkg: "#0f1c20",        // subgraph background
+          clusterBorder: "#43b5a6",
 
           // --- node text — must be light on dark fill ---
-          primaryColor: "#16213A",      // default node fill (same as mainBkg)
-          primaryBorderColor: "#2DD4BF",
-          primaryTextColor: "#E9EEF6",  // light text on dark nodes
-          nodeTextColor: "#E9EEF6",     // explicit override (Mermaid v11)
+          primaryColor: "#11211f",      // default node fill (same as mainBkg)
+          primaryBorderColor: "#43b5a6",
+          primaryTextColor: "#f3ece0",  // light text on dark nodes
+          nodeTextColor: "#f3ece0",     // explicit override (Mermaid v11)
 
           // --- secondary nodes (rhombuses / decision boxes) ---
-          secondaryColor: "#1a2d4a",
-          secondaryBorderColor: "#F0C453",
-          secondaryTextColor: "#E9EEF6",
+          secondaryColor: "#132120",
+          secondaryBorderColor: "#e0a85e",
+          secondaryTextColor: "#f3ece0",
 
           // --- tertiary nodes (database cylinders etc.) ---
-          tertiaryColor: "#0A1628",
-          tertiaryBorderColor: "#2DD4BF",
-          tertiaryTextColor: "#E9EEF6",
+          tertiaryColor: "#0b1417",
+          tertiaryBorderColor: "#43b5a6",
+          tertiaryTextColor: "#f3ece0",
 
           // --- edges & labels ---
-          lineColor: "#A2B3C9",
-          edgeLabelBackground: "#0F1726",  // avoid transparent bg on arrow labels
-          labelTextColor: "#E9EEF6",
+          lineColor: "#c9c2b6",
+          edgeLabelBackground: "#0f1c20",  // avoid transparent bg on arrow labels
+          labelTextColor: "#f3ece0",
 
           // --- cluster/subgraph labels ---
-          titleColor: "#2DD4BF",
+          titleColor: "#43b5a6",
 
           // --- text sizes ---
           fontSize: "15px",

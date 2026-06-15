@@ -14,13 +14,33 @@ export async function generateStaticParams() {
   return components.map((c) => ({ key: c.key }));
 }
 
+const CANONICAL_BASE = "https://daimon.stevenvallejo.com";
+
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { key } = await params;
   const component = getComponentByKey(key);
   if (!component) return { title: "Componente no encontrado" };
+  const pageUrl = `${CANONICAL_BASE}/components/${key}`;
   return {
-    title: `${component.name} — StevenAI Suite`,
+    title: `${component.name} — Daímon · Mouseîon`,
     description: component.description,
+    alternates: {
+      canonical: pageUrl,
+    },
+    openGraph: {
+      title: `${component.name} — Daímon · Mouseîon`,
+      description: component.description,
+      url: pageUrl,
+      siteName: "Mouseîon",
+      locale: "es_ES",
+      images: [{ url: `${CANONICAL_BASE}/og-image.png`, width: 1200, height: 630 }],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${component.name} — Daímon · Mouseîon`,
+      description: component.description,
+      images: [`${CANONICAL_BASE}/og-image.png`],
+    },
   };
 }
 

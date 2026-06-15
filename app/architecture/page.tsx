@@ -5,9 +5,28 @@ import Link from "next/link";
 import { components } from "@/lib/components-data";
 
 export const metadata: Metadata = {
-  title: "Arquitectura global — StevenAI Suite",
+  title: "Arquitectura global — Daímon · Mouseîon",
   description:
-    "Diagrama de arquitectura completo de la pila IA de Steven Vallejo: RAG, GGUF, MCP Swarm, Agentes, OCR GPU.",
+    "Diagrama de arquitectura completo de la pila IA de Steven Vallejo: RAG, GGUF, MCP Swarm, agentes autónomos y OCR GPU.",
+  alternates: {
+    canonical: "https://daimon.stevenvallejo.com/architecture",
+  },
+  openGraph: {
+    title: "Arquitectura global — Daímon · Mouseîon",
+    description:
+      "Diagrama de arquitectura de la pila IA de Steven Vallejo: RAG, GGUF, MCP Swarm, agentes autónomos y OCR GPU.",
+    url: "https://daimon.stevenvallejo.com/architecture",
+    siteName: "Mouseîon",
+    locale: "es_ES",
+    images: [{ url: "/og-image.png", width: 1200, height: 630 }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Arquitectura global — Daímon · Mouseîon",
+    description:
+      "Diagrama de arquitectura de la pila IA de Steven Vallejo: RAG, GGUF, MCP Swarm, agentes y OCR GPU.",
+    images: ["/og-image.png"],
+  },
 };
 
 const globalDiagram = `graph TD
