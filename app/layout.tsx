@@ -6,6 +6,13 @@ export const metadata: Metadata = {
   title: "StevenAI Suite — Pila IA local de Steven Vallejo",
   description:
     "Portal de arquitectura de la pila IA de Steven Vallejo: asistente RAG, LLM local GGUF, enjambre MCP, agentes autonomos y conversor OCR GPU.",
+  icons: {
+    icon: [
+      { url: "/favicon.svg", type: "image/svg+xml" },
+      { url: "/favicon.ico", sizes: "48x48" },
+    ],
+    apple: [{ url: "/apple-touch-icon.png", sizes: "180x180" }],
+  },
   openGraph: {
     title: "StevenAI Suite",
     description: "Pila IA local de Steven Vallejo — RAG, GGUF, MCP Swarm, OCR GPU",
@@ -38,6 +45,37 @@ export default function RootLayout({
           <p className="mt-1">
             Portal estatico. Demos vivos GPU pendientes de hosting dedicado.
           </p>
+          <div className="mt-6 pt-6 border-t border-[var(--card-border)]">
+            <p className="mb-2 text-[var(--text-muted)]">
+              Parte del ecosistema de Steven Vallejo
+            </p>
+            <nav className="flex flex-wrap justify-center gap-4">
+              <a
+                href="https://www.stevenvallejo.com/es#filosofia"
+                className="hover:text-[var(--teal-light)] transition-colors"
+              >
+                Filosofia
+              </a>
+              <a
+                href="https://www.stevenvallejo.com/es#ciencias"
+                className="hover:text-[var(--teal-light)] transition-colors"
+              >
+                Ciencias
+              </a>
+              <a
+                href="https://www.stevenvallejo.com/es#informatica"
+                className="hover:text-[var(--teal-light)] transition-colors"
+              >
+                Informatica
+              </a>
+              <a
+                href="https://www.stevenvallejo.com/es#enterprise"
+                className="hover:text-[var(--teal-light)] transition-colors"
+              >
+                Enterprise
+              </a>
+            </nav>
+          </div>
         </footer>
       </body>
     </html>

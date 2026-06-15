@@ -1,5 +1,6 @@
 "use client";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 
 const navLinks = [
@@ -19,6 +20,25 @@ export default function NavBarClient() {
   return (
     <header className="sticky top-0 z-50 border-b border-[var(--card-border)] bg-[var(--background)]/90 backdrop-blur-md">
       <div className="max-w-7xl mx-auto px-4 py-3 flex items-center gap-6 overflow-x-auto">
+        {/* Wordmark: lemniscata + "Steven Vallejo" → portal principal */}
+        <a
+          href="https://www.stevenvallejo.com"
+          className="flex items-center gap-2 shrink-0 group"
+          aria-label="Steven Vallejo — portal principal"
+        >
+          <Image
+            src="/favicon.svg"
+            alt="Steven Vallejo"
+            width={26}
+            height={26}
+            className="w-[26px] h-[26px]"
+          />
+          <span className="font-semibold text-sm text-[var(--text)] group-hover:text-[var(--teal-light)] transition-colors hidden sm:block">
+            Steven Vallejo
+          </span>
+        </a>
+        {/* Separador */}
+        <span className="text-[var(--card-border)] text-lg hidden sm:block" aria-hidden="true">|</span>
         <Link href="/" className="flex items-center gap-2 shrink-0">
           <span className="text-[var(--teal-light)] font-bold text-lg tracking-tight">
             Steven<span className="text-[var(--gold-light)]">AI</span>

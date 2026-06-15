@@ -1,25 +1,26 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap');
 @import "tailwindcss";
 
 /* ============================================================
-   BRAND TOKENS — teal + dorado (canónico, modo oscuro)
+   BRAND TOKENS — Cloud Atlas (canónico, modo oscuro)
    Fuente de verdad: docs/05-activos/brand-tokens.md
    ============================================================ */
 :root,
 [data-theme="dark"] {
-  --bg: #0A0F1A;
-  --surface: #0F1726;
-  --surface-2: #16213A;
-  --border: #243049;
-  --text: #E9EEF6;
-  --text-muted: #A2B3C9;
-  --primary: #2DD4BF;
-  --primary-strong: #14B8A6;
+  --bg: #0b1417;
+  --surface: #0f1c20;
+  --surface-2: #11211f;
+  --border: rgba(243,236,224,0.10);
+  --text: #f3ece0;
+  --text-muted: #c9c2b6;
+  --primary: #43b5a6;
+  --primary-strong: #2f8478;
   --on-primary: #07241F;
-  --accent: #F0C453;
-  --accent-strong: #E0A82E;
-  --on-accent: #231A05;
-  --link: #5EEAD4;
-  --ring: #2DD4BF;
+  --accent: #e0a85e;
+  --accent-strong: #cf6a3c;
+  --on-accent: #1a1208;
+  --link: #6fd3c4;
+  --ring: #43b5a6;
   --success: #34D399;
   --warning: #FBBF24;
   --danger: #F87171;
@@ -32,15 +33,15 @@
   --border: #E5DFD2;
   --text: #14202E;
   --text-muted: #51606F;
-  --primary: #0F766E;
-  --primary-strong: #115E59;
+  --primary: #2f8478;
+  --primary-strong: #1f5c54;
   --on-primary: #FFFFFF;
-  --accent: #B5791A;
-  --accent-strong: #9A6712;
+  --accent: #9A6712;
+  --accent-strong: #7a5010;
   --on-accent: #FFFFFF;
-  --link: #0F766E;
-  --ring: #0F766E;
-  --success: #0F766E;
+  --link: #2f8478;
+  --ring: #2f8478;
+  --success: #2f8478;
   --warning: #92610A;
   --danger: #B42318;
 }
@@ -83,38 +84,47 @@ body {
   font-family: 'Inter', system-ui, -apple-system, sans-serif;
 }
 
+code, pre, kbd, samp, .font-mono, [class*="mono"] {
+  font-family: 'JetBrains Mono', 'Fira Code', ui-monospace, monospace;
+}
+
 
 /* ============================================================
    Gradients
    ============================================================ */
 .gradient-teal {
-  background: linear-gradient(135deg, var(--primary-strong) 0%, #0d6d65 100%);
+  background: linear-gradient(135deg, var(--primary-strong) 0%, #247a6e 100%);
 }
 
 .gradient-gold {
-  background: linear-gradient(135deg, var(--accent-strong) 0%, #b8860b 100%);
+  background: linear-gradient(135deg, var(--accent-strong) 0%, #a85428 100%);
+}
+
+/* Cloud Atlas signature gradient */
+.gradient-brand {
+  background: linear-gradient(110deg, #e0a85e 0%, #cf6a3c 35%, #43b5a6 100%);
 }
 
 /* ============================================================
    Glow utilities (teal only — no purple/cyan ad-hoc)
    ============================================================ */
 .card-glow {
-  box-shadow: 0 0 20px rgba(45, 212, 191, 0.12), 0 1px 3px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 0 20px rgba(67, 181, 166, 0.12), 0 1px 3px rgba(0, 0, 0, 0.5);
 }
 
 .card-glow-gold {
-  box-shadow: 0 0 20px rgba(240, 196, 83, 0.12), 0 1px 3px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 0 20px rgba(224, 168, 94, 0.12), 0 1px 3px rgba(0, 0, 0, 0.5);
 }
 
 /* ============================================================
    Runtime badges — todos sobre brand tokens, WCAG AA
-   GPU  → acento dorado oscuro (fondo #231A05 + texto #F0C453 = ~11:1)
-   API  → surface-2 + primary (#2DD4BF sobre #16213A = ~9.8:1)
-   CPU  → success (#34D399 sobre #0F1726 = ~9.2:1)
+   GPU  → acento dorado oscuro (fondo #1a1208 + texto #e0a85e = ~7:1)
+   API  → surface-2 + primary (#43b5a6 sobre #11211f = ~7.5:1)
+   CPU  → success (#34D399 sobre #0f1c20 = ~9.2:1)
    ============================================================ */
 .badge-gpu {
-  background: var(--on-accent);        /* #231A05 */
-  color: var(--accent);                /* #F0C453 */
+  background: var(--on-accent);        /* #1a1208 */
+  color: var(--accent);                /* #e0a85e */
   border: 1px solid var(--accent-strong);
   font-size: 0.7rem;
   padding: 2px 8px;
@@ -124,8 +134,8 @@ body {
 }
 
 .badge-api {
-  background: var(--surface-2);        /* #16213A */
-  color: var(--primary);               /* #2DD4BF */
+  background: var(--surface-2);        /* #11211f */
+  color: var(--primary);               /* #43b5a6 */
   border: 1px solid var(--primary-strong);
   font-size: 0.7rem;
   padding: 2px 8px;
