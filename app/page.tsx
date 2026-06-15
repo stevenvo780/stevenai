@@ -13,10 +13,12 @@ export default function Home() {
       {/* Hero */}
       <section className="text-center mb-14">
         <h1 className="text-4xl sm:text-5xl font-bold tracking-tight mb-4">
-          <span className="text-[var(--teal-light)]">Steven</span>
-          <span className="text-[var(--gold-light)]">AI</span>{" "}
-          <span className="text-[var(--foreground)]">Suite</span>
+          <span className="text-[var(--teal-light)]">Daí</span>
+          <span className="text-[var(--gold-light)]">mon</span>
         </h1>
+        <p className="text-[var(--foreground)] text-xl font-semibold mb-2">
+          Pila de inteligencia artificial
+        </p>
         <p className="text-[var(--muted)] text-lg max-w-2xl mx-auto mb-6">
           Pila de inteligencia artificial construida y operada por Steven Vallejo. Desde asistentes
           RAG con modelos de 70B hasta conversores OCR GPU y enjambres de agentes MCP.
