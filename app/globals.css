@@ -46,16 +46,16 @@
   --danger: #B42318;
 }
 
-/* Aliases de compatibilidad (mapean nombres legacy → tokens canónicos) */
+/* Aliases de compatibilidad (mapean nombres legacy → tokens Cloud Atlas) */
 :root,
 [data-theme="dark"],
 [data-theme="light"] {
   --background: var(--bg);
   --foreground: var(--text);
   --teal: var(--primary-strong);
-  --teal-light: var(--primary);
+  --teal-light: var(--primary-light);
   --gold: var(--accent-strong);
-  --gold-light: var(--accent);
+  --gold-light: var(--accent-light);
   --card-bg: var(--surface);
   --card-border: var(--border);
   --muted: var(--text-muted);
@@ -145,9 +145,9 @@ code, pre, kbd, samp, .font-mono, [class*="mono"] {
 }
 
 .badge-local {
-  background: #0a2b1e;                 /* dark green surface */
+  background: #0a1f14;                 /* dark green surface */
   color: var(--success);               /* #34D399 */
-  border: 1px solid #1a5c3a;
+  border: 1px solid #1a4d2e;
   font-size: 0.7rem;
   padding: 2px 8px;
   border-radius: 99px;
