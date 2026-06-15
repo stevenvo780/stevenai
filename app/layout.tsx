@@ -8,8 +8,8 @@ export const metadata: Metadata = {
     "Daímon: pila de inteligencia artificial de Steven Vallejo. Asistente RAG, LLM local GGUF, enjambre MCP, agentes autonomos y conversor OCR GPU.",
   icons: {
     icon: [
-      { url: "/favicon.svg", type: "image/svg+xml" },
-      { url: "/favicon.ico", sizes: "48x48" },
+      { url: "/icon.svg", type: "image/svg+xml" },
+      { url: "/favicon.ico", sizes: "any" },
     ],
     apple: [{ url: "/apple-touch-icon.png", sizes: "180x180" }],
   },
