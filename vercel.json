@@ -1,0 +1,16 @@
+{
+  "redirects": [
+    {
+      "source": "/(.*)",
+      "has": [
+        {
+          "type": "host",
+          "value": "stevenai.vercel.app"
+        }
+      ],
+      "destination": "https://daimon.stevenvallejo.com/$1",
+      "permanent": true,
+      "statusCode": 308
+    }
+  ]
+}

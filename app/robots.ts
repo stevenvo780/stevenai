@@ -7,5 +7,6 @@ export default function robots(): MetadataRoute.Robots {
       allow: "/",
     },
     sitemap: "https://daimon.stevenvallejo.com/sitemap.xml",
+    host: "https://daimon.stevenvallejo.com",
   };
 }

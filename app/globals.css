@@ -8,11 +8,11 @@
 :root,
 [data-theme="dark"] {
   --bg: #0b1417;
-  --surface: #0f1c20;
-  --surface-2: #11211f;
-  --border: rgba(243,236,224,0.10);
-  --text: #f3ece0;
-  --text-muted: #c9c2b6;
+  --surface: #131e22;
+  --surface-2: #131e22;
+  --border: rgba(232,224,212,0.10);
+  --text: #e8e0d4;
+  --text-muted: #8fa3a8;
   --primary: #43b5a6;
   --primary-strong: #2f8478;
   --on-primary: #07241F;
@@ -134,7 +134,7 @@ code, pre, kbd, samp, .font-mono, [class*="mono"] {
 }
 
 .badge-api {
-  background: var(--surface-2);        /* #11211f */
+  background: var(--surface-2);        /* #131e22 */
   color: var(--primary);               /* #43b5a6 */
   border: 1px solid var(--primary-strong);
   font-size: 0.7rem;
