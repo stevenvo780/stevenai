@@ -1,6 +1,5 @@
 "use client";
 import Link from "next/link";
-import Image from "next/image";
 import { usePathname } from "next/navigation";
 
 const navLinks = [
@@ -26,8 +25,8 @@ export default function NavBarClient() {
           className="flex items-center gap-2 shrink-0 group"
           aria-label="Mouseîon — portal principal de Steven Vallejo"
         >
-          <Image
-            src="/favicon.svg"
+          <img
+            src="/icon.svg"
             alt="Daímon"
             width={26}
             height={26}
