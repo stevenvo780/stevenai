@@ -23,32 +23,32 @@ export const components: AIComponent[] = [
     name: "Jarvis IA v1",
     tagline: "El asistente original — arquitectura cerebro modular",
     description:
-      "Primera iteracion del asistente personal en espanol. Inspirado en el cerebro humano: corteza OS, lobulos NLP, sistema de memoria, ego de respuesta y pesos emocionales para personalizar interacciones.",
+      "Primera iteración del asistente personal en español. Inspirado en el cerebro humano: corteza OS, lóbulos NLP, sistema de memoria, ego de respuesta y pesos emocionales para personalizar interacciones.",
     longDescription:
-      "Jarvis v1 es una arquitectura modular Node.js que emula partes del cerebro humano. Cuenta con un modulo 'Corteza' que controla el sistema operativo, 'Lobulos Procesativos' que albergan multiples modelos NLP de transformers y un lector Mycroft, 'Gestion de Memoria' con aprendizaje continuo, y el 'Ego' como controlador de respuestas. Se integra con Betty (comandos OS en lenguaje natural) y WolframAlpha para matematicas.",
+      "Jarvis v1 es una arquitectura modular Node.js que emula partes del cerebro humano. Cuenta con un módulo 'Corteza' que controla el sistema operativo, 'Lóbulos Procesativos' que albergan múltiples modelos NLP de transformers y un lector Mycroft, 'Gestión de Memoria' con aprendizaje continuo, y el 'Ego' como controlador de respuestas. Se integra con Betty (comandos OS en lenguaje natural) y WolframAlpha para matemáticas.",
     repo: "https://github.com/stevenvo780/jarvisIA",
     runtime: "local-cpu",
     runtimeLabel: "Local CPU / NLP ligero",
     status: "available",
-    statusLabel: "Codigo disponible",
+    statusLabel: "Código disponible",
     stack: ["Node.js", "NLP.js", "Python", "Mycroft", "WolframAlpha", "HuggingFace API"],
     capabilities: [
-      "Procesamiento de lenguaje natural en espanol",
-      "Ejecucion de comandos del sistema operativo",
-      "Aprendizaje continuo por retroalimentacion",
+      "Procesamiento de lenguaje natural en español",
+      "Ejecución de comandos del sistema operativo",
+      "Aprendizaje continuo por retroalimentación",
       "Sistema de pesos emocionales para personalizar respuestas",
-      "Integracion con terminal (Betty)",
-      "Resolucion matematica via WolframAlpha",
-      "Texto a voz (TTS) en espanol",
+      "Integración con terminal (Betty)",
+      "Resolución matemática via WolframAlpha",
+      "Texto a voz (TTS) en español",
     ],
     architectureDescription:
-      "Arquitectura modular inspirada en el cerebro humano con separacion clara de responsabilidades entre percepcion, procesamiento y respuesta.",
+      "Arquitectura modular inspirada en el cerebro humano con separación clara de responsabilidades entre percepción, procesamiento y respuesta.",
     mermaidDiagram: `graph TD
     User([Usuario]) --> Jarvis[Jarvis - Iniciador]
     Jarvis --> Ego[EGO - Controlador de Respuestas]
     Ego --> Corteza[Corteza - Control OS]
     Ego --> Lobulos[Lobulos Procesativos]
-    Ego --> GestMem[Gestion de Memoria]
+    Ego --> GestMem[Gestión de Memoria]
     Lobulos --> NLP[NLP Transformers]
     Lobulos --> Mycroft[Mycroft Reader]
     Corteza --> Betty[Betty - Comandos OS]
@@ -63,9 +63,9 @@ export const components: AIComponent[] = [
     name: "Jarvis IA v2",
     tagline: "Asistente RAG avanzado — multi-modelo, voz, GPU",
     description:
-      "Version avanzada con interfaz web tipo ChatGPT, sistema RAG sobre ChromaDB con embeddings BGE-M3, seleccion automatica de modelo por dificultad de query, TTS/STT y monitoreo GPU en tiempo real.",
+      "Versión avanzada con interfaz web tipo ChatGPT, sistema RAG sobre ChromaDB con embeddings BGE-M3, selección automática de modelo por dificultad de query, TTS/STT y monitoreo GPU en tiempo real.",
     longDescription:
-      "JarvisIAV2 es un asistente completo que corre en hardware local con GPU. Soporta multiples LLMs (Qwen2.5-14B/32B, LLaMA 3.1 70B, DeepSeek 14B) con seleccion automatica segun complejidad de la consulta. El sistema RAG usa ChromaDB y embeddings BGE-M3 para recuperacion semantica. Incluye interfaz web moderna con tema oscuro, historial de chat, indicadores de estado GPU, y capacidades de voz bidireccionalmente.",
+      "JarvisIAV2 es un asistente completo que corre en hardware local con GPU. Soporta múltiples LLMs (Qwen2.5-14B/32B, LLaMA 3.1 70B, DeepSeek 14B) con selección automática según complejidad de la consulta. El sistema RAG usa ChromaDB y embeddings BGE-M3 para recuperación semántica. Incluye interfaz web moderna con tema oscuro, historial de chat, indicadores de estado GPU, y capacidades de voz bidireccionalmente.",
     repo: "https://github.com/stevenvo780/jarvisIAV2",
     runtime: "gpu-local",
     runtimeLabel: "GPU Local (16GB+ VRAM recomendado)",
@@ -84,17 +84,17 @@ export const components: AIComponent[] = [
     ],
     capabilities: [
       "RAG con ChromaDB y embeddings BGE-M3",
-      "Seleccion automatica de modelo por dificultad",
+      "Selección automática de modelo por dificultad",
       "Interfaz web moderna tipo ChatGPT",
       "TTS y STT (voz bidireccional)",
       "Monitoreo GPU en tiempo real",
-      "Carga/descarga dinamica de modelos sin reiniciar",
+      "Carga/descarga dinámica de modelos sin reiniciar",
       "Soporte multi-modelo: Qwen, LLaMA, DeepSeek",
-      "API REST para integracion con otros sistemas",
+      "API REST para integración con otros sistemas",
     ],
     hardwareRequirements: "RTX 3090/4090/5070 Ti | 16GB+ VRAM | 32GB+ RAM | CUDA 11.8+",
     architectureDescription:
-      "Pipeline RAG completo con seleccion inteligente de modelo, base de vectores ChromaDB, y servicio web FastAPI.",
+      "Pipeline RAG completo con selección inteligente de modelo, base de vectores ChromaDB, y servicio web FastAPI.",
     mermaidDiagram: `graph TD
     UI[Web UI - ChatGPT Style] --> API[FastAPI Backend]
     API --> Orchestrator[Orchestrator]
@@ -115,12 +115,12 @@ export const components: AIComponent[] = [
     name: "Chat IA Local GGUF",
     tagline: "LLM cuantizado GGUF sobre llama.cpp — 5 GB VRAM",
     description:
-      "App de chat local optimizada para GPUs con ~5 GB VRAM. Usa modelos GGUF cuantizados (Qwen2.5-7B, LLaMA 3.1 8B, Gemma 2 9B, DeepSeek-R1) via llama-cpp-python con aceleracion CUDA.",
+      "App de chat local optimizada para GPUs con ~5 GB VRAM. Usa modelos GGUF cuantizados (Qwen2.5-7B, LLaMA 3.1 8B, Gemma 2 9B, DeepSeek-R1) vía llama-cpp-python con aceleración CUDA.",
     longDescription:
-      "Solucion de LLM local diseniada para hardware accesible. Corre Qwen2.5-7B-Instruct en Q4_K_M (~4.6 GB VRAM) en una RTX 2060 con tokens de alta calidad. Soporta multi-GPU via tensor_split, cambio dinamico de modelo desde la UI sin reiniciar el servidor, y multiples puertos para distintos modelos simultaneos. Backend FastAPI + UI web incluida.",
+      "Solución de LLM local diseñada para hardware accesible. Corre Qwen2.5-7B-Instruct en Q4_K_M (~4.6 GB VRAM) en una RTX 2060 con tokens de alta calidad. Soporta multi-GPU vía tensor_split, cambio dinámico de modelo desde la UI sin reiniciar el servidor, y múltiples puertos para distintos modelos simultáneos. Backend FastAPI + UI web incluida.",
     repo: "https://github.com/stevenvo780/IA",
     runtime: "gpu-local",
-    runtimeLabel: "GPU Local (5 GB VRAM minimo, RTX 2060+)",
+    runtimeLabel: "GPU Local (5 GB VRAM mínimo, RTX 2060+)",
     status: "demo-pending",
     statusLabel: "Demo GPU pendiente de hosting",
     stack: [
@@ -135,16 +135,16 @@ export const components: AIComponent[] = [
     ],
     capabilities: [
       "Inferencia LLM cuantizada GGUF (Q4_K_M)",
-      "Aceleracion GPU NVIDIA con CUDA",
+      "Aceleración GPU NVIDIA con CUDA",
       "Soporte multi-GPU con tensor_split",
-      "Cambio dinamico de modelo sin reiniciar",
-      "Multiples instancias en distintos puertos",
+      "Cambio dinámico de modelo sin reiniciar",
+      "Múltiples instancias en distintos puertos",
       "UI web de chat incluida",
-      "Fallback CPU automatico",
+      "Fallback CPU automático",
     ],
-    hardwareRequirements: "RTX 2060+ | 5 GB VRAM minimo | CUDA + cuDNN | Linux / WSL2",
+    hardwareRequirements: "RTX 2060+ | 5 GB VRAM mínimo | CUDA + cuDNN | Linux / WSL2",
     architectureDescription:
-      "Server FastAPI con llama-cpp-python como motor de inferencia GGUF, con gestion de modelos y API REST.",
+      "Server FastAPI con llama-cpp-python como motor de inferencia GGUF, con gestión de modelos y API REST.",
     mermaidDiagram: `graph TD
     UI[Web UI Chat] --> FastAPI[FastAPI Server]
     FastAPI --> ModelMgr[Model Manager]
@@ -166,7 +166,7 @@ export const components: AIComponent[] = [
     description:
       "Servidor MCP que expone herramientas a Copilot y Cursor para delegar tareas complejas a un enjambre de LLMs locales en Ollama. Pipeline Planner (deepseek-r1:14b) → Workers paralelos (qwen2.5-coder:14b) → Reviewer (qwen2.5:14b).",
     longDescription:
-      "MCP-delegate-agents implementa el patron Planner-Workers-Reviewer sobre Ollama local. El Planner razona y genera un plan JSON; los Workers ejecutan tareas en paralelo (codigo, tests, documentacion); el Reviewer consolida y valida. Disenado para RTX 5070 Ti con modelos de 14B que caben integros en 16 GB VRAM. Se conecta como servidor MCP stdio a VS Code / Copilot Chat.",
+      "MCP-delegate-agents implementa el patrón Planner-Workers-Reviewer sobre Ollama local. El Planner razona y genera un plan JSON; los Workers ejecutan tareas en paralelo (código, tests, documentación); el Reviewer consolida y valida. Diseñado para RTX 5070 Ti con modelos de 14B que caben íntegros en 16 GB VRAM. Se conecta como servidor MCP stdio a VS Code / Copilot Chat.",
     repo: "https://github.com/stevenvo780/MCP-delegate-agents",
     runtime: "gpu-local",
     runtimeLabel: "GPU Local (16 GB VRAM, RTX 5070 Ti)",
@@ -183,16 +183,16 @@ export const components: AIComponent[] = [
     ],
     capabilities: [
       "Servidor MCP stdio para Copilot / Cursor",
-      "Planeacion automatica de tareas complejas (JSON)",
-      "Ejecucion paralela de Workers especializados",
+      "Planeación automática de tareas complejas (JSON)",
+      "Ejecución paralela de Workers especializados",
       "Revision y consolidacion por LLM Reviewer",
       "Verificacion de disponibilidad de Ollama",
-      "Listado dinamico de modelos instalados",
+      "Listado dinámico de modelos instalados",
       "Inyeccion de config MCP en VS Code automaticamente",
     ],
     hardwareRequirements: "RTX 5070 Ti | 16 GB VRAM | Ollama corriendo localmente",
     architectureDescription:
-      "Enjambre de agentes LLM locales con patron Planner-Workers-Reviewer, expuesto via protocolo MCP para integracion con IDEs.",
+      "Enjambre de agentes LLM locales con patrón Planner-Workers-Reviewer, expuesto vía protocolo MCP para integración con IDEs.",
     mermaidDiagram: `graph TD
     Copilot[VS Code Copilot / Cursor] -->|MCP stdio| Server[MCP Swarm Server]
     Server --> delegate_run[delegate_run tool]
@@ -213,11 +213,11 @@ export const components: AIComponent[] = [
   {
     key: "mcp-agents",
     name: "MCP Autonomous Agents",
-    tagline: "Servidor MCP con agentes autonomos — OpenAI + REST",
+    tagline: "Servidor MCP con agentes autónomos — OpenAI + REST",
     description:
-      "Servidor MCP dual (stdio + HTTP) con agentes autonomos integrados con OpenAI. Herramientas de analisis de codigo, contexto automatico de proyecto y endpoints REST para integracion web.",
+      "Servidor MCP dual (stdio + HTTP) con agentes autónomos integrados con OpenAI. Herramientas de análisis de código, contexto automático de proyecto y endpoints REST para integración web.",
     longDescription:
-      "MCPagents expone dos servidores: uno MCP stdio para VS Code y Claude Desktop, y uno HTTP REST para integraciones web. Los agentes incluyen contexto automatico del proyecto (estructura, git, archivos principales) en cada llamada. Soporta todos los modelos OpenAI (GPT-4o, GPT-5, o1) con control de temperatura y tokens. Incluye herramientas especializadas de analisis y optimizacion de codigo.",
+      "MCPagents expone dos servidores: uno MCP stdio para VS Code y Claude Desktop, y uno HTTP REST para integraciones web. Los agentes incluyen contexto automático del proyecto (estructura, git, archivos principales) en cada llamada. Soporta todos los modelos OpenAI (GPT-4o, GPT-5, o1) con control de temperatura y tokens. Incluye herramientas especializadas de análisis y optimización de código.",
     repo: "https://github.com/stevenvo780/MCPagents",
     runtime: "api",
     runtimeLabel: "API Cloud (OpenAI)",
@@ -233,15 +233,15 @@ export const components: AIComponent[] = [
     capabilities: [
       "Servidor MCP stdio para VS Code y Claude Desktop",
       "API REST HTTP para integraciones web",
-      "Contexto automatico de proyecto (git, estructura, archivos)",
-      "Analisis avanzado de codigo con IA",
+      "Contexto automático de proyecto (git, estructura, archivos)",
+      "Análisis avanzado de código con IA",
       "Soporte a todos los modelos OpenAI",
       "Endpoint JSON-RPC compatible con MCP",
       "Modo streaming de respuestas",
       "Stress testing incluido",
     ],
     architectureDescription:
-      "Servidor dual MCP/HTTP con contexto automatico de proyecto, conectado a la API de OpenAI para capacidades de agente autonomo.",
+      "Servidor dual MCP/HTTP con contexto automático de proyecto, conectado a la API de OpenAI para capacidades de agente autónomo.",
     mermaidDiagram: `graph TD
     VsCode[VS Code / Claude Desktop] -->|MCP stdio| StdioServer[MCP Stdio Server]
     WebClient[Web Client] -->|HTTP REST| WebServer[Web HTTP Server]
@@ -265,7 +265,7 @@ export const components: AIComponent[] = [
     description:
       "Conversor de documentos a Markdown con OCR acelerado por GPU usando el modelo Surya. Arquitectura separada en Backend API, Worker GPU y Frontend para maxima estabilidad. Soporta PDF, DOCX y PPTX.",
     longDescription:
-      "ConvertPDFToMarkdownIA usa el modelo de OCR Surya con aceleracion CUDA para extraer y convertir documentos complejos (PDFs con imagenes, presentaciones, Word) a Markdown limpio. La arquitectura en tres capas evita bloqueos de UI: Backend API sin GPU para orquestacion, Worker GPU dedicado para procesamiento, y Frontend estatico. Configurable via variables de entorno para forzar CPU o deshabilitar OCR.",
+      "ConvertPDFToMarkdownIA usa el modelo de OCR Surya con aceleración CUDA para extraer y convertir documentos complejos (PDFs con imágenes, presentaciones, Word) a Markdown limpio. La arquitectura en tres capas evita bloqueos de UI: Backend API sin GPU para orquestación, Worker GPU dedicado para procesamiento, y Frontend estático. Configurable vía variables de entorno para forzar CPU o deshabilitar OCR.",
     repo: "https://github.com/stevenvo780/ConvertPDFToMarkdownIA",
     runtime: "gpu-local",
     runtimeLabel: "GPU Local (CUDA, RTX recomendado) + fallback CPU",
@@ -280,19 +280,19 @@ export const components: AIComponent[] = [
     ],
     capabilities: [
       "OCR acelerado por GPU con modelo Surya",
-      "Conversion de PDF, DOCX y PPTX a Markdown",
+      "Conversión de PDF, DOCX y PPTX a Markdown",
       "Arquitectura desacoplada Backend/Worker/Frontend",
-      "Procesamiento batch de multiples documentos",
+      "Procesamiento batch de múltiples documentos",
       "Modo CPU forzado (PDF2MD_FORCE_CPU=1)",
-      "Timeout y limite de tamano configurables",
+      "Timeout y límite de tamaño configurables",
       "CORS configurable para UI separada",
       "Health checks por capa independientes",
     ],
     hardwareRequirements: "GPU NVIDIA con CUDA (recomendado) | fallback CPU disponible",
     architectureDescription:
-      "Arquitectura en tres capas independientes: API de orquestacion, Worker GPU de procesamiento OCR, y Frontend estatico.",
+      "Arquitectura en tres capas independientes: API de orquestación, Worker GPU de procesamiento OCR, y Frontend estático.",
     mermaidDiagram: `graph TD
-    Frontend[Frontend Estatico :5173] -->|API calls| BackendAPI[Backend API :8001]
+    Frontend[Frontend Estático :5173] -->|API calls| BackendAPI[Backend API :8001]
     BackendAPI --> Queue[Job Queue]
     Queue --> Worker[GPU Worker]
     Worker --> Surya[Surya OCR Model]

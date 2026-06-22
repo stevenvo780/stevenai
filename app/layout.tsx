@@ -40,11 +40,16 @@ export const metadata: Metadata = {
   },
   icons: {
     icon: [
+      { url: "/favicon-16.png", sizes: "16x16", type: "image/png" },
       { url: "/favicon-32.png", sizes: "32x32", type: "image/png" },
+      { url: "/icon-192.png", sizes: "192x192", type: "image/png" },
       { url: "/icon-512.png", sizes: "512x512", type: "image/png" },
       { url: "/favicon.ico", sizes: "any" },
     ],
+    apple: [{ url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" }],
+    shortcut: [{ url: "/favicon.ico" }],
   },
+  manifest: "/manifest.json",
   other: {
     "theme-color": "#0b1417",
   },
@@ -135,7 +140,7 @@ export default function RootLayout({
             </a>
           </p>
           <p className="mt-1">
-            Portal estatico. Demos vivos GPU pendientes de hosting dedicado.
+            Portal estático. Demos vivos GPU pendientes de hosting dedicado.
           </p>
           <div className="mt-6 pt-6 border-t border-[var(--card-border)]">
             <p className="mb-2 text-[var(--text-muted)]">
@@ -152,7 +157,7 @@ export default function RootLayout({
                 href="https://www.stevenvallejo.com/es#filosofia"
                 className="hover:text-[var(--teal-light)] transition-colors"
               >
-                Filosofia
+                Filosofía
               </a>
               <a
                 href="https://www.stevenvallejo.com/es#ciencias"
