@@ -9,7 +9,7 @@ interface ComponentCardProps {
 const colorAccent: Record<AIComponent["color"], string> = {
   teal: "border-t-[var(--teal)]",
   gold: "border-t-[var(--gold)]",
-  purple: "border-t-[var(--accent)]",
+  purple: "border-t-[var(--purple)]",
   cyan: "border-t-[var(--teal-light)]",
 };
 

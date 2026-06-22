@@ -39,7 +39,7 @@ export const metadata: Metadata = {
   },
   icons: {
     icon: [
-      { url: "/icon.svg", type: "image/svg+xml" },
+      { url: "/isotipo.png", type: "image/png" },
       { url: "/favicon.ico", sizes: "any" },
     ],
     apple: [{ url: "/apple-touch-icon.png", sizes: "180x180" }],
@@ -166,10 +166,10 @@ export default function RootLayout({
                 Informatica
               </a>
               <a
-                href="https://www.stevenvallejo.com/es#enterprise"
+                href="https://www.stevenvallejo.com/es#ingenieria"
                 className="hover:text-[var(--teal-light)] transition-colors"
               >
-                Enterprise
+                Ingeniería
               </a>
             </nav>
           </div>
