@@ -9,7 +9,7 @@ export const metadata: Metadata = {
   metadataBase: new URL(CANONICAL_BASE),
   title: "Daímon — Pila de inteligencia artificial · Mouseîon",
   description:
-    "Daímon: pila de inteligencia artificial de Steven Vallejo. Asistente RAG, LLM local GGUF, enjambre MCP, agentes autónomos y conversor OCR GPU. Parte del ecosistema Mouseîon.",
+    "Daímon: pila IA de Steven Vallejo — RAG, LLM local GGUF, enjambre MCP, agentes autónomos y OCR GPU. Ecosistema Mouseîon.",
   alternates: {
     canonical: "/",
   },
@@ -23,10 +23,11 @@ export const metadata: Metadata = {
     locale: "es_ES",
     images: [
       {
-        url: "/og-image.png",
+        url: CANONICAL_BASE + "/og-image.png",
         width: 1200,
         height: 630,
         alt: "Daímon — Pila de inteligencia artificial · Mouseîon",
+        type: "image/png",
       },
     ],
   },
@@ -35,14 +36,14 @@ export const metadata: Metadata = {
     title: "Daímon — Pila de inteligencia artificial · Mouseîon",
     description:
       "Pila IA de Steven Vallejo — RAG, GGUF, MCP Swarm, agentes autónomos, OCR GPU.",
-    images: ["/og-image.png"],
+    images: [CANONICAL_BASE + "/og-image.png"],
   },
   icons: {
     icon: [
-      { url: "/isotipo.png", type: "image/png" },
+      { url: "/favicon-32.png", sizes: "32x32", type: "image/png" },
+      { url: "/icon-512.png", sizes: "512x512", type: "image/png" },
       { url: "/favicon.ico", sizes: "any" },
     ],
-    apple: [{ url: "/apple-touch-icon.png", sizes: "180x180" }],
   },
   other: {
     "theme-color": "#0b1417",
@@ -163,7 +164,7 @@ export default function RootLayout({
                 href="https://www.stevenvallejo.com/es#informatica"
                 className="hover:text-[var(--teal-light)] transition-colors"
               >
-                Informatica
+                Informática
               </a>
               <a
                 href="https://www.stevenvallejo.com/es#ingenieria"

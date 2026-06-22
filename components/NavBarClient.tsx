@@ -30,6 +30,7 @@ export default function NavBarClient() {
             alt="Daímon"
             width={26}
             height={26}
+            style={{ width: 26, height: 26 }}
             className="w-[26px] h-[26px]"
           />
           <span className="font-semibold text-sm text-[var(--text)] group-hover:text-[var(--teal-light)] transition-colors hidden sm:block">
