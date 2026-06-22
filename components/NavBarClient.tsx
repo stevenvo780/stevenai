@@ -26,7 +26,7 @@ export default function NavBarClient() {
           aria-label="Mouseîon — portal principal de Steven Vallejo"
         >
           <img
-            src="/icon.svg"
+            src="/navbar-logo.png"
             alt="Daímon"
             width={26}
             height={26}
