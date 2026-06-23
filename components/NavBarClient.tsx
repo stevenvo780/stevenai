@@ -19,19 +19,19 @@ export default function NavBarClient() {
   return (
     <header className="sticky top-0 z-50 border-b border-[var(--card-border)] bg-[var(--background)]/90 backdrop-blur-md">
       <div className="max-w-7xl mx-auto px-4 py-3 flex items-center gap-6 overflow-x-auto">
-        {/* Wordmark: lemniscata + "Daímon" + tag Mouseîon → portal principal */}
+        {/* Wordmark: lemniscata cuadrada + "Daímon" + tag Mouseîon → portal principal */}
         <a
           href="https://www.stevenvallejo.com"
           className="flex items-center gap-2 shrink-0 group"
           aria-label="Mouseîon — portal principal de Steven Vallejo"
         >
           <img
-            src="/navbar-logo.png"
+            src="/icon-256.png"
             alt="Daímon"
-            width={26}
-            height={26}
-            style={{ width: 26, height: 26 }}
-            className="w-[26px] h-[26px]"
+            width={40}
+            height={40}
+            style={{ width: 40, height: 40, objectFit: "contain" }}
+            className="w-[40px] h-[40px]"
           />
           <span className="font-semibold text-sm text-[var(--text)] group-hover:text-[var(--teal-light)] transition-colors hidden sm:block">
             Daímon
