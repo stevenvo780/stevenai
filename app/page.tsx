@@ -72,11 +72,11 @@ export default function Home() {
       {/* Legend */}
       <section className="mt-10 flex flex-wrap gap-6 text-xs text-[var(--muted)] justify-center">
         <div className="flex items-center gap-2">
-          <span className="w-2 h-2 rounded-full bg-[var(--success)]" />
+          <span className="w-2 h-2 rounded-full bg-[var(--success)]" aria-label="Código disponible en GitHub" />
           Codigo disponible en GitHub
         </div>
         <div className="flex items-center gap-2">
-          <span className="w-2 h-2 rounded-full bg-[var(--warning)]" />
+          <span className="w-2 h-2 rounded-full bg-[var(--warning)]" aria-label="Demo GPU pendiente de hosting" />
           Demo GPU pendiente de hosting
         </div>
         <div className="flex items-center gap-2">

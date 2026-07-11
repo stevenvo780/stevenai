@@ -1,5 +1,6 @@
 "use client";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 
 const navLinks = [
@@ -17,28 +18,28 @@ export default function NavBarClient() {
   const pathname = usePathname();
 
   return (
-    <header className="sticky top-0 z-50 border-b border-[var(--card-border)] bg-[var(--background)]/90 backdrop-blur-md">
-      <div className="max-w-7xl mx-auto px-4 py-3 flex items-center gap-6 overflow-x-auto">
+    <header className="sticky top-0 z-50 border-b border-[var(--card-border)] bg-[var(--background)]/90 backdrop-blur-md overflow-x-auto">
+      <div className="max-w-7xl mx-auto px-4 py-3 flex items-center gap-6">
         {/* Wordmark: lemniscata cuadrada + "Daímon" + tag Mouseîon → portal principal */}
         <a
           href="https://www.stevenvallejo.com"
           className="flex items-center gap-2 shrink-0 group"
           aria-label="Mouseîon — portal principal de Steven Vallejo"
         >
-          <img
+          <Image
             src="/icon-256.png"
             alt="Daímon"
             width={40}
             height={40}
-            style={{ width: 40, height: 40, objectFit: "contain" }}
             className="w-[40px] h-[40px]"
+            style={{ objectFit: "contain" }}
           />
           <span className="font-semibold text-sm text-[var(--text)] group-hover:text-[var(--teal-light)] transition-colors hidden sm:block">
             Daímon
           </span>
           <span className="text-[var(--muted)] text-[10px] hidden sm:block leading-none">Mouseîon</span>
         </a>
-        <nav className="flex items-center gap-1 overflow-x-auto">
+        <nav className="flex items-center gap-1 shrink-0" aria-label="Navegación principal">
           {navLinks.map((link) => (
             <Link
               key={link.href}

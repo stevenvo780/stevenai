@@ -1,5 +1,5 @@
 export interface AIComponent {
-  key: string;
+  key: string; // Must match regex: ^[a-z0-9-]+$ (alphanumeric + hyphens only)
   name: string;
   tagline: string;
   description: string;
@@ -15,6 +15,11 @@ export interface AIComponent {
   architectureDescription: string;
   mermaidDiagram: string;
   color: "teal" | "gold" | "purple" | "cyan";
+}
+
+// Validates that a key is safe for URL paths (alphanumeric + hyphens only)
+function isValidComponentKey(key: string): key is string {
+  return /^[a-z0-9-]+$/.test(key);
 }
 
 export const components: AIComponent[] = [
@@ -309,5 +314,9 @@ export const components: AIComponent[] = [
 ];
 
 export function getComponentByKey(key: string): AIComponent | undefined {
+  // Prevent path traversal attacks: validate key format before lookup
+  if (!isValidComponentKey(key)) {
+    return undefined;
+  }
   return components.find((c) => c.key === key);
 }

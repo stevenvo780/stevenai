@@ -20,18 +20,24 @@ const statusDot: Record<AIComponent["status"], string> = {
 };
 
 export default function ComponentCard({ component }: ComponentCardProps) {
+  // Fallback for color in case of invalid value
+  const colorBorder = colorAccent[component.color] ?? colorAccent.teal;
+  const statusClass = statusDot[component.status] ?? statusDot.available;
+
   return (
     <Link href={`/components/${component.key}`} className="block group">
       <div
-        className={`bg-[var(--card-bg)] border border-[var(--card-border)] border-t-2 ${colorAccent[component.color]} rounded-xl p-5 card-glow h-full transition-transform duration-200 group-hover:-translate-y-1`}
+        className={`bg-[var(--card-bg)] border border-[var(--card-border)] border-t-2 ${colorBorder} rounded-xl p-5 card-glow h-full transition-transform duration-200 group-hover:-translate-y-1`}
       >
         <div className="flex items-start justify-between gap-2 mb-3">
           <h3 className="font-semibold text-[var(--foreground)] text-base leading-tight">
             {component.name}
           </h3>
           <span
-            className={`w-2 h-2 rounded-full mt-1.5 shrink-0 ${statusDot[component.status]}`}
+            className={`w-2 h-2 rounded-full mt-1.5 shrink-0 ${statusClass}`}
             title={component.statusLabel}
+            aria-label={component.statusLabel}
+            role="status"
           />
         </div>
         <p className="text-[var(--muted)] text-xs mb-3 italic">{component.tagline}</p>
@@ -51,7 +57,9 @@ export default function ComponentCard({ component }: ComponentCardProps) {
         <RuntimeBadge runtime={component.runtime} label={component.runtimeLabel} />
         <div className="mt-3 text-xs text-[var(--muted)]">
           <span
-            className={`inline-block w-1.5 h-1.5 rounded-full mr-1 mb-0.5 ${statusDot[component.status]}`}
+            className={`inline-block w-1.5 h-1.5 rounded-full mr-1 mb-0.5 ${statusClass}`}
+            aria-label={component.statusLabel}
+            role="status"
           />
           {component.statusLabel}
         </div>

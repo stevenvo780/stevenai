@@ -168,6 +168,14 @@ code, pre, kbd, samp, .font-mono, [class*="mono"] {
   border-radius: 12px;
   padding: 1.5rem;
   overflow-x: auto;
+  /* Mobile optimization: force SVG to maintain intrinsic size instead of scaling.
+     This allows overflow-x: auto to scroll on narrow viewports, improving readability. */
+}
+
+.mermaid-wrapper svg {
+  max-width: none;
+  width: auto;
+  height: auto;
 }
 
 /* ============================================================

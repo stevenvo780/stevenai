@@ -6,7 +6,12 @@ import dynamic from "next/dynamic";
 const NavBarClient = dynamic(() => import("./NavBarClient"), {
   ssr: false,
   loading: () => (
-    <header className="sticky top-0 z-50 border-b border-[var(--card-border)] bg-[var(--background)]/90 h-[53px]" />
+    <header
+      className="sticky top-0 z-50 border-b border-[var(--card-border)] bg-[var(--background)]/90 h-[53px]"
+      aria-label="Barra de navegación (cargando)"
+      role="region"
+      aria-busy="true"
+    />
   ),
 });
 

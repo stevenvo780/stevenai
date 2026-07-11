@@ -4,20 +4,28 @@ interface RuntimeBadgeProps {
 }
 
 export default function RuntimeBadge({ runtime, label }: RuntimeBadgeProps) {
-  const classes = {
+  // Fallback classes to prevent undefined className
+  const classMap: Record<string, string> = {
     "gpu-local": "badge-gpu",
     api: "badge-api",
     "local-cpu": "badge-local",
-  }[runtime];
+  };
+  const classes = classMap[runtime] ?? "badge-gpu";
 
-  const icon = {
+  const iconMap: Record<string, string> = {
     "gpu-local": "GPU",
     api: "API",
     "local-cpu": "CPU",
-  }[runtime];
+  };
+  const icon = iconMap[runtime] ?? "CPU";
 
   return (
-    <span className={classes} title={label}>
+    <span
+      className={classes}
+      title={label}
+      aria-label={label}
+      role="status"
+    >
       {icon} — {label}
     </span>
   );

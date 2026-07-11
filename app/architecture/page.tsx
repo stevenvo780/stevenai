@@ -110,7 +110,7 @@ export default function ArchitecturePage() {
       </nav>
 
       <h1 className="text-3xl font-bold text-[var(--foreground)] mb-3">
-        Arquitectura de la StevenAI Suite
+        Arquitectura de Daímon
       </h1>
       <p className="text-[var(--muted)] max-w-2xl mb-6">
         Vision de alto nivel de como los 6 componentes IA de Steven Vallejo interactuan entre si,

@@ -251,7 +251,7 @@ export default function RootLayout({
                 Mouseîon
               </a>
             </p>
-            <nav className="flex flex-wrap justify-center gap-4">
+            <nav className="flex flex-wrap justify-center gap-4" aria-label="Frentes Mouseîon">
               <a
                 href="https://www.stevenvallejo.com/es#filosofia"
                 className="hover:text-[var(--teal-light)] transition-colors"
