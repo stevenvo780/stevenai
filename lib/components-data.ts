@@ -625,6 +625,34 @@ export const components: AIComponent[] = [
     color: "cyan",
   },
   {
+    key: "cloud-delegate",
+    name: "Cloud Delegate",
+    category: "infrastructure",
+    tagline: "Delegación local de tareas entre clientes MCP y CLI de agentes",
+    description:
+      "Servidor MCP en Python que recibe una tarea y la ejecuta mediante un CLI de agente instalado y autenticado en la misma máquina.",
+    longDescription:
+      "Cloud Delegate expone dos herramientas MCP: delegar_a_cloud para enviar una tarea autocontenida a un CLI compatible y listar_modelos_cloud para ver las rutas configuradas y la disponibilidad de sus ejecutables. Permite elegir nivel de acceso, tiempo límite y directorio de trabajo; limita la profundidad de delegación. El repositorio contiene el servidor reutilizable y pruebas con procesos simulados. Cada usuario configura por separado los CLI y sus credenciales; la lista de rutas no garantiza acceso a los modelos ni cuota disponible.",
+    repo: "https://github.com/stevenvo780/cloud-delegate",
+    runtime: "local-cpu",
+    runtimeLabel: "Servidor MCP local + CLI autenticados",
+    status: "available",
+    statusLabel: "Código disponible; requiere CLI configurados",
+    stack: ["Python 3", "MCP", "JSON-RPC", "CLI de agentes"],
+    capabilities: [
+      "Delegar tareas autocontenidas desde un cliente MCP",
+      "Consultar rutas configuradas y ejecutables disponibles",
+      "Elegir acceso de texto, lectura o escritura",
+      "Limitar tiempo de ejecución y profundidad de delegación",
+      "Probar el servidor sin invocar proveedores reales",
+    ],
+    hardwareRequirements: "Python 3 y al menos un CLI compatible instalado y autenticado localmente",
+    architectureDescription:
+      "Un cliente MCP llama al servidor local, que selecciona un CLI autenticado, aplica el tiempo límite y devuelve la respuesta. La configuración y autenticación permanecen en la máquina del usuario.",
+    mermaidDiagram: `graph LR\n    Client[Cliente MCP] --> Server[Cloud Delegate]\n    Server --> Route[Seleccion de CLI]\n    Route --> CLI[CLI autenticado]\n    CLI --> Result[Respuesta]\n    Server --> Guard[Limite de profundidad y timeout]`,
+    color: "teal",
+  },
+  {
     key: "talos-harness",
     name: "Talos · Harness de automatización",
     category: "infrastructure",
