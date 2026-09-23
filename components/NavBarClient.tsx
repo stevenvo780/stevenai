@@ -1,67 +1,38 @@
 "use client";
+
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 
 const navLinks = [
-  { href: "/", label: "Suite" },
-  { href: "/components/jarvis-v1", label: "Jarvis v1" },
-  { href: "/components/jarvis-v2", label: "Jarvis v2" },
-  { href: "/components/ia-gguf", label: "Chat IA GGUF" },
-  { href: "/components/mcp-swarm", label: "MCP Swarm" },
-  { href: "/components/mcp-agents", label: "MCP Agents" },
-  { href: "/components/pdf-converter", label: "PDF Converter" },
-  { href: "/architecture", label: "Arquitectura" },
+  { href: "/#catalogo", label: "Catálogo" },
+  { href: "/#guia", label: "Guía" },
+  { href: "/architecture", label: "Mapa" },
 ];
 
 export default function NavBarClient() {
   const pathname = usePathname();
 
   return (
-    <header className="sticky top-0 z-50 border-b border-[var(--card-border)] bg-[var(--background)]/90 backdrop-blur-md overflow-x-auto">
-      <div className="max-w-7xl mx-auto px-4 py-3 flex items-center gap-6">
-        {/* Wordmark: lemniscata cuadrada + "Daímon" + tag Mouseîon → portal principal */}
-        <a
-          href="https://www.stevenvallejo.com"
-          className="flex items-center gap-2 shrink-0 group"
-          aria-label="Mouseîon — portal principal de Steven Vallejo"
-        >
-          <Image
-            src="/icon-256.png"
-            alt="Daímon"
-            width={40}
-            height={40}
-            className="w-[40px] h-[40px]"
-            style={{ objectFit: "contain" }}
-          />
-          <span className="font-semibold text-sm text-[var(--text)] group-hover:text-[var(--teal-light)] transition-colors hidden sm:block">
-            Daímon
-          </span>
-          <span className="text-[var(--muted)] text-[10px] hidden sm:block leading-none">Mouseîon</span>
-        </a>
-        <nav className="flex items-center gap-1 shrink-0" aria-label="Navegación principal">
+    <header className="sticky top-0 z-50 border-b border-[var(--card-border)] bg-[var(--background)]/95 backdrop-blur-md">
+      <div className="max-w-7xl mx-auto px-4 py-3 flex flex-wrap sm:flex-nowrap items-center justify-between gap-x-5 gap-y-2">
+        <Link href="/" className="flex items-center gap-2 group" aria-label="Daímon, inicio">
+          <Image src="/icon-256.png" alt="" width={34} height={34} className="w-[34px] h-[34px]" />
+          <span className="font-semibold text-sm text-[var(--foreground)] group-hover:text-[var(--teal-light)] transition-colors">Daímon</span>
+        </Link>
+        <a href="https://www.stevenvallejo.com/es"
+          className="sm:order-3 text-xs text-[var(--muted)] hover:text-[var(--foreground)] transition-colors">Portal de Steven ↗</a>
+        <nav className="order-3 sm:order-2 w-full sm:w-auto flex items-center gap-1" aria-label="Navegación principal">
           {navLinks.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              className={`px-3 py-1.5 rounded-lg text-sm font-medium whitespace-nowrap transition-colors ${
-                pathname === link.href
-                  ? "bg-[var(--surface-2)] text-[var(--primary)]"
+            <Link key={link.href} href={link.href}
+              aria-current={pathname === "/architecture" && link.href === "/architecture" ? "page" : undefined}
+              className={`px-3 py-1.5 rounded-lg text-sm transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--ring)] ${
+                pathname === "/architecture" && link.href === "/architecture"
+                  ? "bg-[var(--surface-2)] text-[var(--teal-light)]"
                   : "text-[var(--muted)] hover:text-[var(--foreground)] hover:bg-[var(--card-bg)]"
-              }`}
-            >
-              {link.label}
-            </Link>
+              }`}>{link.label}</Link>
           ))}
         </nav>
-        <a
-          href="https://github.com/stevenvo780"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="ml-auto shrink-0 text-xs text-[var(--muted)] hover:text-[var(--foreground)] transition-colors"
-        >
-          GitHub
-        </a>
       </div>
     </header>
   );

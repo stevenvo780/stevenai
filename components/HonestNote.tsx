@@ -15,10 +15,9 @@ export default function HonestNote() {
         Nota honesta:
       </span>{" "}
       <span style={{ color: "var(--text-muted)" }}>
-        Los componentes marcados como &ldquo;Demo GPU pendiente&rdquo; corren en hardware local (RTX
-        2060 / RTX 5070 Ti) y requieren VRAM dedicada para funcionar. Hostear inferencia GPU en la
-        nube a costo razonable esta pendiente. El código fuente de cada componente está disponible en
-        GitHub.
+        Este proyecto requiere hardware local con GPU para la demo. El catálogo muestra su código y
+        documentación, pero todavía no aloja una demo pública. Consulta los requisitos de esta ficha
+        y su repositorio antes de instalarlo.
       </span>
     </div>
   );

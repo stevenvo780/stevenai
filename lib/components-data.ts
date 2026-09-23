@@ -1,6 +1,7 @@
 export interface AIComponent {
   key: string; // Must match regex: ^[a-z0-9-]+$ (alphanumeric + hyphens only)
   name: string;
+  category: "assistants" | "agents" | "tools";
   tagline: string;
   description: string;
   longDescription: string;
@@ -26,6 +27,7 @@ export const components: AIComponent[] = [
   {
     key: "jarvis-v1",
     name: "Jarvis IA v1",
+    category: "assistants",
     tagline: "El asistente original — arquitectura cerebro modular",
     description:
       "Primera iteración del asistente personal en español. Inspirado en el cerebro humano: corteza OS, lóbulos NLP, sistema de memoria, ego de respuesta y pesos emocionales para personalizar interacciones.",
@@ -66,6 +68,7 @@ export const components: AIComponent[] = [
   {
     key: "jarvis-v2",
     name: "Jarvis IA v2",
+    category: "assistants",
     tagline: "Asistente RAG avanzado — multi-modelo, voz, GPU",
     description:
       "Versión avanzada con interfaz web tipo ChatGPT, sistema RAG sobre ChromaDB con embeddings BGE-M3, selección automática de modelo por dificultad de query, TTS/STT y monitoreo GPU en tiempo real.",
@@ -118,6 +121,7 @@ export const components: AIComponent[] = [
   {
     key: "ia-gguf",
     name: "Chat IA Local GGUF",
+    category: "agents",
     tagline: "LLM cuantizado GGUF sobre llama.cpp — 5 GB VRAM",
     description:
       "App de chat local optimizada para GPUs con ~5 GB VRAM. Usa modelos GGUF cuantizados (Qwen2.5-7B, LLaMA 3.1 8B, Gemma 2 9B, DeepSeek-R1) vía llama-cpp-python con aceleración CUDA.",
@@ -167,6 +171,7 @@ export const components: AIComponent[] = [
   {
     key: "mcp-swarm",
     name: "MCP Swarm Delegator",
+    category: "agents",
     tagline: "Enjambre local Planner-Worker-Reviewer via MCP",
     description:
       "Servidor MCP que expone herramientas a Copilot y Cursor para delegar tareas complejas a un enjambre de LLMs locales en Ollama. Pipeline Planner (deepseek-r1:14b) → Workers paralelos (qwen2.5-coder:14b) → Reviewer (qwen2.5:14b).",
@@ -218,6 +223,7 @@ export const components: AIComponent[] = [
   {
     key: "mcp-agents",
     name: "MCP Autonomous Agents",
+    category: "agents",
     tagline: "Servidor MCP con agentes autónomos — OpenAI + REST",
     description:
       "Servidor MCP dual (stdio + HTTP) con agentes autónomos integrados con OpenAI. Herramientas de análisis de código, contexto automático de proyecto y endpoints REST para integración web.",
@@ -266,6 +272,7 @@ export const components: AIComponent[] = [
   {
     key: "pdf-converter",
     name: "PDF to Markdown IA",
+    category: "tools",
     tagline: "Conversor OCR GPU — PDF/DOCX/PPTX a Markdown con Surya",
     description:
       "Conversor de documentos a Markdown con OCR acelerado por GPU usando el modelo Surya. Arquitectura separada en Backend API, Worker GPU y Frontend para maxima estabilidad. Soporta PDF, DOCX y PPTX.",
@@ -309,6 +316,177 @@ export const components: AIComponent[] = [
     Parsers --> Docx[python-docx - DOCX]
     Parsers --> Pptx[python-pptx - PPTX]
     Worker --> Storage[(Markdown Output)]`,
+    color: "gold",
+  },
+  {
+    key: "kratos-jarvis",
+    name: "Kratos Jarvis",
+    category: "assistants",
+    tagline: "Asistente personal por voz, alojado en casa",
+    description:
+      "Sistema personal sobre OpenClaw con transcripción Whisper y voz Kokoro locales. Combina un filtro de relevancia, visión de pantalla bajo pedido y automatizaciones de seguimiento.",
+    longDescription:
+      "El repositorio publica una versión saneada del sistema que opera en un equipo doméstico. Reúne escucha con VAD, un filtro local que decide si una frase va dirigida al asistente, transcripción Whisper, respuestas habladas con Kokoro, visión de pantalla bajo pedido, herramientas MCP y rutinas de asesoría y supervisión. Es una referencia de una instalación particular, no un instalador universal.",
+    repo: "https://github.com/stevenvo780/kratos-jarvis",
+    runtime: "gpu-local",
+    runtimeLabel: "Servidor local con GPU y OpenClaw",
+    status: "live-local",
+    statusLabel: "Sistema local; referencia pública",
+    stack: ["OpenClaw", "Whisper", "Kokoro", "Ollama", "MCP", "Python"],
+    capabilities: [
+      "Conversación por voz con transcripción y síntesis locales",
+      "Filtro de relevancia para evitar respuestas a conversaciones ajenas",
+      "Visión de pantalla activada bajo pedido",
+      "Asesoría apoyada en decisiones y documentos propios",
+      "Rutinas de actividad y supervisión de servicios",
+    ],
+    hardwareRequirements: "Equipo local con GPU para la pila de voz; OpenClaw y servicios auxiliares",
+    architectureDescription:
+      "La voz entra por VAD y Whisper, pasa por un filtro local de relevancia y llega al agente OpenClaw; Kokoro reproduce la respuesta. La visión se activa bajo pedido.",
+    mermaidDiagram: `graph LR
+    Voz[Voz] --> VAD[VAD]
+    VAD --> Whisper[Whisper local]
+    Whisper --> Filtro[Filtro de relevancia]
+    Filtro --> OpenClaw[Agente OpenClaw]
+    OpenClaw --> Kokoro[Kokoro TTS]
+    Pantalla[Pantalla bajo pedido] --> OpenClaw
+    MCP[Herramientas MCP] --> OpenClaw`,
+    color: "teal",
+  },
+  {
+    key: "clawbar",
+    name: "clawbar",
+    category: "assistants",
+    tagline: "Voz y estado del agente en Waybar",
+    description:
+      "Integración de escritorio para hablar con un agente OpenClaw y ver si escucha, transcribe, piensa o responde. Incluye detección de silencio y visión de pantalla bajo pedido.",
+    longDescription:
+      "clawbar conecta un escritorio Wayland con un agente OpenClaw en Docker. Permite pulsar para hablar o usar detección de voz, transcribe mediante Whisper, recibe la respuesta del agente y la reproduce con Kokoro. Un módulo de Waybar muestra la fase activa. Funciona como integración fina alrededor del agente y del servicio de audio, sin modificar su contenedor.",
+    repo: "https://github.com/stevenvo780/clawbar",
+    runtime: "local-cpu",
+    runtimeLabel: "Escritorio Linux; audio local aparte",
+    status: "available",
+    statusLabel: "Código e instalador disponibles",
+    stack: ["Waybar", "Hyprland", "OpenClaw", "Whisper", "Kokoro", "Docker"],
+    capabilities: [
+      "Pulsar para hablar o detener por silencio con VAD",
+      "Estado visible en Waybar durante cada fase de la conversación",
+      "Captura de pantalla solo cuando se solicita",
+      "Respuesta hablada mediante síntesis de voz",
+      "Instalación reversible con copias de seguridad",
+    ],
+    hardwareRequirements: "Escritorio Linux con Waybar, Docker, agente OpenClaw y servicio de audio",
+    architectureDescription:
+      "El escritorio captura voz y muestra el estado; un servicio de audio transcribe y sintetiza, mientras OpenClaw procesa la solicitud.",
+    mermaidDiagram: `graph LR
+    Microfono[Micrófono] --> VAD[VAD]
+    VAD --> Audio[Whisper STT]
+    Audio --> Agent[OpenClaw en Docker]
+    Agent --> TTS[Kokoro TTS]
+    TTS --> Altavoces[Altavoces]
+    Agent --> Barra[Estado en Waybar]`,
+    color: "cyan",
+  },
+  {
+    key: "night-harness",
+    name: "night-harness",
+    category: "agents",
+    tagline: "Búsqueda y validación de errores con agentes",
+    description:
+      "Harness experimental para revisar proyectos Next.js y TypeScript con modelos locales y externos. Filtra hallazgos, prueba correcciones en un worktree aislado y deja la integración final a una persona.",
+    longDescription:
+      "Nació de un proyecto concreto y requiere adaptación antes de usarlo en otro repositorio. Combina cazadores de posibles errores, filtros y revisión de hipótesis; los cambios candidatos deben superar typecheck y pruebas E2E en navegador dentro de un worktree aislado. Consulta ai-usage-live para escoger modelos según la cuota disponible. El merge queda manual.",
+    repo: "https://github.com/stevenvo780/night-harness",
+    runtime: "local-cpu",
+    runtimeLabel: "Local; modelos y CLI configurados aparte",
+    status: "available",
+    statusLabel: "Código de referencia disponible",
+    stack: ["Python", "Ollama", "TypeScript", "Playwright", "Git worktree", "ai-usage-live"],
+    capabilities: [
+      "Búsqueda de posibles errores con modelos locales",
+      "Refutación y revisión de hallazgos antes de editar",
+      "Correcciones aisladas en un worktree",
+      "Validación con typecheck y E2E de navegador",
+      "Selección de modelos informada por cuotas",
+    ],
+    hardwareRequirements: "Proyecto Next.js/TypeScript adaptable, modelos locales y CLI compatibles",
+    architectureDescription:
+      "Las hipótesis pasan por filtros y revisión; una corrección candidata se valida con pruebas dentro de un worktree antes de integrarse manualmente.",
+    mermaidDiagram: `graph LR
+    Repo[Repositorio] --> Hunter[Cazadores]
+    Hunter --> Filter[Filtro y refutación]
+    Filter --> Fixer[Corrección en worktree]
+    Fixer --> Gates[Typecheck y E2E]
+    Gates --> Review[Revisión e integración manual]
+    Quota[ai-usage-live] --> Hunter`,
+    color: "purple",
+  },
+  {
+    key: "ai-usage-live",
+    name: "ai-usage-live",
+    category: "tools",
+    tagline: "Cuotas de asistentes de código en una TUI",
+    description:
+      "Panel de terminal que reúne consumo y cuotas de Claude Code, Codex, Gemini y otros proveedores. También ofrece salida JSON y un servidor MCP para consultar disponibilidad.",
+    longDescription:
+      "La TUI consulta las cuotas que cada CLI o servicio permite ver, conserva caché con marca de frescura y distingue cuentas no configuradas de cuotas agotadas. La salida JSON y el servidor MCP permiten a otros agentes elegir un proveedor disponible. Algunas fuentes usan estimaciones o valores manuales cuando no existe una cuota en vivo.",
+    repo: "https://github.com/stevenvo780/ai-usage-live",
+    runtime: "local-cpu",
+    runtimeLabel: "Terminal local; CLI autenticados por separado",
+    status: "available",
+    statusLabel: "Código y paquete disponibles",
+    stack: ["Node.js", "Python", "TUI", "MCP", "JSON", "SQLite"],
+    capabilities: [
+      "Vista conjunta de consumo y cuotas por proveedor",
+      "Marca de frescura y caché de los datos",
+      "Salida JSON para scripts y agentes",
+      "Servidor MCP para consultar disponibilidad",
+      "Oculta proveedores no configurados sin confundirlos con los agotados",
+    ],
+    architectureDescription:
+      "Consulta fuentes locales y de los proveedores, normaliza su disponibilidad y la muestra en TUI, JSON o MCP.",
+    mermaidDiagram: `graph LR
+    CLI[CLI y servicios] --> Probe[Consultas de cuota]
+    Probe --> Cache[Caché con frescura]
+    Cache --> TUI[Panel TUI]
+    Cache --> JSON[Salida JSON]
+    Cache --> MCP[Servidor MCP]`,
+    color: "teal",
+  },
+  {
+    key: "reel-forge",
+    name: "reel-forge",
+    category: "tools",
+    tagline: "Vídeos verticales a partir de una configuración",
+    description:
+      "Generador de reels MP4 con gráficos WebGL, narración local Piper, música MusicGen y subtítulos. Renderiza los fotogramas con Playwright y compone el vídeo con ffmpeg.",
+    longDescription:
+      "Un archivo JSON define la marca, el guion, el tema visual y el audio. reel-forge crea la narración con Piper, la música con MusicGen, captura fotogramas de una escena Three.js en Chrome y compone un MP4 vertical con ffmpeg. Incluye temas visuales y un ejemplo reproducible; requiere instalar las dependencias locales.",
+    repo: "https://github.com/stevenvo780/reel-forge",
+    runtime: "local-cpu",
+    runtimeLabel: "Render local con Chrome y ffmpeg",
+    status: "available",
+    statusLabel: "Código y demo reproducible",
+    stack: ["Node.js", "Three.js", "Piper", "MusicGen", "Playwright", "ffmpeg"],
+    capabilities: [
+      "Generación de vídeo vertical 9:16",
+      "Escenas WebGL con temas intercambiables",
+      "Narración local y música generativa",
+      "Subtítulos animados y salida MP4",
+      "Render fotograma a fotograma reproducible",
+    ],
+    hardwareRequirements: "Chrome, Node.js, Python y ffmpeg; render sin GPU obligatoria",
+    architectureDescription:
+      "Una configuración JSON genera audio y escenas visuales; Playwright captura los fotogramas y ffmpeg ensambla el vídeo final.",
+    mermaidDiagram: `graph LR
+    Config[Configuración JSON] --> Piper[Piper voz]
+    Config --> MusicGen[MusicGen música]
+    Config --> Scene[Three.js escenas]
+    Scene --> Frames[Playwright fotogramas]
+    Piper --> FFmpeg[ffmpeg]
+    MusicGen --> FFmpeg
+    Frames --> FFmpeg
+    FFmpeg --> Video[MP4 vertical]`,
     color: "gold",
   },
 ];

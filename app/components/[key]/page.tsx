@@ -88,17 +88,6 @@ export default async function ComponentPage({ params }: PageProps) {
     description: component.description,
     abstract: component.longDescription,
     applicationCategory: "DeveloperApplication",
-    operatingSystem: component.runtime === "gpu-local" ? "Linux" : "Web",
-    runtimePlatform:
-      component.runtime === "gpu-local" ? "NVIDIA CUDA" :
-      component.runtime === "api" ? "OpenAI API" :
-      "CPU",
-    offers: {
-      "@type": "Offer",
-      price: "0",
-      priceCurrency: "USD",
-      availability: "https://schema.org/InStock",
-    },
     author: {
       "@type": "Person",
       "@id": "https://www.stevenvallejo.com/#person",
@@ -131,7 +120,7 @@ export default async function ComponentPage({ params }: PageProps) {
         {/* Breadcrumb */}
         <nav className="text-xs text-[var(--muted)] mb-6 flex items-center gap-2">
           <Link href="/" className="hover:text-[var(--foreground)] transition-colors">
-            Suite
+            Catálogo
           </Link>
           <span>/</span>
           <span className="text-[var(--foreground)]">{component.name}</span>

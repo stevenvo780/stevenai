@@ -17,9 +17,9 @@ export const viewport: Viewport = {
 
 export const metadata: Metadata = {
   metadataBase: new URL(CANONICAL_BASE),
-  title: "Daímon — Pila de inteligencia artificial · Mouseîon",
+  title: "Daímon — Catálogo de proyectos de IA · Mouseîon",
   description:
-    "Daímon: pila IA de Steven Vallejo — RAG, LLM local GGUF, enjambre MCP, agentes autónomos y OCR GPU. Ecosistema Mouseîon.",
+    "Catálogo de proyectos de IA de Steven Vallejo: asistentes, agentes, inferencia local y herramientas creativas con código público.",
   // authors → renders <meta name="author"> automatically via Metadata API.
   // creator/publisher → reinforce author attribution in crawlers.
   authors: [
@@ -31,9 +31,9 @@ export const metadata: Metadata = {
     canonical: "/",
   },
   openGraph: {
-    title: "Daímon — Pila de inteligencia artificial · Mouseîon",
+    title: "Daímon — Catálogo de proyectos de IA · Mouseîon",
     description:
-      "Pila IA de Steven Vallejo — RAG, GGUF, MCP Swarm, agentes autónomos, OCR GPU. Parte del ecosistema Mouseîon.",
+      "Explora los proyectos de IA de Steven Vallejo: asistentes, agentes y herramientas independientes.",
     type: "website",
     url: CANONICAL_BASE + "/",
     siteName: ECOSYSTEM_NAME,
@@ -43,16 +43,16 @@ export const metadata: Metadata = {
         url: CANONICAL_BASE + "/og-image.png",
         width: 1200,
         height: 630,
-        alt: "Daímon — Pila de inteligencia artificial · Mouseîon",
+        alt: "Daímon — Catálogo de proyectos de IA · Mouseîon",
         type: "image/png",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Daímon — Pila de inteligencia artificial · Mouseîon",
+    title: "Daímon — Catálogo de proyectos de IA · Mouseîon",
     description:
-      "Pila IA de Steven Vallejo — RAG, GGUF, MCP Swarm, agentes autónomos, OCR GPU.",
+      "Asistentes, agentes y herramientas de IA con código público.",
     images: [CANONICAL_BASE + "/og-image.png"],
   },
   icons: {
@@ -81,7 +81,7 @@ const authorPerson = {
   email: "mailto:steven@stevenvallejo.com", // schema-level only; not exposed as visible mailto on page
   jobTitle: "Ingeniero-filósofo · Arquitecto de IA",
   description:
-    "Autor del ecosistema Mouseîon: 14 productos griegos que cubren filosofía, ciencias e ingeniería. Diseñador y operador de Daímon.",
+    "Autor del ecosistema Mouseîon y de los proyectos de IA reunidos en Daímon.",
   knowsAbout: [
     "Inteligencia artificial",
     "RAG (Retrieval-Augmented Generation)",
@@ -113,7 +113,7 @@ const jsonLd = {
       url: CANONICAL_BASE + "/",
       name: "Daímon",
       description:
-        "Pila de inteligencia artificial de Steven Vallejo: RAG, GGUF, MCP Swarm, agentes autónomos y OCR GPU.",
+        "Catálogo de proyectos de IA de Steven Vallejo: asistentes, agentes y herramientas independientes.",
       inLanguage: "es-ES",
       // isPartOf ties this site into the personal hub → builds entity graph for the author.
       isPartOf: {
@@ -126,18 +126,13 @@ const jsonLd = {
       publisher: { "@id": AUTHOR_URL + "/#person" },
     },
     {
-      // The "product" Daímon as software (richer schema for product-aware crawlers).
-      "@type": "SoftwareApplication",
-      "@id": CANONICAL_BASE + "/#software",
+      // Daímon is a catalogue of separate projects, not one software product.
+      "@type": "CollectionPage",
+      "@id": CANONICAL_BASE + "/#catalogue",
       name: "Daímon",
       url: CANONICAL_BASE + "/",
-      applicationCategory: "DeveloperApplication",
-      applicationSubCategory: "AI Stack / RAG Framework",
-      operatingSystem: "Linux",
       description:
-        "Pila de inteligencia artificial construida y operada por Steven Vallejo. Incluye asistente RAG con modelos 70B, LLM local GGUF, enjambre de agentes MCP, y conversor OCR GPU con modelo Surya.",
-      screenshot: CANONICAL_BASE + "/og-image.png",
-      softwareVersion: "1.0",
+        "Colección de proyectos independientes de inteligencia artificial con repositorios públicos.",
       inLanguage: "es-ES",
       author: { "@id": AUTHOR_URL + "/#person" },
       publisher: { "@id": AUTHOR_URL + "/#person" },
@@ -147,12 +142,6 @@ const jsonLd = {
         name: ECOSYSTEM_NAME,
         url: AUTHOR_URL,
       },
-      offers: {
-        "@type": "Offer",
-        price: "0",
-        priceCurrency: "USD",
-        availability: "https://schema.org/PreOrder",
-      },
     },
     {
       // Daímon also as a CreativeWork → helps general crawlers/AI indexers that prefer
@@ -161,7 +150,7 @@ const jsonLd = {
       "@id": CANONICAL_BASE + "/#creativework",
       name: "Daímon",
       abstract:
-        "Pila de IA personal de Steven Vallejo, parte del ecosistema Mouseîon.",
+        "Catálogo de proyectos de IA de Steven Vallejo, parte del ecosistema Mouseîon.",
       author: { "@id": AUTHOR_URL + "/#person" },
       isPartOf: {
         "@type": "WebSite",
@@ -218,7 +207,7 @@ export default function RootLayout({
       </head>
       <body className="min-h-screen">
         <NavBar />
-        <main>{children}</main>
+        <div>{children}</div>
         <footer className="border-t border-[var(--card-border)] mt-16 py-8 text-center text-xs text-[var(--muted)]">
           <p>
             por{" "}
@@ -239,7 +228,7 @@ export default function RootLayout({
             </a>
           </p>
           <p className="mt-1">
-            Portal estático. Demos vivos GPU pendientes de hosting dedicado.
+            Catálogo público. Algunas demos con GPU aún no están alojadas.
           </p>
           <div className="mt-6 pt-6 border-t border-[var(--card-border)]">
             <p className="mb-2 text-[var(--text-muted)]">

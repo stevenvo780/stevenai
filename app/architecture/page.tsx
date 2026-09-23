@@ -1,178 +1,65 @@
 import type { Metadata } from "next";
-import MermaidDiagram from "@/components/MermaidDiagramDynamic";
-import HonestNote from "@/components/HonestNote";
 import Link from "next/link";
 import { components } from "@/lib/components-data";
+import { catalogGroups } from "@/lib/catalog-groups";
 
 export const metadata: Metadata = {
-  title: "Arquitectura global — Daímon · Mouseîon",
-  description:
-    "Diagrama de arquitectura completo de la pila IA de Steven Vallejo: RAG, GGUF, MCP Swarm, agentes autónomos y OCR GPU.",
-  alternates: {
-    canonical: "https://daimon.stevenvallejo.com/architecture",
-  },
+  title: "Mapa de proyectos — Daímon · Mouseîon",
+  description: "Mapa del catálogo de IA de Steven Vallejo: asistentes, agentes y herramientas independientes.",
+  alternates: { canonical: "https://daimon.stevenvallejo.com/architecture" },
   openGraph: {
-    title: "Arquitectura global — Daímon · Mouseîon",
-    description:
-      "Diagrama de arquitectura de la pila IA de Steven Vallejo: RAG, GGUF, MCP Swarm, agentes autónomos y OCR GPU.",
+    title: "Mapa de proyectos — Daímon · Mouseîon",
+    description: "Asistentes, agentes y herramientas del catálogo Daímon.",
     url: "https://daimon.stevenvallejo.com/architecture",
     siteName: "Mouseîon",
     locale: "es_ES",
     images: [{ url: "/og-image.png", width: 1200, height: 630 }],
   },
-  twitter: {
-    card: "summary_large_image",
-    title: "Arquitectura global — Daímon · Mouseîon",
-    description:
-      "Diagrama de arquitectura de la pila IA de Steven Vallejo: RAG, GGUF, MCP Swarm, agentes y OCR GPU.",
-    images: ["/og-image.png"],
-  },
-};
-
-const globalDiagram = `graph TD
-  Dev[Desarrollador / IDE] -->|MCP stdio| SwarmMCP[MCP Swarm Delegator]
-  Dev -->|MCP stdio| AgentsMCP[MCP Autonomous Agents]
-  SwarmMCP --> Ollama[(Ollama Local\n16GB VRAM)]
-  Ollama --> Planner[Planner deepseek-r1:14b]
-  Ollama --> Workers[Workers qwen2.5-coder:14b]
-  Ollama --> Reviewer[Reviewer qwen2.5:14b]
-  AgentsMCP --> OpenAI[OpenAI API\nGPT-4o / GPT-5]
-  Dev -->|Web UI| JarvisV2[Jarvis IA v2\nRAG + Multi-LLM]
-  JarvisV2 --> ChromaDB[(ChromaDB\nVector Store)]
-  JarvisV2 --> BGE[BGE-M3 Embeddings]
-  JarvisV2 --> GPU_V2[(GPU 16GB+\nQwen/LLaMA/DeepSeek)]
-  Dev -->|Web UI| ChatGGUF[Chat IA GGUF\nllama-cpp-python]
-  ChatGGUF --> GPU_GGUF[(GPU 5GB+\nGGUF Cuantizado)]
-  Dev -->|Terminal| JarvisV1[Jarvis IA v1\nNLP Modular]
-  JarvisV1 --> NLPModules[NLP Transformers\n+ Mycroft + WolframAlpha]
-  User[Usuario final] -->|Documentos| PDFConv[PDF-to-Markdown IA]
-  PDFConv --> Surya[Surya OCR Model]
-  Surya --> GPU_OCR[(GPU CUDA\nOCR Acelerado)]`;
-
-const layers = [
-  {
-    title: "Capa IDE / Herramientas de desarrollo",
-    color: "teal",
-    items: [
-      "MCP Swarm Delegator — delega tareas complejas a enjambre local",
-      "MCP Autonomous Agents — agentes con contexto de proyecto via OpenAI",
-    ],
-  },
-  {
-    title: "Capa de asistentes conversacionales",
-    color: "purple",
-    items: [
-      "Jarvis IA v1 — asistente modular NLP en espanol (CPU)",
-      "Jarvis IA v2 — RAG + multi-modelo + voz (GPU 16GB+)",
-      "Chat IA GGUF — LLM cuantizado accesible (GPU 5GB+)",
-    ],
-  },
-  {
-    title: "Capa de procesamiento de documentos",
-    color: "gold",
-    items: ["PDF to Markdown IA — OCR GPU con Surya para PDF/DOCX/PPTX"],
-  },
-  {
-    title: "Infraestructura de modelos",
-    color: "cyan",
-    items: [
-      "Ollama local — modelos 14B (deepseek-r1, qwen2.5-coder, qwen2.5)",
-      "GGUF via llama-cpp-python — Qwen 7B, LLaMA 8B, Gemma 9B, DeepSeek 7B",
-      "ChromaDB + BGE-M3 — vectorstore para RAG",
-      "OpenAI API — GPT-4o / GPT-5 / o1 (fallback cloud)",
-    ],
-  },
-];
-
-const colorTextMap: Record<string, string> = {
-  teal: "text-[var(--teal-light)]",
-  gold: "text-[var(--gold-light)]",
-  purple: "text-[var(--accent)]",
-  cyan: "text-[var(--teal-light)]",
-};
-
-const colorBorderMap: Record<string, string> = {
-  teal: "border-[var(--teal)]",
-  gold: "border-[var(--gold)]",
-  purple: "border-[var(--accent-strong)]",
-  cyan: "border-[var(--teal)]",
 };
 
 export default function ArchitecturePage() {
   return (
-    <div className="max-w-5xl mx-auto px-4 py-10">
-      <nav className="text-xs text-[var(--muted)] mb-6 flex items-center gap-2">
-        <Link href="/" className="hover:text-[var(--foreground)] transition-colors">
-          Suite
-        </Link>
-        <span>/</span>
-        <span className="text-[var(--foreground)]">Arquitectura global</span>
+    <main className="max-w-5xl mx-auto px-4 py-10 pb-20">
+      <nav className="text-xs text-[var(--muted)] mb-8 flex items-center gap-2" aria-label="Ruta de navegación">
+        <Link href="/" className="hover:text-[var(--foreground)]">Catálogo</Link>
+        <span aria-hidden="true">/</span>
+        <span className="text-[var(--foreground)]">Mapa</span>
       </nav>
 
-      <h1 className="text-3xl font-bold text-[var(--foreground)] mb-3">
-        Arquitectura de Daímon
-      </h1>
-      <p className="text-[var(--muted)] max-w-2xl mb-6">
-        Vision de alto nivel de como los 6 componentes IA de Steven Vallejo interactuan entre si,
-        desde el IDE del desarrollador hasta los modelos GPU locales y la nube.
+      <p className="text-xs uppercase tracking-[0.16em] text-[var(--teal-light)] mb-2">Orientación</p>
+      <h1 className="text-4xl sm:text-5xl mb-4">Mapa de proyectos</h1>
+      <p className="text-[var(--muted)] max-w-2xl leading-relaxed mb-10">
+        Daímon reúne proyectos de IA con propósitos distintos. El mapa los agrupa para explorarlos;
+        no representa una integración técnica entre todos ellos. Cada ficha explica la arquitectura
+        de su propio repositorio.
       </p>
 
-      <div className="mb-6">
-        <HonestNote />
-      </div>
-
-      {/* Global diagram */}
-      <section className="mb-10">
-        <MermaidDiagram chart={globalDiagram} id="global-arch" />
-      </section>
-
-      {/* Layers */}
-      <section className="mb-10">
-        <h2 className="text-xl font-semibold text-[var(--foreground)] mb-5">
-          Capas de la arquitectura
-        </h2>
-        <div className="space-y-4">
-          {layers.map((layer) => (
-            <div
-              key={layer.title}
-              className={`bg-[var(--card-bg)] border border-[var(--card-border)] border-l-4 ${colorBorderMap[layer.color]} rounded-xl p-5`}
-            >
-              <h3 className={`font-semibold mb-2 ${colorTextMap[layer.color]}`}>
-                {layer.title}
-              </h3>
-              <ul className="space-y-1">
-                {layer.items.map((item) => (
-                  <li key={item} className="text-sm text-[var(--foreground)] flex gap-2">
-                    <span className={colorTextMap[layer.color]}>—</span>
-                    {item}
+      <div className="space-y-10">
+        {catalogGroups.map((group, index) => {
+          const projects = components.filter((project) => project.category === group.id);
+          return (
+            <section key={group.id} aria-labelledby={`${group.id}-title`}
+              className="grid md:grid-cols-[minmax(0,1fr)_minmax(0,2fr)] gap-5 md:gap-10 border-t border-[var(--card-border)] pt-6">
+              <div>
+                <span className="text-xs font-mono text-[var(--teal-light)]">0{index + 1}</span>
+                <h2 id={`${group.id}-title`} className="text-2xl mt-2 mb-2">{group.title}</h2>
+                <p className="text-sm text-[var(--muted)] leading-relaxed">{group.description}</p>
+              </div>
+              <ul className="grid sm:grid-cols-2 gap-3">
+                {projects.map((project) => (
+                  <li key={project.key}>
+                    <Link href={`/components/${project.key}`}
+                      className="block h-full rounded-xl border border-[var(--card-border)] bg-[var(--card-bg)] p-4 hover:border-[var(--teal)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--ring)] transition-colors">
+                      <strong className="block text-sm text-[var(--foreground)] mb-1">{project.name}</strong>
+                      <span className="block text-xs text-[var(--muted)] leading-relaxed">{project.tagline}</span>
+                    </Link>
                   </li>
                 ))}
               </ul>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* Components quick links */}
-      <section>
-        <h2 className="text-xl font-semibold text-[var(--foreground)] mb-4">
-          Detalles por componente
-        </h2>
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
-          {components.map((c) => (
-            <Link
-              key={c.key}
-              href={`/components/${c.key}`}
-              className="bg-[var(--card-bg)] border border-[var(--card-border)] rounded-lg px-4 py-3 text-sm hover:border-[var(--teal)] transition-colors group"
-            >
-              <span className="font-medium text-[var(--foreground)] group-hover:text-[var(--teal-light)] transition-colors">
-                {c.name}
-              </span>
-              <p className="text-xs text-[var(--muted)] mt-0.5 line-clamp-1">{c.tagline}</p>
-            </Link>
-          ))}
-        </div>
-      </section>
-    </div>
+            </section>
+          );
+        })}
+      </div>
+    </main>
   );
 }
