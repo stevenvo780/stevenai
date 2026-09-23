@@ -1,5 +1,5 @@
 interface RuntimeBadgeProps {
-  runtime: "gpu-local" | "api" | "local-cpu";
+  runtime: "gpu-local" | "api" | "local-cpu" | "service";
   label: string;
 }
 
@@ -9,6 +9,7 @@ export default function RuntimeBadge({ runtime, label }: RuntimeBadgeProps) {
     "gpu-local": "badge-gpu",
     api: "badge-api",
     "local-cpu": "badge-local",
+    service: "badge-service",
   };
   const classes = classMap[runtime] ?? "badge-gpu";
 
@@ -16,6 +17,7 @@ export default function RuntimeBadge({ runtime, label }: RuntimeBadgeProps) {
     "gpu-local": "GPU",
     api: "API",
     "local-cpu": "CPU",
+    service: "Servicio",
   };
   const icon = iconMap[runtime] ?? "CPU";
 

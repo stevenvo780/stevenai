@@ -19,7 +19,7 @@ export const metadata: Metadata = {
   metadataBase: new URL(CANONICAL_BASE),
   title: "Daímon — Catálogo de proyectos de IA · Mouseîon",
   description:
-    "Catálogo de proyectos de IA de Steven Vallejo: asistentes, agentes, inferencia local y herramientas creativas con código público.",
+    "Catálogo de proyectos de IA de Steven Vallejo: asistentes, infraestructura para agentes, modelos y herramientas con código público.",
   // authors → renders <meta name="author"> automatically via Metadata API.
   // creator/publisher → reinforce author attribution in crawlers.
   authors: [
@@ -33,7 +33,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Daímon — Catálogo de proyectos de IA · Mouseîon",
     description:
-      "Explora los proyectos de IA de Steven Vallejo: asistentes, agentes y herramientas independientes.",
+      "Explora los proyectos de IA de Steven Vallejo: asistentes, infraestructura para agentes, modelos y herramientas independientes.",
     type: "website",
     url: CANONICAL_BASE + "/",
     siteName: ECOSYSTEM_NAME,
@@ -52,7 +52,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Daímon — Catálogo de proyectos de IA · Mouseîon",
     description:
-      "Asistentes, agentes y herramientas de IA con código público.",
+      "Asistentes, infraestructura para agentes, modelos y herramientas de IA con código público.",
     images: [CANONICAL_BASE + "/og-image.png"],
   },
   icons: {
@@ -113,7 +113,7 @@ const jsonLd = {
       url: CANONICAL_BASE + "/",
       name: "Daímon",
       description:
-        "Catálogo de proyectos de IA de Steven Vallejo: asistentes, agentes y herramientas independientes.",
+        "Catálogo de proyectos de IA de Steven Vallejo: asistentes, infraestructura para agentes, modelos y herramientas independientes.",
       inLanguage: "es-ES",
       // isPartOf ties this site into the personal hub → builds entity graph for the author.
       isPartOf: {

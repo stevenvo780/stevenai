@@ -18,7 +18,7 @@ export default function Home() {
           Catálogo de proyectos de IA de Steven Vallejo.
         </p>
         <p className="hidden sm:block text-[var(--muted)] max-w-2xl leading-relaxed">
-          Asistentes, agentes y herramientas con código público. Cada ficha explica qué hace el
+          Asistentes, infraestructura y herramientas con código público. Cada ficha explica qué hace el
           proyecto, qué necesita para funcionar y dónde encontrar su repositorio.
         </p>
       </header>
@@ -77,11 +77,11 @@ export default function Home() {
             <p><strong className="block text-[var(--foreground)] mb-1">Código disponible</strong>
               La ficha enlaza al repositorio. Algunas instalaciones son referencias de un entorno personal y requieren adaptación.</p>
             <p><strong className="block text-[var(--foreground)] mb-1">Ejecución local</strong>
-              La etiqueta indica si el proyecto usa GPU, CPU o una API. No significa que haya una demo pública activa.</p>
+              La etiqueta indica si usa GPU, CPU, una API o un servicio. No significa que haya una demo pública activa.</p>
             <p><strong className="block text-[var(--foreground)] mb-1">Demo pendiente</strong>
               El código se puede consultar; las demos que necesitan GPU aún no están alojadas aquí.</p>
             <p><strong className="block text-[var(--foreground)] mb-1">Mapa de proyectos</strong>
-              Una vista rápida de las tres áreas. Cada ficha contiene además su propio diagrama.
+              Una vista rápida de las cuatro áreas. Cada ficha contiene además su propio diagrama.
               <Link href="/architecture" className="block mt-2 text-[var(--teal-light)] hover:underline">Ver el mapa →</Link></p>
           </div>
         </div>

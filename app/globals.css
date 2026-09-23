@@ -159,6 +159,17 @@ code, pre, kbd, samp, .font-mono, [class*="mono"] {
   letter-spacing: 0.03em;
 }
 
+.badge-service {
+  background: var(--surface-2);
+  color: var(--primary);
+  border: 1px solid var(--primary-strong);
+  font-size: 0.7rem;
+  padding: 2px 8px;
+  border-radius: 99px;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+}
+
 /* ============================================================
    Mermaid wrapper
    ============================================================ */

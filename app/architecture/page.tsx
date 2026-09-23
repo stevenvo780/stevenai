@@ -9,7 +9,7 @@ export const metadata: Metadata = {
   alternates: { canonical: "https://daimon.stevenvallejo.com/architecture" },
   openGraph: {
     title: "Mapa de proyectos — Daímon · Mouseîon",
-    description: "Asistentes, agentes y herramientas del catálogo Daímon.",
+    description: "Asistentes, infraestructura, modelos y herramientas del catálogo Daímon.",
     url: "https://daimon.stevenvallejo.com/architecture",
     siteName: "Mouseîon",
     locale: "es_ES",

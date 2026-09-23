@@ -6,6 +6,7 @@ export const catalogGroups: {
   description: string;
 }[] = [
   { id: "assistants", title: "Asistentes y voz", description: "Asistentes personales y la interfaz de escritorio para conversar con ellos." },
-  { id: "agents", title: "Modelos y agentes", description: "Inferencia local, servidores MCP y herramientas para revisar código con agentes." },
-  { id: "tools", title: "Herramientas y creación", description: "Documentos, seguimiento de cuotas y producción audiovisual asistida por IA." },
+  { id: "infrastructure", title: "Infraestructura para agentes", description: "Buses, servidores MCP y harnesses que conectan o coordinan agentes." },
+  { id: "models", title: "Modelos y laboratorios", description: "Inferencia local y experimentos de entrenamiento de redes neuronales." },
+  { id: "tools", title: "Herramientas y creación", description: "Documentos, seguimiento de cuotas y producción visual asistida por IA." },
 ];

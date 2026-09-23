@@ -1,12 +1,12 @@
 export interface AIComponent {
   key: string; // Must match regex: ^[a-z0-9-]+$ (alphanumeric + hyphens only)
   name: string;
-  category: "assistants" | "agents" | "tools";
+  category: "assistants" | "models" | "infrastructure" | "tools";
   tagline: string;
   description: string;
   longDescription: string;
   repo: string;
-  runtime: "gpu-local" | "api" | "local-cpu";
+  runtime: "gpu-local" | "api" | "local-cpu" | "service";
   runtimeLabel: string;
   status: "live-local" | "demo-pending" | "available";
   statusLabel: string;
@@ -121,7 +121,7 @@ export const components: AIComponent[] = [
   {
     key: "ia-gguf",
     name: "Chat IA Local GGUF",
-    category: "agents",
+    category: "models",
     tagline: "LLM cuantizado GGUF sobre llama.cpp — 5 GB VRAM",
     description:
       "App de chat local optimizada para GPUs con ~5 GB VRAM. Usa modelos GGUF cuantizados (Qwen2.5-7B, LLaMA 3.1 8B, Gemma 2 9B, DeepSeek-R1) vía llama-cpp-python con aceleración CUDA.",
@@ -171,7 +171,7 @@ export const components: AIComponent[] = [
   {
     key: "mcp-swarm",
     name: "MCP Swarm Delegator",
-    category: "agents",
+    category: "infrastructure",
     tagline: "Enjambre local Planner-Worker-Reviewer via MCP",
     description:
       "Servidor MCP que expone herramientas a Copilot y Cursor para delegar tareas complejas a un enjambre de LLMs locales en Ollama. Pipeline Planner (deepseek-r1:14b) → Workers paralelos (qwen2.5-coder:14b) → Reviewer (qwen2.5:14b).",
@@ -223,7 +223,7 @@ export const components: AIComponent[] = [
   {
     key: "mcp-agents",
     name: "MCP Autonomous Agents",
-    category: "agents",
+    category: "infrastructure",
     tagline: "Servidor MCP con agentes autónomos — OpenAI + REST",
     description:
       "Servidor MCP dual (stdio + HTTP) con agentes autónomos integrados con OpenAI. Herramientas de análisis de código, contexto automático de proyecto y endpoints REST para integración web.",
@@ -390,7 +390,7 @@ export const components: AIComponent[] = [
   {
     key: "night-harness",
     name: "night-harness",
-    category: "agents",
+    category: "infrastructure",
     tagline: "Búsqueda y validación de errores con agentes",
     description:
       "Harness experimental para revisar proyectos Next.js y TypeScript con modelos locales y externos. Filtra hallazgos, prueba correcciones en un worktree aislado y deja la integración final a una persona.",
@@ -488,6 +488,268 @@ export const components: AIComponent[] = [
     Frames --> FFmpeg
     FFmpeg --> Video[MP4 vertical]`,
     color: "gold",
+  },
+  {
+    key: "cauce-v3",
+    name: "Cauce V3",
+    category: "infrastructure",
+    tagline: "Mensajería durable para una flota de agentes",
+    description:
+      "Bus de comunicación entre agentes que usan Claude Code, Codex u OpenClaw. Entrega mensajes por WebSocket, conserva estado en PostgreSQL y ofrece consola de operador.",
+    longDescription:
+      "Cauce V3 es un monorepo TypeScript y Python para coordinar agentes en distintos entornos. Su gateway recibe y entrega mensajes, PostgreSQL conserva el estado durable y los adaptadores conectan las sesiones de los agentes. Incluye consola de operador, puente de Telegram, monitor MCP y herramientas de operación. El repositorio público documenta la arquitectura; una instalación real requiere su propia infraestructura y configuración.",
+    repo: "https://github.com/stevenvo780/cauce-v3",
+    runtime: "service",
+    runtimeLabel: "Servidor propio con PostgreSQL y agentes conectados",
+    status: "available",
+    statusLabel: "Código público; operación propia",
+    stack: ["TypeScript", "Node.js", "PostgreSQL", "WebSocket", "React", "Python"],
+    capabilities: [
+      "Mensajes durables entre agentes y runtimes distintos",
+      "Adaptadores para sesiones de CLI",
+      "Gateway HTTP y WebSocket con almacenamiento PostgreSQL",
+      "Consola de operador y puente de Telegram",
+      "Monitor MCP para observar la flota",
+    ],
+    hardwareRequirements: "Node.js 22, pnpm, PostgreSQL y despliegue de los servicios propios",
+    architectureDescription:
+      "Los adaptadores conectan agentes con el gateway; PostgreSQL guarda el estado y la consola permite observar la operación.",
+    mermaidDiagram: `graph LR
+    Agents[Agentes CLI] --> Adapter[Adaptadores]
+    Adapter --> Gateway[Gateway HTTP y WS]
+    Gateway --> Store[(PostgreSQL)]
+    Gateway --> Console[Consola]
+    Gateway --> Telegram[Puente Telegram]
+    Gateway --> Monitor[Monitor MCP]`,
+    color: "teal",
+  },
+  {
+    key: "clawbus",
+    name: "Clawbus",
+    category: "infrastructure",
+    tagline: "Bus experimental entre agentes de distintos runtimes",
+    description:
+      "Broker WebSocket con salas, destinatarios por alias y protección contra bucles de conversación. Incluye integraciones para Claude Code y OpenClaw.",
+    longDescription:
+      "Clawbus nació para que agentes que viven en procesos y contenedores distintos puedan hablar entre sí. Su broker enruta mensajes por salas y alias; incorpora presupuesto de saltos, deduplicación, límites de tasa y un cortacircuitos por pareja de agentes. El README lo presenta como prototipo funcional y advierte que la autenticación por defecto solo es adecuada para una red interna confiable.",
+    repo: "https://github.com/stevenvo780/clawbus",
+    runtime: "service",
+    runtimeLabel: "Broker WebSocket en red confiable",
+    status: "available",
+    statusLabel: "Prototipo público",
+    stack: ["Python", "WebSocket", "Docker", "MCP", "Claude Code", "OpenClaw"],
+    capabilities: [
+      "Comunicación entre agentes de diferentes runtimes",
+      "Salas y mensajes dirigidos por alias",
+      "Protección contra bucles de respuesta",
+      "Deduplicación y límites de tasa",
+      "Conectores para Claude Code y OpenClaw",
+    ],
+    hardwareRequirements: "Red interna confiable; reforzar autenticación antes de exponer el broker",
+    architectureDescription:
+      "Los conectores publican y reciben mensajes mediante un broker WebSocket que aplica reglas de enrutamiento y protección contra bucles.",
+    mermaidDiagram: `graph LR
+    Claude[Claude Code] --> Connector[Conector]
+    OpenClaw[OpenClaw] --> Connector
+    Connector --> Broker[Broker WebSocket]
+    Broker --> Rooms[Salas y alias]
+    Broker --> Guard[Protección de bucles]
+    Rooms --> Agents[Otros agentes]`,
+    color: "gold",
+  },
+  {
+    key: "prizma-agent-stack",
+    name: "Prizma Agent Stack",
+    category: "infrastructure",
+    tagline: "Ciclo de vida y terminales para una flota de agentes",
+    description:
+      "Capa de integración para levantar agentes en Docker desde un VPS, consultar su estado y abrir sesiones de terminal. Usa Clawbus para mensajería entre agentes.",
+    longDescription:
+      "El repositorio reúne contratos de agentes, comandos para aplicar especificaciones, operaciones de flota y acceso remoto a sesiones de terminal. El camino documentado parte de un VPS duradero con Docker y tmux, al que el operador llega por SSH. Puede conectar Clawbus y, opcionalmente, Ultimate Terminal. Sus demos usan agentes sin credenciales de proveedores.",
+    repo: "https://github.com/stevenvo780/prizma-agent-stack",
+    runtime: "service",
+    runtimeLabel: "VPS con Docker, SSH y tmux",
+    status: "available",
+    statusLabel: "Código y demos de flota disponibles",
+    stack: ["Python", "Docker", "SSH", "tmux", "Clawbus"],
+    capabilities: [
+      "Aplicar especificaciones y revisar salud de agentes",
+      "Administrar sesiones persistentes de terminal",
+      "Coordinar contenedores de una flota pequeña",
+      "Probar mensajería real entre agentes de demostración",
+      "Mantener credenciales fuera del repositorio",
+    ],
+    hardwareRequirements: "VPS con Python 3.12+, Docker y tmux; acceso SSH del operador",
+    architectureDescription:
+      "El operador usa SSH para administrar el plano de control en un VPS; allí corren los agentes Docker y el bus de mensajería.",
+    mermaidDiagram: `graph LR
+    Operator[Operador] --> SSH[SSH]
+    SSH --> Control[Prizma Fleet y Agentctl]
+    Control --> Docker[Docker]
+    Docker --> Agents[Agentes]
+    Agents --> Bus[Clawbus]
+    Operator --> Terminal[Prizma Terminal]
+    Terminal --> SSH`,
+    color: "purple",
+  },
+  {
+    key: "agora-mcp",
+    name: "Agora MCP",
+    category: "infrastructure",
+    tagline: "Herramientas de Ágora para clientes MCP",
+    description:
+      "Servidor MCP para que un agente consulte y ejecute herramientas de documentos, tareas, tableros y workspaces de Ágora mediante su backend.",
+    longDescription:
+      "Este servidor Node expone dos herramientas MCP: una descubre el catálogo de operaciones de Ágora y otra las ejecuta. Obtiene autenticación de Firebase configurada por el operador y llama al backend de Ágora. Las operaciones destructivas requieren una confirmación explícita. Es una integración para una instalación de Ágora, no una API genérica ni una demo abierta.",
+    repo: "https://github.com/stevenvo780/agora-mcp",
+    runtime: "api",
+    runtimeLabel: "Node.js local + backend de Ágora",
+    status: "available",
+    statusLabel: "Código público; requiere Ágora",
+    stack: ["Node.js", "MCP", "Firebase Auth", "Ágora API"],
+    capabilities: [
+      "Descubrir herramientas de Ágora desde un cliente MCP",
+      "Consultar documentos, tareas, tableros y workspaces",
+      "Ejecutar operaciones autorizadas en el backend",
+      "Exigir confirmación para operaciones destructivas",
+    ],
+    hardwareRequirements: "Node.js 18+ y credenciales propias de una instalación de Ágora",
+    architectureDescription:
+      "Un cliente MCP habla con el servidor local; este obtiene un token y consulta el backend de Ágora para ejecutar la herramienta solicitada.",
+    mermaidDiagram: `graph LR
+    Agent[Cliente MCP] --> Server[Agora MCP]
+    Server --> Auth[Autenticación Firebase]
+    Auth --> Backend[Backend Ágora]
+    Server --> Catalog[Catálogo de herramientas]
+    Backend --> Result[Resultado]`,
+    color: "cyan",
+  },
+  {
+    key: "talos-harness",
+    name: "Talos · Harness de automatización",
+    category: "infrastructure",
+    tagline: "Automatizaciones empresariales con agentes y verificación",
+    description:
+      "Harness para automatizaciones con Claude Code. Aporta checkpoints, idempotencia, revisión humana y auditoría; incluye ejemplos de facturas, CRM, RPA y correos.",
+    longDescription:
+      "El repositorio prizma-talos contiene un núcleo de harness, un CLI y cuatro automatizaciones de referencia. El modelo toma decisiones, mientras el harness limita herramientas, conserva checkpoints, registra decisiones y permite pausas para revisión humana. Los ejemplos cubren extracción de datos de facturas, sincronización CRM, descarga de extractos y clasificación de correos. El panel web se construye por separado.",
+    repo: "https://github.com/stevenvo780/prizma-talos",
+    runtime: "api",
+    runtimeLabel: "Node.js local + Claude Code",
+    status: "available",
+    statusLabel: "Código y demos de referencia",
+    stack: ["TypeScript", "Node.js", "Claude Code", "Playwright", "Next.js"],
+    capabilities: [
+      "Ejecutar automatizaciones registradas desde un CLI",
+      "Checkpoints e idempotencia para reintentos",
+      "Revisión humana en casos de baja confianza",
+      "Auditoría de decisiones y resultados",
+      "Demos de facturas, CRM, RPA y correos",
+    ],
+    hardwareRequirements: "Node.js 20+ y Claude Code configurado para las automatizaciones con modelo",
+    architectureDescription:
+      "Claude Code decide dentro de un harness que gobierna herramientas, checkpoints, revisión humana y verificación de cada automatización.",
+    mermaidDiagram: `graph LR
+    User[Operador] --> CLI[CLI del harness]
+    CLI --> Model[Claude Code]
+    Model --> Core[Harness Core]
+    Core --> Tasks[Automatizaciones]
+    Core --> Checkpoint[Checkpoints y auditoría]
+    Tasks --> HITL[Revisión humana]`,
+    color: "gold",
+  },
+  {
+    key: "minimax-h3",
+    name: "NewsLeters · MiniMax H3",
+    category: "tools",
+    tagline: "Noticias convertidas en reels con vídeo generativo",
+    description:
+      "Pipeline para producir reels verticales de noticias desde texto, con MiniMax H3 local, guion verificado, subtítulos y exportación MP4. También prepara imágenes con Codex.",
+    longDescription:
+      "El proyecto toma un titular y un cuerpo de noticia, construye un guion que cita fragmentos literales de la fuente y genera tomas con MiniMax H3 local. Después monta subtítulos y exporta el reel vertical con ffmpeg. Incluye comprobaciones de ritmo y de fidelidad al texto antes de dar una pieza por válida. El módulo de imágenes usa Codex CLI por separado; no es necesario para el flujo básico de vídeo.",
+    repo: "https://github.com/stevenvo780/minimax-h3",
+    runtime: "gpu-local",
+    runtimeLabel: "Vídeo con MiniMax H3 local; imágenes opcionales con Codex",
+    status: "available",
+    statusLabel: "Código de producción disponible",
+    stack: ["MiniMax H3", "Python", "ffmpeg", "Codex CLI", "GPU local"],
+    capabilities: [
+      "Generar reels verticales desde titulares y texto",
+      "Comprobar que la voz sigue la noticia fuente",
+      "Ajustar duración de tomas al guion",
+      "Quemar subtítulos y exportar MP4",
+      "Preparar imágenes de noticias con Codex CLI",
+    ],
+    hardwareRequirements: "Modelo MiniMax H3 y GPU local para vídeo; ffmpeg; Codex CLI solo para imágenes",
+    architectureDescription:
+      "Un texto fuente pasa por la preparación del guion, generación local de vídeo y montaje final con subtítulos.",
+    mermaidDiagram: `graph LR
+    Source[Titular y texto] --> Script[Guion verificado]
+    Script --> Video[MiniMax H3 local]
+    Video --> Edit[ffmpeg y subtítulos]
+    Edit --> Reel[Reel MP4]
+    Source --> Images[Imágenes opcionales con Codex]`,
+    color: "purple",
+  },
+  {
+    key: "pixel-art-replicate",
+    name: "Generador de pixel art",
+    category: "tools",
+    tagline: "Imágenes desde texto mediante Replicate",
+    description:
+      "Pequeña herramienta de terminal en Python que envía una descripción a la API de Replicate y guarda una imagen de pixel art.",
+    longDescription:
+      "CreadorDeImagenes es un proyecto compacto de línea de comandos: recibe un prompt, llama a un modelo alojado en Replicate y guarda el resultado en una carpeta de salida. Es un ejemplo de generación por API; requiere una cuenta y credencial propias de Replicate y no aloja una demo pública.",
+    repo: "https://github.com/stevenvo780/CreadorDeImagenes",
+    runtime: "api",
+    runtimeLabel: "Python + API de Replicate",
+    status: "available",
+    statusLabel: "Ejemplo de CLI disponible",
+    stack: ["Python", "Replicate API", "CLI"],
+    capabilities: [
+      "Aceptar prompts de texto desde la terminal",
+      "Generar pixel art mediante una API externa",
+      "Guardar imágenes en una carpeta local",
+    ],
+    hardwareRequirements: "Python 3 y credencial propia de Replicate",
+    architectureDescription:
+      "Un comando recibe el prompt, consulta Replicate y descarga la imagen generada.",
+    mermaidDiagram: `graph LR
+    Prompt[Prompt de texto] --> CLI[CLI Python]
+    CLI --> API[Replicate API]
+    API --> Image[Imagen de pixel art]
+    Image --> Folder[Carpeta de salida]`,
+    color: "teal",
+  },
+  {
+    key: "neuronal-learning",
+    name: "Neuronal Learning",
+    category: "models",
+    tagline: "Laboratorio histórico de redes neuronales y NLP",
+    description:
+      "Colección de ejercicios con Brain.js, TensorFlow y Python: pruebas CPU/GPU, una red XOR y experimentos de clasificación de texto. Es código exploratorio sin guía de instalación.",
+    longDescription:
+      "El repositorio reúne scripts independientes de aprendizaje automático. Incluye ejemplos de redes neuronales con Brain.js en CPU y GPU, una prueba de XOR y un experimento de clasificación de frases con TensorFlow/Keras. No hay README de proyecto ni un flujo de instalación unificado; conviene leer cada script antes de ejecutarlo. Se presenta como laboratorio histórico, no como servicio listo para desplegar.",
+    repo: "https://github.com/stevenvo780/neuronalLearning",
+    runtime: "local-cpu",
+    runtimeLabel: "Scripts locales; algunos usan GPU",
+    status: "available",
+    statusLabel: "Código experimental sin guía única",
+    stack: ["Brain.js", "TensorFlow", "Python", "JavaScript", "NLP"],
+    capabilities: [
+      "Ejemplos de entrenamiento en CPU y GPU",
+      "Prueba de red neuronal para XOR",
+      "Experimentos de clasificación de texto",
+    ],
+    hardwareRequirements: "Dependencias distintas por script; GPU opcional para ejemplos específicos",
+    architectureDescription:
+      "El repositorio contiene dos líneas de experimentación separadas: redes en JavaScript y modelos de texto en Python.",
+    mermaidDiagram: `graph LR
+    Repo[Repositorio] --> JS[Ejemplos JavaScript]
+    Repo --> PY[Ejemplos Python]
+    JS --> Brain[Brain.js CPU o GPU]
+    PY --> TF[TensorFlow NLP]`,
+    color: "cyan",
   },
 ];
 
