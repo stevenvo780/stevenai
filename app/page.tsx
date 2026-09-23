@@ -17,7 +17,7 @@ export default function Home() {
         <p className="text-xl sm:text-2xl text-[var(--foreground)] max-w-3xl leading-snug mb-3 sm:mb-4">
           Catálogo de proyectos de IA de Steven Vallejo.
         </p>
-        <p className="text-[var(--muted)] max-w-2xl leading-relaxed">
+        <p className="hidden sm:block text-[var(--muted)] max-w-2xl leading-relaxed">
           Asistentes, agentes y herramientas con código público. Cada ficha explica qué hace el
           proyecto, qué necesita para funcionar y dónde encontrar su repositorio.
         </p>
@@ -29,7 +29,7 @@ export default function Home() {
             <p className="text-xs uppercase tracking-[0.16em] text-[var(--teal-light)] mb-2">Explorar</p>
             <h2 id="catalogo-titulo" className="text-3xl sm:text-4xl text-[var(--foreground)]">El catálogo</h2>
           </div>
-          <p className="text-sm text-[var(--muted)] max-w-md">
+          <p className="hidden sm:block text-sm text-[var(--muted)] max-w-md">
             {components.length} proyectos agrupados por lo que permiten hacer. Son iniciativas
             independientes; cada una tiene su propio repositorio.
           </p>
