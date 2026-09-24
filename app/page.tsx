@@ -83,7 +83,7 @@ export default async function Home({ searchParams }: { searchParams: Promise<Sea
               <span className="dm-home-signal" aria-hidden="true" />
               DAÍMON <span aria-hidden="true">/</span> MOUSEÎON · ATLAS DE IA
             </p>
-            <h1 id="dm-home-title">La inteligencia<br />se <em>construye.</em></h1>
+            <h1 id="dm-home-title">La inteligencia<br />{" "}se <em>construye.</em></h1>
             <p className="dm-home-hero-intro">
               Proyectos de inteligencia artificial hechos para leerse por dentro:
               qué hacen, cómo funcionan y qué necesitan para existir.
@@ -122,7 +122,7 @@ export default async function Home({ searchParams }: { searchParams: Promise<Sea
           <div className="dm-home-section-heading">
             <p className="dm-home-eyebrow"><span>01 / 04</span> CRITERIO DE LECTURA</p>
             <div className="dm-home-heading-grid">
-              <h2 id="dm-home-guide-title">Abrir un proyecto es<br /><em>leer tres capas.</em></h2>
+              <h2 id="dm-home-guide-title">Abrir un proyecto es<br />{" "}<em>leer tres capas.</em></h2>
               <p>Cada entrada separa la idea, su fuente y las condiciones para ponerla en marcha. Así se puede explorar el trabajo sin confundir código disponible con servicio abierto.</p>
             </div>
           </div>
@@ -148,7 +148,7 @@ export default async function Home({ searchParams }: { searchParams: Promise<Sea
           <div className="dm-home-section-heading">
             <p className="dm-home-eyebrow"><span>02 / 04</span> CUATRO FORMAS DE EXPLORAR</p>
             <div className="dm-home-heading-grid">
-              <h2 id="dm-home-areas-title">Del agente al<br /><em>instrumento.</em></h2>
+              <h2 id="dm-home-areas-title">Del agente al<br />{" "}<em>instrumento.</em></h2>
               <p>Asistentes que conversan, sistemas que coordinan, modelos que se prueban y herramientas que transforman materiales. Entra por el tipo de trabajo que te interesa.</p>
             </div>
           </div>
@@ -183,7 +183,7 @@ export default async function Home({ searchParams }: { searchParams: Promise<Sea
           <div className="dm-home-section-heading dm-home-section-heading-dark">
             <p className="dm-home-eyebrow"><span>03 / 04</span> SISTEMAS DESTACADOS</p>
             <div className="dm-home-heading-grid">
-              <h2 id="dm-home-featured-title">Ideas distintas.<br /><em>Sistemas reales.</em></h2>
+              <h2 id="dm-home-featured-title">Ideas distintas.<br />{" "}<em>Sistemas reales.</em></h2>
               <p>Una selección de propósitos y escalas: mensajería durable, delegación de tareas, asistencia local y un agente integrado en Ágora. Cada ficha describe su propio sistema.</p>
             </div>
           </div>
@@ -222,7 +222,7 @@ export default async function Home({ searchParams }: { searchParams: Promise<Sea
           <div className="dm-home-section-heading">
             <p className="dm-home-eyebrow"><span>04 / 04</span> EL ARCHIVO COMPLETO</p>
             <div className="dm-home-heading-grid">
-              <h2 id="dm-home-catalog-title">Encuentra el proyecto.<br /><em>Abre su ficha.</em></h2>
+              <h2 id="dm-home-catalog-title">Encuentra el proyecto.<br />{" "}<em>Abre su ficha.</em></h2>
               <p>Busca por nombre, propósito o tecnología. Filtra por área y tipo de ejecución para llegar a la descripción, los requisitos y la información de acceso a la fuente.</p>
             </div>
           </div>
@@ -285,7 +285,7 @@ export default async function Home({ searchParams }: { searchParams: Promise<Sea
       <section className="dm-home-outro" aria-labelledby="dm-home-outro-title">
         <div className="dm-home-shell dm-home-outro-grid">
           <p className="dm-home-eyebrow">FIN DEL ÍNDICE / INICIO DE LA LECTURA</p>
-          <h2 id="dm-home-outro-title">La inteligencia también<br />se <em>examina.</em></h2>
+          <h2 id="dm-home-outro-title">La inteligencia también<br />{" "}se <em>examina.</em></h2>
           <a href="#catalogo">Volver al archivo <span aria-hidden="true">↑</span></a>
         </div>
       </section>

@@ -15,7 +15,7 @@ export default function NavBarServer() {
           <Image src="/icon-256.png" width={39} height={39} alt="" priority />
           <span className="dm-brand-name">Daímon</span>
           <span className="dm-brand-rule" aria-hidden="true" />
-          <span className="dm-brand-sub">Atlas de<br />inteligencia</span>
+          <span className="dm-brand-sub">Atlas de<br />{" "}inteligencia</span>
         </Link>
         <nav className="dm-desktop-nav" aria-label="Navegación principal">
           {links.map(({ href, label }) => <Link className="dm-nav-link" key={href} href={href}>{label}</Link>)}
