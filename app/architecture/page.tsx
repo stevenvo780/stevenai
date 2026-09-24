@@ -40,7 +40,7 @@ export default function ArchitecturePage() {
         <header className="atlas-hero">
           <div>
             <p className="detail-overline">Índice visual / Daímon</p>
-            <h1>Una colección.<br /><em>Muchas maneras de pensar con IA.</em></h1>
+            <h1>Una colección.<br />{" "}<em>Muchas maneras de pensar con IA.</em></h1>
           </div>
           <div className="atlas-hero-aside">
             <p>
