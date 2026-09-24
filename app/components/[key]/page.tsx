@@ -128,7 +128,7 @@ export default async function ComponentPage({ params }: PageProps) {
         <nav className="detail-breadcrumbs" aria-label="Ruta de navegación">
           <Link href="/">Daímon</Link>
           <span aria-hidden="true">/</span>
-          <Link href={`/#${component.category}`}>{group?.title ?? "Catálogo"}</Link>
+          <Link href={`/?area=${component.category}#resultados`}>{group?.title ?? "Catálogo"}</Link>
           <span aria-hidden="true">/</span>
           <span aria-current="page">{component.name}</span>
         </nav>

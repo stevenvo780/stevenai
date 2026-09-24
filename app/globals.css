@@ -37,6 +37,7 @@
   --font-display: var(--font-manrope), Arial, sans-serif;
   --font-editorial: var(--font-newsreader), Georgia, serif;
   --font-mono: var(--font-plex-mono), ui-monospace, monospace;
+  --dm-header-height: 77px;
 }
 
 @theme inline {
@@ -52,7 +53,7 @@
 }
 
 *, *::before, *::after { box-sizing: border-box; }
-html { scroll-behavior: smooth; scroll-padding-top: 6rem; }
+html { scroll-padding-top: calc(var(--dm-header-height) + 16px); }
 body { margin: 0; background: var(--bg); color: var(--text); font-family: var(--font-sans); -webkit-font-smoothing: antialiased; }
 ::selection { background: var(--primary); color: var(--bg); }
 a { text-underline-offset: .22em; }
@@ -109,6 +110,7 @@ h1, h2, h3, h4, h5, h6 { font-family: var(--font-display); letter-spacing: -.055
 .gradient-brand { background: linear-gradient(110deg, var(--accent) 0%, var(--accent-strong) 35%, var(--primary) 100%); }
 
 @media (max-width: 760px) {
+  :root { --dm-header-height: 65px; }
   .dm-shell { width: min(100% - 2rem, 1480px); }
   .dm-header-inner { min-height: 64px; }
   .dm-brand img { width: 34px; height: 34px; }
@@ -121,6 +123,5 @@ h1, h2, h3, h4, h5, h6 { font-family: var(--font-display); letter-spacing: -.055
 }
 
 @media (prefers-reduced-motion: reduce) {
-  html { scroll-behavior: auto; }
   *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
 }

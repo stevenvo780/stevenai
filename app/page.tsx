@@ -1,5 +1,6 @@
 import Link from "next/link";
 import ComponentCard from "@/components/ComponentCard";
+import CatalogFormSync from "@/components/CatalogFormSync";
 import IntelligenceScene from "@/components/visual/IntelligenceScene";
 import { GroupMotif } from "@/components/visual/ProjectMotif";
 import { catalogGroups } from "@/lib/catalog-groups";
@@ -117,9 +118,9 @@ export default async function Home({ searchParams }: { searchParams: Promise<Sea
         </div>
       </div>
 
-      <section id="guia" className="dm-home-guide dm-home-paper" aria-labelledby="dm-home-guide-title">
+      <section className="dm-home-guide dm-home-paper" aria-labelledby="dm-home-guide-title">
         <div className="dm-home-shell">
-          <div className="dm-home-section-heading">
+          <div id="guia" className="dm-home-section-heading">
             <p className="dm-home-eyebrow"><span>01 / 04</span> CRITERIO DE LECTURA</p>
             <div className="dm-home-heading-grid">
               <h2 id="dm-home-guide-title">Abrir un proyecto es<br />{" "}<em>leer tres capas.</em></h2>
@@ -167,7 +168,7 @@ export default async function Home({ searchParams }: { searchParams: Promise<Sea
                   <div className="dm-home-area-copy">
                     <h3 id={"dm-home-" + group.id + "-title"}>{group.title}</h3>
                     <p>{group.description}</p>
-                    <a href={"/?area=" + group.id + "#catalogo"} aria-label={"Ver proyectos de " + group.title}>
+                    <a href={"/?area=" + group.id + "#resultados"} aria-label={"Ver proyectos de " + group.title}>
                       Ver proyectos <span aria-hidden="true">↗</span>
                     </a>
                   </div>
@@ -217,9 +218,9 @@ export default async function Home({ searchParams }: { searchParams: Promise<Sea
         </div>
       </section>
 
-      <section id="catalogo" className="dm-home-catalog dm-home-paper" aria-labelledby="dm-home-catalog-title">
+      <section className="dm-home-catalog dm-home-paper" aria-labelledby="dm-home-catalog-title">
         <div className="dm-home-shell">
-          <div className="dm-home-section-heading">
+          <div id="catalogo" className="dm-home-section-heading">
             <p className="dm-home-eyebrow"><span>04 / 04</span> EL ARCHIVO COMPLETO</p>
             <div className="dm-home-heading-grid">
               <h2 id="dm-home-catalog-title">Encuentra el proyecto.<br />{" "}<em>Abre su ficha.</em></h2>
@@ -227,7 +228,7 @@ export default async function Home({ searchParams }: { searchParams: Promise<Sea
             </div>
           </div>
 
-          <form className="dm-home-search" action="/#catalogo" method="get" role="search" aria-label="Buscar y filtrar proyectos">
+          <form key={JSON.stringify([query, area, runtime])} className="dm-home-search" action="/#resultados" method="get" role="search" aria-label="Buscar y filtrar proyectos">
             <div className="dm-home-search-field dm-home-search-query">
               <label htmlFor="dm-home-query">Buscar proyectos</label>
               <input id="dm-home-query" name="q" type="search" defaultValue={query} placeholder="Nombre, propósito o tecnología" maxLength={120} />
@@ -247,18 +248,19 @@ export default async function Home({ searchParams }: { searchParams: Promise<Sea
               </select>
             </div>
             <button type="submit">Aplicar filtros <span aria-hidden="true">↗</span></button>
+            <CatalogFormSync query={query} area={area} runtime={runtime} />
           </form>
 
-          <div className="dm-home-results-heading">
+          <div id="resultados" className="dm-home-results-heading">
             <p role="status">{visibleComponents.length} de {components.length} proyectos</p>
-            {filtersActive && <Link href="/#catalogo">Limpiar filtros <span aria-hidden="true">×</span></Link>}
+            {filtersActive && <Link href="/#resultados">Limpiar filtros <span aria-hidden="true">×</span></Link>}
           </div>
 
           {visibleComponents.length === 0 ? (
             <div className="dm-home-empty">
               <h3>No hay proyectos con esos filtros.</h3>
               <p>Prueba otra palabra o amplía el área y el tipo de ejecución.</p>
-              <Link href="/#catalogo">Ver todo el archivo <span aria-hidden="true">↗</span></Link>
+              <Link href="/#resultados">Ver todo el archivo <span aria-hidden="true">↗</span></Link>
             </div>
           ) : (
             <div className="dm-home-catalog-groups">

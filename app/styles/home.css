@@ -11,10 +11,6 @@
   padding-inline: clamp(1.25rem, 4.2vw, 4.5rem);
 }
 
-.dm-home :is(section, article)[id] {
-  scroll-margin-top: 6.5rem;
-}
-
 .dm-home :is(a, button, input, select):focus-visible {
   outline: 3px solid var(--primary, #8ee9d4);
   outline-offset: 4px;
