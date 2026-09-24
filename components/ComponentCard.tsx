@@ -1,67 +1,38 @@
 import Link from "next/link";
-import { AIComponent } from "@/lib/components-data";
-import RuntimeBadge from "./RuntimeBadge";
+import { ProjectMotif } from "@/components/visual/ProjectMotif";
+import { catalogGroups } from "@/lib/catalog-groups";
+import { components, type AIComponent } from "@/lib/components-data";
+import "@/app/styles/detail.css";
 
 interface ComponentCardProps {
   component: AIComponent;
 }
 
-const colorAccent: Record<AIComponent["color"], string> = {
-  teal: "border-t-[var(--teal)]",
-  gold: "border-t-[var(--gold)]",
-  purple: "border-t-[var(--purple)]",
-  cyan: "border-t-[var(--teal-light)]",
-};
-
-const statusDot: Record<AIComponent["status"], string> = {
-  "live-local": "bg-[var(--success)]",
-  "demo-pending": "bg-[var(--warning)]",
-  available: "bg-[var(--primary)]",
-};
-
 export default function ComponentCard({ component }: ComponentCardProps) {
-  // Fallback for color in case of invalid value
-  const colorBorder = colorAccent[component.color] ?? colorAccent.teal;
-  const statusClass = statusDot[component.status] ?? statusDot.available;
+  const number = components.findIndex((item) => item.key === component.key) + 1;
+  const group = catalogGroups.find((item) => item.id === component.category);
 
   return (
-    <Link href={`/components/${component.key}`} className="block group">
-      <div
-        className={`bg-[var(--card-bg)] border border-[var(--card-border)] border-t-2 ${colorBorder} rounded-xl p-5 card-glow h-full transition-transform duration-200 group-hover:-translate-y-1`}
-      >
-        <div className="flex items-start justify-between gap-2 mb-3">
-          <h3 className="font-semibold text-[var(--foreground)] text-base leading-tight">
-            {component.name}
-          </h3>
-          <span
-            className={`w-2 h-2 rounded-full mt-1.5 shrink-0 ${statusClass}`}
-            title={component.statusLabel}
-            aria-label={component.statusLabel}
-            role="status"
-          />
+    <Link
+      href={`/components/${component.key}`}
+      className="component-card"
+      data-category={component.category}
+    >
+      <div className="component-card-visual">
+        <div className="component-card-visual-top">
+          <span>{String(number).padStart(2, "0")}</span>
+          <span>Motivo conceptual</span>
         </div>
-        <p className="text-[var(--muted)] text-xs mb-3 italic">{component.tagline}</p>
-        <p className="text-sm text-[var(--foreground)] mb-4 line-clamp-3">
-          {component.description}
-        </p>
-        <div className="flex flex-wrap gap-1 mb-4">
-          {component.stack.slice(0, 4).map((s) => (
-            <span key={s} className="tag">
-              {s}
-            </span>
-          ))}
-          {component.stack.length > 4 && (
-            <span className="tag">+{component.stack.length - 4}</span>
-          )}
-        </div>
-        <RuntimeBadge runtime={component.runtime} label={component.runtimeLabel} />
-        <div className="mt-3 text-xs text-[var(--muted)]">
-          <span
-            className={`inline-block w-1.5 h-1.5 rounded-full mr-1 mb-0.5 ${statusClass}`}
-            aria-label={component.statusLabel}
-            role="status"
-          />
-          {component.statusLabel}
+        <ProjectMotif projectKey={component.key} category={component.category} />
+      </div>
+      <div className="component-card-body">
+        <p className="component-card-category">{group?.title ?? "Proyecto"}</p>
+        <h4>{component.name}</h4>
+        <p className="component-card-tagline">{component.tagline}</p>
+        <p className="component-card-description">{component.description}</p>
+        <div className="component-card-footer">
+          <span className="component-card-state">{component.statusLabel}</span>
+          <span className="component-card-arrow" aria-hidden="true">↗</span>
         </div>
       </div>
     </Link>

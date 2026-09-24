@@ -1,58 +1,29 @@
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap');
 @import "tailwindcss";
 
-/* ============================================================
-   BRAND TOKENS — Cloud Atlas (canónico, modo oscuro)
-   Fuente de verdad: docs/05-activos/brand-tokens.md
-   ============================================================ */
-:root,
-[data-theme="dark"] {
-  --bg: #0b1417;
-  --surface: #131e22;
-  --surface-2: #131e22;
-  --border: rgba(232,224,212,0.10);
-  --text: #e8e0d4;
-  --text-muted: #8fa3a8;
-  --primary: #43b5a6;
-  --primary-strong: #2f8478;
-  --on-primary: #07241F;
-  --accent: #e0a85e;
-  --accent-strong: #cf6a3c;
+:root {
+  color-scheme: dark;
+  --bg: #071519;
+  --surface: #10272b;
+  --surface-2: #17343a;
+  --border: rgba(220, 240, 235, .16);
+  --text: #f4f2e9;
+  --text-muted: #acc4c2;
+  --primary: #8ee9d4;
+  --primary-strong: #43b5a6;
+  --on-primary: #071519;
+  --accent: #f1bb7c;
+  --accent-strong: #d48d4e;
   --on-accent: #1a1208;
-  --accent-2: #2a7a70;
-  --link: #6fd3c4;
-  --ring: #43b5a6;
-  --success: #34D399;
-  --warning: #FBBF24;
-  --danger: #F87171;
-  --purple: #8d7cc0;
-}
-
-[data-theme="light"] {
-  --bg: #FBFAF6;
-  --surface: #FFFFFF;
-  --surface-2: #F4F1E9;
-  --border: #E5DFD2;
-  --text: #14202E;
-  --text-muted: #51606F;
-  --primary: #2f8478;
-  --primary-strong: #1f5c54;
-  --on-primary: #FFFFFF;
-  --accent: #9A6712;
-  --accent-strong: #7a5010;
-  --on-accent: #FFFFFF;
-  --accent-2: #2a7a70;
-  --link: #2f8478;
-  --ring: #2f8478;
-  --success: #2f8478;
-  --warning: #92610A;
-  --danger: #B42318;
-}
-
-/* Aliases de compatibilidad (mapean nombres legacy → tokens Cloud Atlas) */
-:root,
-[data-theme="dark"],
-[data-theme="light"] {
+  --accent-2: #c8baff;
+  --link: #8ee9d4;
+  --ring: #8ee9d4;
+  --success: #86dfac;
+  --warning: #f1bb7c;
+  --danger: #f29c98;
+  --purple: #c8baff;
+  --paper: #f3f1e9;
+  --paper-ink: #102327;
+  --paper-muted: #526367;
   --background: var(--bg);
   --foreground: var(--text);
   --teal: var(--primary-strong);
@@ -62,6 +33,10 @@
   --card-bg: var(--surface);
   --card-border: var(--border);
   --muted: var(--text-muted);
+  --font-sans: var(--font-manrope), Arial, sans-serif;
+  --font-display: var(--font-manrope), Arial, sans-serif;
+  --font-editorial: var(--font-newsreader), Georgia, serif;
+  --font-mono: var(--font-plex-mono), ui-monospace, monospace;
 }
 
 @theme inline {
@@ -74,180 +49,78 @@
   --color-card-bg: var(--surface);
   --color-card-border: var(--border);
   --color-muted: var(--text-muted);
-  --color-brand-primary: var(--primary);
-  --color-brand-accent: var(--accent);
-  --color-brand-accent-2: var(--accent-2);
-  --color-brand-success: var(--success);
-  --color-brand-warning: var(--warning);
-  --color-brand-danger: var(--danger);
 }
 
-body {
-  background: var(--bg);
-  color: var(--text);
-  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: 6rem; }
+body { margin: 0; background: var(--bg); color: var(--text); font-family: var(--font-sans); -webkit-font-smoothing: antialiased; }
+::selection { background: var(--primary); color: var(--bg); }
+a { text-underline-offset: .22em; }
+button, input, select { font: inherit; }
+code, pre, kbd, samp, .font-mono { font-family: var(--font-mono); }
+h1, h2, h3, h4, h5, h6 { font-family: var(--font-display); letter-spacing: -.055em; }
+:focus-visible { outline: 2px solid var(--ring); outline-offset: 4px; }
+
+.dm-shell { width: min(100% - 3rem, 1480px); margin-inline: auto; }
+.dm-skip { position: fixed; top: .5rem; left: .5rem; z-index: 100; transform: translateY(-160%); padding: .75rem 1rem; background: var(--primary); color: var(--bg); font-weight: 700; }
+.dm-skip:focus { transform: translateY(0); }
+
+.dm-header { position: sticky; top: 0; z-index: 60; border-bottom: 1px solid var(--border); background: rgba(7, 21, 25, .91); backdrop-filter: blur(22px); -webkit-backdrop-filter: blur(22px); }
+.dm-header-inner { min-height: 76px; display: flex; align-items: center; gap: clamp(1.5rem, 4vw, 4rem); }
+.dm-brand { display: inline-flex; flex: 0 0 auto; align-items: center; gap: .72rem; color: var(--text); text-decoration: none; }
+.dm-brand img { width: 39px; height: 39px; object-fit: contain; }
+.dm-brand-name { font-family: var(--font-editorial); font-size: 1.72rem; line-height: 1; letter-spacing: -.045em; }
+.dm-brand-rule { width: 1px; height: 24px; margin-inline: .15rem; background: var(--border); }
+.dm-brand-sub { color: var(--text-muted); font-family: var(--font-mono); font-size: .58rem; letter-spacing: .1em; line-height: 1.45; text-transform: uppercase; }
+.dm-desktop-nav { display: flex; align-items: center; gap: clamp(1.5rem, 3vw, 3rem); margin-left: auto; }
+.dm-nav-link { color: var(--text-muted); font-size: .8rem; font-weight: 600; text-decoration: none; transition: color .18s ease; }
+.dm-nav-link:hover, .dm-nav-link:focus-visible { color: var(--text); }
+.dm-nav-link[data-primary] { display: inline-flex; align-items: center; gap: .8rem; min-height: 38px; padding: .3rem .8rem .3rem 1rem; border: 1px solid rgba(142,233,212,.42); border-radius: 99px; color: var(--primary); }
+.dm-nav-link[data-primary]:hover { background: var(--primary); color: var(--bg); }
+.dm-mobile-nav { display: none; margin-left: auto; position: relative; }
+.dm-mobile-nav summary { display: flex; align-items: center; justify-content: center; width: 42px; height: 42px; border: 1px solid var(--border); border-radius: 50%; cursor: pointer; color: var(--text); list-style: none; font-family: var(--font-mono); font-size: 1.35rem; line-height: 1; }
+.dm-mobile-nav summary::-webkit-details-marker { display: none; }
+.dm-mobile-nav[open] summary { border-color: var(--primary); color: var(--primary); }
+.dm-mobile-panel { position: absolute; top: calc(100% + .9rem); right: 0; width: min(80vw, 320px); padding: .7rem; border: 1px solid var(--border); border-radius: 16px; background: #10272b; box-shadow: 0 24px 65px rgba(0,0,0,.42); }
+.dm-mobile-panel a { display: flex; align-items: center; justify-content: space-between; padding: .85rem .75rem; border-bottom: 1px solid var(--border); color: var(--text); text-decoration: none; font-size: .94rem; }
+.dm-mobile-panel a:last-child { border-bottom: 0; color: var(--primary); }
+.dm-mobile-panel a:hover { color: var(--primary); }
+
+.dm-footer { position: relative; overflow: hidden; margin-top: 0; border-top: 1px solid var(--border); background: #061115; }
+.dm-footer-top { display: grid; grid-template-columns: 1.35fr 1fr; gap: 4rem; padding-block: clamp(4rem, 7vw, 7.5rem) 4rem; }
+.dm-footer-kicker { color: var(--primary); font: 500 .68rem/1.4 var(--font-mono); letter-spacing: .16em; text-transform: uppercase; }
+.dm-footer-title { margin: 1.2rem 0 .8rem; color: var(--text); font: 400 clamp(5rem, 12vw, 11rem)/.78 var(--font-editorial); letter-spacing: -.08em; }
+.dm-footer-text { max-width: 35rem; color: var(--text-muted); font-size: clamp(.96rem, 1.4vw, 1.15rem); line-height: 1.6; }
+.dm-footer-links { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 2.5rem; padding-top: .2rem; }
+.dm-footer-links h2 { margin: 0 0 1.3rem; color: var(--text-muted); font: 500 .66rem/1.4 var(--font-mono); letter-spacing: .15em; text-transform: uppercase; }
+.dm-footer-links a { display: block; width: fit-content; margin-block: .75rem; color: var(--text); font-size: .96rem; text-decoration: none; }
+.dm-footer-links a:hover { color: var(--primary); }
+.dm-footer-bottom { display: flex; justify-content: space-between; gap: 1rem; padding-block: 1.2rem 1.5rem; border-top: 1px solid var(--border); color: var(--text-muted); font: 400 .65rem/1.5 var(--font-mono); text-transform: uppercase; letter-spacing: .08em; }
+
+.badge-gpu, .badge-api, .badge-local, .badge-service { display: inline-flex; align-items: center; padding: .25rem .6rem; border-radius: 99px; border: 1px solid var(--border); background: var(--surface-2); color: var(--text); font: 500 .68rem/1.3 var(--font-mono); }
+.badge-gpu { color: var(--accent); border-color: rgba(241,187,124,.38); }
+.badge-api, .badge-service { color: var(--primary); border-color: rgba(142,233,212,.32); }
+.badge-local { color: var(--success); border-color: rgba(134,223,172,.3); }
+.mermaid-wrapper { overflow-x: auto; padding: 1.5rem; border: 1px solid var(--border); border-radius: 12px; background: var(--surface); }
+.mermaid-wrapper svg { max-width: none; width: auto; height: auto; }
+.tag { display: inline-block; padding: .3rem .52rem; border: 1px solid var(--border); border-radius: 5px; background: var(--surface-2); color: var(--text-muted); font: 400 .68rem/1.3 var(--font-mono); }
+.gradient-teal { background: linear-gradient(135deg, var(--primary-strong), #247a6e); }
+.gradient-gold { background: linear-gradient(135deg, var(--accent-strong), #a85428); }
+.gradient-brand { background: linear-gradient(110deg, var(--accent) 0%, var(--accent-strong) 35%, var(--primary) 100%); }
+
+@media (max-width: 760px) {
+  .dm-shell { width: min(100% - 2rem, 1480px); }
+  .dm-header-inner { min-height: 64px; }
+  .dm-brand img { width: 34px; height: 34px; }
+  .dm-brand-name { font-size: 1.45rem; }
+  .dm-brand-rule, .dm-brand-sub, .dm-desktop-nav { display: none; }
+  .dm-mobile-nav { display: block; }
+  .dm-footer-top { grid-template-columns: 1fr; gap: 3rem; padding-block: 4rem 3rem; }
+  .dm-footer-links { gap: 1.5rem; }
+  .dm-footer-bottom { flex-direction: column; }
 }
 
-code, pre, kbd, samp, .font-mono, [class*="mono"] {
-  font-family: 'JetBrains Mono', 'Fira Code', ui-monospace, monospace;
-}
-
-
-/* ============================================================
-   Gradients
-   ============================================================ */
-.gradient-teal {
-  background: linear-gradient(135deg, var(--primary-strong) 0%, #247a6e 100%);
-}
-
-.gradient-gold {
-  background: linear-gradient(135deg, var(--accent-strong) 0%, #a85428 100%);
-}
-
-/* Cloud Atlas signature gradient */
-.gradient-brand {
-  background: linear-gradient(110deg, #e0a85e 0%, #cf6a3c 35%, #43b5a6 100%);
-}
-
-/* ============================================================
-   Glow utilities (teal only — no purple/cyan ad-hoc)
-   ============================================================ */
-.card-glow {
-  box-shadow: 0 0 20px rgba(67, 181, 166, 0.12), 0 1px 3px rgba(0, 0, 0, 0.5);
-}
-
-.card-glow-gold {
-  box-shadow: 0 0 20px rgba(224, 168, 94, 0.12), 0 1px 3px rgba(0, 0, 0, 0.5);
-}
-
-/* ============================================================
-   Runtime badges — todos sobre brand tokens, WCAG AA
-   GPU  → acento dorado oscuro (fondo #1a1208 + texto #e0a85e = ~7:1)
-   API  → surface-2 + primary (#43b5a6 sobre #11211f = ~7.5:1)
-   CPU  → success (#34D399 sobre #0f1c20 = ~9.2:1)
-   ============================================================ */
-.badge-gpu {
-  background: var(--on-accent);        /* #1a1208 */
-  color: var(--accent);                /* #e0a85e */
-  border: 1px solid var(--accent-strong);
-  font-size: 0.7rem;
-  padding: 2px 8px;
-  border-radius: 99px;
-  font-weight: 600;
-  letter-spacing: 0.03em;
-}
-
-.badge-api {
-  background: var(--surface-2);        /* #131e22 */
-  color: var(--primary);               /* #43b5a6 */
-  border: 1px solid var(--primary-strong);
-  font-size: 0.7rem;
-  padding: 2px 8px;
-  border-radius: 99px;
-  font-weight: 600;
-  letter-spacing: 0.03em;
-}
-
-.badge-local {
-  background: #0a1f14;                 /* dark green surface */
-  color: var(--success);               /* #34D399 */
-  border: 1px solid #1a4d2e;
-  font-size: 0.7rem;
-  padding: 2px 8px;
-  border-radius: 99px;
-  font-weight: 600;
-  letter-spacing: 0.03em;
-}
-
-.badge-service {
-  background: var(--surface-2);
-  color: var(--primary);
-  border: 1px solid var(--primary-strong);
-  font-size: 0.7rem;
-  padding: 2px 8px;
-  border-radius: 99px;
-  font-weight: 600;
-  letter-spacing: 0.03em;
-}
-
-/* ============================================================
-   Mermaid wrapper
-   ============================================================ */
-.mermaid-wrapper {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 1.5rem;
-  overflow-x: auto;
-  /* Mobile optimization: force SVG to maintain intrinsic size instead of scaling.
-     This allows overflow-x: auto to scroll on narrow viewports, improving readability. */
-}
-
-.mermaid-wrapper svg {
-  max-width: none;
-  width: auto;
-  height: auto;
-}
-
-/* ============================================================
-   Tag chips (stack tech)
-   ============================================================ */
-.tag {
-  display: inline-block;
-  background: var(--surface-2);
-  color: var(--text-muted);
-  border: 1px solid var(--border);
-  border-radius: 6px;
-  font-size: 0.72rem;
-  padding: 2px 8px;
-  font-family: monospace;
-}
-
-/* ============================================================
-   Typography — Cormorant Garamond for titles
-   ============================================================ */
-h1,
-h2,
-h3,
-h4,
-h5,
-h6,
-.heading-1,
-.heading-2,
-.heading-3,
-.display-lg,
-.display-md,
-.display-sm {
-  font-family: 'Cormorant Garamond', serif;
-  font-weight: 700;
-  letter-spacing: -0.02em;
-}
-
-h1,
-.heading-1,
-.display-lg {
-  font-size: 3rem;
-  line-height: 1.1;
-}
-
-h2,
-.heading-2,
-.display-md {
-  font-size: 2rem;
-  line-height: 1.2;
-}
-
-h3,
-.heading-3,
-.display-sm {
-  font-size: 1.5rem;
-  line-height: 1.3;
-}
-
-/* ============================================================
-   Focus visible — brand ring
-   ============================================================ */
-:focus-visible {
-  outline: 2px solid var(--ring);
-  outline-offset: 2px;
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
 }
