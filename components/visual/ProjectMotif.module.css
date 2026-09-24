@@ -1,0 +1,14 @@
+.motif {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+.field { opacity: .55; }
+.glyph { filter: drop-shadow(0 0 14px rgba(142, 233, 212, .1)); }
+
+@media (prefers-reduced-motion: no-preference) {
+  .motif .glyph { transition: transform .3s ease, opacity .3s ease; transform-origin: center; }
+  .motif:hover .glyph { transform: translateY(-3px); }
+}

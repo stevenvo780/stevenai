@@ -1,267 +1,280 @@
-import { components, getComponentByKey } from "@/lib/components-data";
+import type { Metadata } from "next";
+import Link from "next/link";
 import { notFound } from "next/navigation";
-import RuntimeBadge from "@/components/RuntimeBadge";
 import MermaidDiagram from "@/components/MermaidDiagramDynamic";
 import HonestNote from "@/components/HonestNote";
-import Link from "next/link";
-import type { Metadata } from "next";
+import { ProjectMotif } from "@/components/visual/ProjectMotif";
+import { catalogGroups } from "@/lib/catalog-groups";
+import { components, getComponentByKey, type AIComponent } from "@/lib/components-data";
+import "@/app/styles/detail.css";
 
 interface PageProps {
   params: Promise<{ key: string }>;
 }
 
-export async function generateStaticParams() {
-  return components.map((c) => ({ key: c.key }));
-}
-
 const CANONICAL_BASE = "https://daimon.stevenvallejo.com";
+const MEDIA_TOOLS = new Set(["reel-forge", "minimax-h3", "pixel-art-replicate"]);
+
+export function generateStaticParams() {
+  return components.map(({ key }) => ({ key }));
+}
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { key } = await params;
   const component = getComponentByKey(key);
-  if (!component) return { title: "Componente no encontrado" };
+  if (!component) return { title: "Proyecto no encontrado" };
+
   const pageUrl = `${CANONICAL_BASE}/components/${key}`;
+  const title = `${component.name} — Daímon · Mouseîon`;
   return {
-    title: `${component.name} — Daímon · Mouseîon`,
+    title,
     description: component.description,
-    alternates: {
-      canonical: pageUrl,
-    },
+    alternates: { canonical: pageUrl },
     openGraph: {
-      title: `${component.name} — Daímon · Mouseîon`,
+      title,
       description: component.description,
       url: pageUrl,
       siteName: "Mouseîon",
       locale: "es_ES",
-      images: [{ url: `${CANONICAL_BASE}/og-image.png`, width: 1200, height: 630 }],
+      images: [{ url: "/opengraph-image", width: 1200, height: 630, alt: "Daímon, atlas de proyectos de inteligencia artificial" }],
     },
     twitter: {
       card: "summary_large_image",
-      title: `${component.name} — Daímon · Mouseîon`,
+      title,
       description: component.description,
-      images: [`${CANONICAL_BASE}/og-image.png`],
+      images: ["/twitter-image"],
     },
   };
 }
 
-const colorBorder: Record<string, string> = {
-  teal: "border-[var(--teal)]",
-  gold: "border-[var(--gold)]",
-  purple: "border-[var(--accent-strong)]",
-  cyan: "border-[var(--teal)]",
-};
+function programmingLanguages(stack: string[]): string[] {
+  const languages = ["TypeScript", "JavaScript", "Python", "Shell"];
+  return languages.filter((language) =>
+    stack.some((entry) => new RegExp(`\\b${language}\\b`, "i").test(entry)),
+  );
+}
 
-const colorText: Record<string, string> = {
-  teal: "text-[var(--teal-light)]",
-  gold: "text-[var(--gold-light)]",
-  purple: "text-[var(--accent)]",
-  cyan: "text-[var(--teal-light)]",
-};
+function applicationCategory(component: AIComponent): string {
+  if (component.key === "agora-ai-agent") return "EducationalApplication";
+  if (MEDIA_TOOLS.has(component.key)) return "MultimediaApplication";
+  if (component.category === "infrastructure") return "DeveloperApplication";
+  return "UtilitiesApplication";
+}
 
-const statusDot: Record<string, string> = {
-  "live-local": "bg-[var(--success)]",
-  "demo-pending": "bg-[var(--warning)]",
-  available: "bg-[var(--primary)]",
-};
+function structuredData(component: AIComponent) {
+  const isCodeLab = component.key === "neuronal-learning";
+  const languages = programmingLanguages(component.stack);
+  const pageUrl = `${CANONICAL_BASE}/components/${component.key}`;
+
+  return {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": isCodeLab ? "SoftwareSourceCode" : "SoftwareApplication",
+        "@id": `${pageUrl}/#software`,
+        name: component.name,
+        url: pageUrl,
+        description: component.description,
+        abstract: component.longDescription,
+        ...(isCodeLab ? {} : { applicationCategory: applicationCategory(component) }),
+        ...(component.sourceAccess === "private" ? {} : { codeRepository: component.repo }),
+        ...(languages.length > 0 ? { programmingLanguage: languages } : {}),
+        keywords: component.stack.join(", "),
+        author: {
+          "@type": "Person",
+          "@id": "https://www.stevenvallejo.com/#person",
+          name: "Steven Vallejo",
+        },
+        isPartOf: {
+          "@type": "WebSite",
+          "@id": `${CANONICAL_BASE}/#website`,
+          name: "Daímon",
+          url: CANONICAL_BASE,
+        },
+      },
+      {
+        "@type": "BreadcrumbList",
+        "@id": `${pageUrl}/#breadcrumb`,
+        itemListElement: [
+          { "@type": "ListItem", position: 1, name: "Daímon", item: CANONICAL_BASE },
+          { "@type": "ListItem", position: 2, name: component.name, item: pageUrl },
+        ],
+      },
+    ],
+  };
+}
 
 export default async function ComponentPage({ params }: PageProps) {
   const { key } = await params;
   const component = getComponentByKey(key);
   if (!component) notFound();
 
-  const currentIndex = components.findIndex((c) => c.key === key);
-  const prev = currentIndex > 0 ? components[currentIndex - 1] : null;
-  const next = currentIndex < components.length - 1 ? components[currentIndex + 1] : null;
-
-  // Fallbacks for color maps
-  const borderColor = colorBorder[component.color] ?? colorBorder.teal;
-  const textColor = colorText[component.color] ?? colorText.teal;
-  const statusClass = statusDot[component.status] ?? statusDot.available;
-
-  // Generate JSON-LD for this component (Product/SoftwareApplication schema)
-  const jsonLd = {
-    "@context": "https://schema.org",
-    "@type": "SoftwareApplication",
-    "@id": `${CANONICAL_BASE}/components/${component.key}/#software`,
-    name: component.name,
-    url: `${CANONICAL_BASE}/components/${component.key}`,
-    description: component.description,
-    abstract: component.longDescription,
-    applicationCategory: "DeveloperApplication",
-    author: {
-      "@type": "Person",
-      "@id": "https://www.stevenvallejo.com/#person",
-      name: "Steven Vallejo",
-    },
-    codeRepository: component.repo,
-    programmingLanguage: component.stack[0] || "TypeScript",
-    keywords: component.stack.join(", "),
-    isPartOf: {
-      "@type": "WebSite",
-      "@id": "https://www.stevenvallejo.com/#website",
-      name: "Mouseîon",
-      url: "https://www.stevenvallejo.com",
-    },
-  };
-
-  // Safe JSON.stringify with XSS escaping
-  const jsonLdString = JSON.stringify(jsonLd).replace(/</g, "\\u003c");
+  const currentIndex = components.findIndex((item) => item.key === key);
+  const previous = components[currentIndex - 1];
+  const next = components[currentIndex + 1];
+  const group = catalogGroups.find((item) => item.id === component.category);
+  const isPrivate = component.sourceAccess === "private";
+  const jsonLd = JSON.stringify(structuredData(component)).replace(/</g, "\\u003c");
 
   return (
-    <>
-      {/* JSON-LD Structured Data for this component */}
+    <main className="detail-page" data-category={component.category}>
       <script
         id={`json-ld-component-${component.key}`}
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: jsonLdString }}
+        dangerouslySetInnerHTML={{ __html: jsonLd }}
       />
 
-      <div className="max-w-4xl mx-auto px-4 py-10">
-        {/* Breadcrumb */}
-        <nav className="text-xs text-[var(--muted)] mb-6 flex items-center gap-2">
-          <Link href="/" className="hover:text-[var(--foreground)] transition-colors">
-            Catálogo
-          </Link>
-          <span>/</span>
-          <span className="text-[var(--foreground)]">{component.name}</span>
+      <div className="detail-shell">
+        <nav className="detail-breadcrumbs" aria-label="Ruta de navegación">
+          <Link href="/">Daímon</Link>
+          <span aria-hidden="true">/</span>
+          <Link href={`/#${component.category}`}>{group?.title ?? "Catálogo"}</Link>
+          <span aria-hidden="true">/</span>
+          <span aria-current="page">{component.name}</span>
         </nav>
 
-        {/* Header */}
-        <header className={`border-l-4 ${borderColor} pl-5 mb-8`}>
-          <div className="flex flex-wrap items-center gap-3 mb-2">
-            <h1 className={`text-3xl font-bold ${textColor}`}>
-              {component.name}
-            </h1>
-            <span
-              className={`w-2.5 h-2.5 rounded-full ${statusClass}`}
-              title={component.statusLabel}
-              aria-label={component.statusLabel}
-              role="status"
-            />
-            <span className="text-xs text-[var(--muted)]">{component.statusLabel}</span>
+        <header className="detail-hero">
+          <div className="detail-hero-copy">
+            <p className="detail-overline">
+              <span>Archivo de IA</span>
+              <span aria-hidden="true">·</span>
+              <span>Ficha {String(currentIndex + 1).padStart(2, "0")}</span>
+            </p>
+            <h1 className="detail-title">{component.name}</h1>
+            <p className="detail-deck">{component.tagline}</p>
+            <p className="detail-lead">{component.description}</p>
+            <div className="detail-actions">
+              {isPrivate ? (
+                <p className="detail-private-callout">
+                  El repositorio es privado. Esta ficha presenta el proyecto sin ofrecer acceso al código.
+                </p>
+              ) : (
+                <a className="detail-primary-link" href={component.repo} target="_blank" rel="noopener noreferrer">
+                  Explorar repositorio <span aria-hidden="true">↗</span>
+                </a>
+              )}
+              <Link className="detail-secondary-link" href="/architecture">Ver mapa de proyectos <span aria-hidden="true">→</span></Link>
+            </div>
           </div>
-          <p className="text-[var(--muted)] italic mb-3">{component.tagline}</p>
-          <div className="flex flex-wrap gap-2 items-center">
-            <RuntimeBadge runtime={component.runtime} label={component.runtimeLabel} />
-            <a
-              href={component.repo}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-xs text-[var(--teal-light)] hover:underline"
-            >
-              Ver código en GitHub
-            </a>
-          </div>
+
+          <figure className="detail-hero-art">
+            <ProjectMotif projectKey={component.key} category={component.category} className="detail-project-motif" />
+            <figcaption>
+              <span>Motivo conceptual</span>
+              <span>{group?.title ?? "Proyecto"}</span>
+            </figcaption>
+          </figure>
         </header>
 
-        {/* Status notice for demo-pending */}
+        <dl className="detail-facts" aria-label="Estado y ejecución">
+          <div className="detail-fact">
+            <dt>Acceso al código</dt>
+            <dd>{isPrivate ? "Repositorio privado" : "Repositorio público"}</dd>
+          </div>
+          <div className="detail-fact">
+            <dt>Estado</dt>
+            <dd>{component.statusLabel}</dd>
+          </div>
+          <div className="detail-fact">
+            <dt>Ejecución</dt>
+            <dd>{component.runtimeLabel}</dd>
+          </div>
+        </dl>
+
         {component.status === "demo-pending" && (
-          <div className="mb-6">
-            <HonestNote />
+          <div className="detail-honest-note"><HonestNote /></div>
+        )}
+
+        <section className="detail-section detail-purpose" aria-labelledby="detail-purpose-title">
+          <div className="detail-section-head">
+            <span className="detail-section-index">01 / Propósito</span>
+            <h2 id="detail-purpose-title">Qué resuelve</h2>
           </div>
-        )}
-
-        {/* Description */}
-        <section className="bg-[var(--card-bg)] border border-[var(--card-border)] rounded-xl p-6 mb-6">
-          <h2 className="text-sm font-semibold text-[var(--muted)] uppercase tracking-wider mb-3">
-            Descripción
-          </h2>
-          <p className="text-[var(--foreground)] leading-relaxed">{component.longDescription}</p>
-        </section>
-
-        {/* Hardware requirements if present */}
-        {component.hardwareRequirements && (
-          <section className="bg-[var(--surface-2)] border border-[var(--border)] rounded-xl p-5 mb-6">
-            <h2 className="text-sm font-semibold text-[var(--accent)] uppercase tracking-wider mb-2">
-              Requisitos de hardware
-            </h2>
-            <p className="text-[var(--text-muted)] text-sm font-mono">{component.hardwareRequirements}</p>
-          </section>
-        )}
-
-        {/* Two-column: capabilities + stack */}
-        <div className="grid sm:grid-cols-2 gap-5 mb-6">
-          <section className="bg-[var(--card-bg)] border border-[var(--card-border)] rounded-xl p-5">
-            <h2 className="text-sm font-semibold text-[var(--muted)] uppercase tracking-wider mb-3">
-              Capacidades
-            </h2>
-            <ul className="space-y-2">
-              {component.capabilities.map((cap) => (
-                <li key={cap} className="flex items-start gap-2 text-sm">
-                  <span className={`mt-1 ${textColor}`}>—</span>
-                  <span className="text-[var(--foreground)]">{cap}</span>
-                </li>
-              ))}
-            </ul>
-          </section>
-
-          <section className="bg-[var(--card-bg)] border border-[var(--card-border)] rounded-xl p-5">
-            <h2 className="text-sm font-semibold text-[var(--muted)] uppercase tracking-wider mb-3">
-              Stack tecnológico
-            </h2>
-            <div className="flex flex-wrap gap-2">
-              {component.stack.map((s) => (
-                <span key={s} className="tag text-sm">
-                  {s}
-                </span>
-              ))}
+          <div className="detail-purpose-body">
+            <p className="detail-prose">{component.longDescription}</p>
+            <div className="detail-capabilities">
+              <h3>Capacidades documentadas</h3>
+              <ul>
+                {component.capabilities.map((capability, index) => (
+                  <li key={capability}>
+                    <span aria-hidden="true">{String(index + 1).padStart(2, "0")}</span>
+                    <span>{capability}</span>
+                  </li>
+                ))}
+              </ul>
             </div>
-          </section>
-        </div>
-
-        {/* Architecture Diagram */}
-        <section className="mb-8">
-          <h2 className="text-sm font-semibold text-[var(--muted)] uppercase tracking-wider mb-3">
-            Diagrama de arquitectura
-          </h2>
-          <p className="text-sm text-[var(--muted)] mb-4">{component.architectureDescription}</p>
-          <MermaidDiagram
-            chart={component.mermaidDiagram}
-            id={component.key}
-            ariaLabel={`Diagrama de arquitectura de ${component.name}`}
-          />
-        </section>
-
-        {/* GitHub CTA */}
-        <section className="bg-[var(--card-bg)] border border-[var(--card-border)] rounded-xl p-5 flex flex-col sm:flex-row items-center justify-between gap-4 mb-10">
-          <div>
-            <p className="font-medium text-[var(--foreground)]">Código fuente</p>
-            <p className="text-xs text-[var(--muted)] mt-0.5">{component.repo}</p>
           </div>
-          <a
-            href={component.repo}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="px-5 py-2.5 rounded-lg font-semibold text-white gradient-teal hover:opacity-90 transition-opacity text-sm shrink-0"
-          >
-            Ver en GitHub
-          </a>
         </section>
 
-        {/* Prev / Next navigation */}
-        <nav className="flex justify-between gap-4">
-          {prev ? (
-            <Link
-              href={`/components/${prev.key}`}
-              className="text-sm text-[var(--muted)] hover:text-[var(--foreground)] transition-colors"
-            >
-              &larr; {prev.name}
-            </Link>
-          ) : (
-            <span />
+        <section className="detail-section detail-architecture" aria-labelledby="detail-architecture-title">
+          <div className="detail-section-head">
+            <span className="detail-section-index">02 / Arquitectura</span>
+            <h2 id="detail-architecture-title">Cómo funciona</h2>
+          </div>
+          <p className="detail-architecture-intro">{component.architectureDescription}</p>
+          <div className="detail-diagram">
+            <p className="detail-diagram-label">Síntesis editorial del proyecto · no representa un despliegue en vivo</p>
+            <MermaidDiagram
+              chart={component.mermaidDiagram}
+              id={component.key}
+              ariaLabel={`Diagrama de arquitectura de ${component.name}`}
+            />
+          </div>
+        </section>
+
+        <section className="detail-section detail-technical" aria-labelledby="detail-technical-title">
+          <div className="detail-section-head">
+            <span className="detail-section-index">03 / Condiciones</span>
+            <h2 id="detail-technical-title">Para ponerlo en marcha</h2>
+          </div>
+          <div className="detail-technical-grid">
+            <div>
+              <h3>Entorno requerido</h3>
+              <p>{component.hardwareRequirements ?? component.runtimeLabel}</p>
+            </div>
+            <div>
+              <h3>Tecnologías</h3>
+              <ul className="detail-stack">
+                {component.stack.map((technology) => <li key={technology}>{technology}</li>)}
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <aside className="detail-source" aria-label="Origen de esta ficha">
+          <div>
+            <p className="detail-source-kicker">Origen de la ficha</p>
+            <h2>{isPrivate ? "Referencia sin código público" : "Explora el proyecto original"}</h2>
+            <p>
+              {isPrivate
+                ? "El repositorio de Talos es privado. La descripción permite conocer su enfoque, sin prometer acceso a implementación ni demo."
+                : component.key === "agora-ai-agent"
+                  ? "Ágora AI Agent es un módulo de AgoraBack. El repositorio también contiene otros servicios de la plataforma."
+                  : "El repositorio contiene la implementación y la documentación disponible para este proyecto. Su ejecución puede requerir servicios o credenciales propias."}
+            </p>
+          </div>
+          {!isPrivate && (
+            <a href={component.repo} target="_blank" rel="noopener noreferrer">
+              Abrir GitHub <span aria-hidden="true">↗</span>
+            </a>
           )}
+        </aside>
+
+        <nav className="detail-pagination" aria-label="Explorar otras fichas">
+          {previous ? (
+            <Link href={`/components/${previous.key}`} className="detail-pagination-link">
+              <span>← Ficha anterior</span>
+              <strong>{previous.name}</strong>
+            </Link>
+          ) : <span />}
           {next ? (
-            <Link
-              href={`/components/${next.key}`}
-              className="text-sm text-[var(--muted)] hover:text-[var(--foreground)] transition-colors"
-            >
-              {next.name} &rarr;
+            <Link href={`/components/${next.key}`} className="detail-pagination-link detail-pagination-next">
+              <span>Ficha siguiente →</span>
+              <strong>{next.name}</strong>
             </Link>
-          ) : (
-            <span />
-          )}
+          ) : <span />}
         </nav>
       </div>
-    </>
+    </main>
   );
 }

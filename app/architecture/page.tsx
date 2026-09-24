@@ -1,64 +1,119 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { GroupMotif } from "@/components/visual/ProjectMotif";
 import { components } from "@/lib/components-data";
 import { catalogGroups } from "@/lib/catalog-groups";
+import "@/app/styles/detail.css";
+
+const PAGE_URL = "https://daimon.stevenvallejo.com/architecture";
 
 export const metadata: Metadata = {
   title: "Mapa de proyectos — Daímon · Mouseîon",
-  description: "Mapa del catálogo de IA de Steven Vallejo: asistentes, agentes y herramientas independientes.",
-  alternates: { canonical: "https://daimon.stevenvallejo.com/architecture" },
+  description: "Atlas editorial de los proyectos y módulos de IA de Daímon, agrupados por propósito. No representa una integración técnica entre ellos.",
+  alternates: { canonical: PAGE_URL },
   openGraph: {
     title: "Mapa de proyectos — Daímon · Mouseîon",
-    description: "Asistentes, infraestructura, modelos y herramientas del catálogo Daímon.",
-    url: "https://daimon.stevenvallejo.com/architecture",
+    description: "Asistentes, infraestructura, inferencia y herramientas del catálogo Daímon, agrupados por propósito.",
+    url: PAGE_URL,
     siteName: "Mouseîon",
     locale: "es_ES",
-    images: [{ url: "/og-image.png", width: 1200, height: 630 }],
+    images: [{ url: "/opengraph-image", width: 1200, height: 630, alt: "Daímon, atlas de proyectos de inteligencia artificial" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    images: ["/twitter-image"],
   },
 };
 
 export default function ArchitecturePage() {
+  const publicCount = components.filter((project) => project.sourceAccess !== "private").length;
+
   return (
-    <main className="max-w-5xl mx-auto px-4 py-10 pb-20">
-      <nav className="text-xs text-[var(--muted)] mb-8 flex items-center gap-2" aria-label="Ruta de navegación">
-        <Link href="/" className="hover:text-[var(--foreground)]">Catálogo</Link>
-        <span aria-hidden="true">/</span>
-        <span className="text-[var(--foreground)]">Mapa</span>
-      </nav>
+    <main className="atlas-page">
+      <div className="atlas-shell">
+        <nav className="detail-breadcrumbs" aria-label="Ruta de navegación">
+          <Link href="/">Daímon</Link>
+          <span aria-hidden="true">/</span>
+          <span aria-current="page">Mapa</span>
+        </nav>
 
-      <p className="text-xs uppercase tracking-[0.16em] text-[var(--teal-light)] mb-2">Orientación</p>
-      <h1 className="text-4xl sm:text-5xl mb-4">Mapa de proyectos</h1>
-      <p className="text-[var(--muted)] max-w-2xl leading-relaxed mb-10">
-        Daímon reúne proyectos de IA con propósitos distintos. El mapa los agrupa para explorarlos;
-        no representa una integración técnica entre todos ellos. Cada ficha explica la arquitectura
-        de su propio repositorio.
-      </p>
+        <header className="atlas-hero">
+          <div>
+            <p className="detail-overline">Índice visual / Daímon</p>
+            <h1>Una colección.<br /><em>Muchas maneras de pensar con IA.</em></h1>
+          </div>
+          <div className="atlas-hero-aside">
+            <p>
+              Este mapa reúne asistentes, infraestructura, experimentos y herramientas por su propósito.
+              Cada ficha explica el alcance real del proyecto o módulo que documenta.
+            </p>
+            <div className="atlas-hero-counts" aria-label="Tamaño del catálogo">
+              <span><strong>{String(components.length).padStart(2, "0")}</strong> fichas</span>
+              <span><strong>{String(publicCount).padStart(2, "0")}</strong> fuentes públicas</span>
+            </div>
+          </div>
+        </header>
 
-      <div className="space-y-10">
-        {catalogGroups.map((group, index) => {
-          const projects = components.filter((project) => project.category === group.id);
-          return (
-            <section key={group.id} aria-labelledby={`${group.id}-title`}
-              className="grid md:grid-cols-[minmax(0,1fr)_minmax(0,2fr)] gap-5 md:gap-10 border-t border-[var(--card-border)] pt-6">
-              <div>
-                <span className="text-xs font-mono text-[var(--teal-light)]">0{index + 1}</span>
-                <h2 id={`${group.id}-title`} className="text-2xl mt-2 mb-2">{group.title}</h2>
-                <p className="text-sm text-[var(--muted)] leading-relaxed">{group.description}</p>
-              </div>
-              <ul className="grid sm:grid-cols-2 gap-3">
-                {projects.map((project) => (
-                  <li key={project.key}>
-                    <Link href={`/components/${project.key}`}
-                      className="block h-full rounded-xl border border-[var(--card-border)] bg-[var(--card-bg)] p-4 hover:border-[var(--teal)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--ring)] transition-colors">
-                      <strong className="block text-sm text-[var(--foreground)] mb-1">{project.name}</strong>
-                      <span className="block text-xs text-[var(--muted)] leading-relaxed">{project.tagline}</span>
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </section>
-          );
-        })}
+        <nav className="atlas-index" aria-label="Familias del catálogo">
+          {catalogGroups.map((group, index) => (
+            <a href={`#${group.id}`} key={group.id}>
+              <span>{String(index + 1).padStart(2, "0")}</span>
+              {group.title}
+              <span aria-hidden="true">↗</span>
+            </a>
+          ))}
+        </nav>
+
+        <div className="atlas-groups">
+          {catalogGroups.map((group, groupIndex) => {
+            const projects = components.filter((project) => project.category === group.id);
+            return (
+              <section className="atlas-group" data-category={group.id} id={group.id} key={group.id} aria-labelledby={`${group.id}-title`}>
+                <div className="atlas-group-sidebar">
+                  <div className="atlas-group-heading">
+                    <span>0{groupIndex + 1} / {String(projects.length).padStart(2, "0")}</span>
+                    <h2 id={`${group.id}-title`}>{group.title}</h2>
+                    <p>{group.description}</p>
+                  </div>
+                  <figure className="atlas-group-visual">
+                    <GroupMotif category={group.id} />
+                    <figcaption>Motivo conceptual</figcaption>
+                  </figure>
+                </div>
+
+                <ol className="atlas-project-list">
+                  {projects.map((project) => {
+                    const projectNumber = components.findIndex((item) => item.key === project.key) + 1;
+                    return (
+                      <li key={project.key}>
+                        <Link href={`/components/${project.key}`}>
+                          <span className="atlas-project-number">{String(projectNumber).padStart(2, "0")}</span>
+                          <span className="atlas-project-copy">
+                            <strong>{project.name}</strong>
+                            <span>{project.tagline}</span>
+                          </span>
+                          <span className="atlas-project-access">
+                            {project.sourceAccess === "private" ? "Referencia privada" : "Ficha pública"}
+                          </span>
+                          <span className="atlas-project-arrow" aria-hidden="true">↗</span>
+                        </Link>
+                      </li>
+                    );
+                  })}
+                </ol>
+              </section>
+            );
+          })}
+        </div>
+
+        <aside className="atlas-note">
+          <span>Cómo leer el mapa</span>
+          <p>
+            Estas familias ayudan a explorar el catálogo. Los motivos visuales son conceptuales:
+            no representan un flujo operativo ni conexiones técnicas entre todos los proyectos.
+          </p>
+          <Link href="/#catalogo">Volver al catálogo <span aria-hidden="true">↗</span></Link>
+        </aside>
       </div>
     </main>
   );
