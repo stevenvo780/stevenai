@@ -68,9 +68,9 @@ export default function ArchitecturePage() {
           {catalogGroups.map((group, groupIndex) => {
             const projects = components.filter((project) => project.category === group.id);
             return (
-              <section className="atlas-group" data-category={group.id} id={group.id} key={group.id} aria-labelledby={`${group.id}-title`}>
+              <section className="atlas-group" data-category={group.id} key={group.id} aria-labelledby={`${group.id}-title`}>
                 <div className="atlas-group-sidebar">
-                  <div className="atlas-group-heading">
+                  <div className="atlas-group-heading" id={group.id}>
                     <span>0{groupIndex + 1} / {String(projects.length).padStart(2, "0")}</span>
                     <h2 id={`${group.id}-title`}>{group.title}</h2>
                     <p>{group.description}</p>

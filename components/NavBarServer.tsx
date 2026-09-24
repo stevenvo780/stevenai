@@ -1,5 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
+import MobileNav from "./MobileNav";
 
 const links = [
   { href: "/#catalogo", label: "Proyectos" },
@@ -21,13 +22,7 @@ export default function NavBarServer() {
           {links.map(({ href, label }) => <Link className="dm-nav-link" key={href} href={href}>{label}</Link>)}
           <a className="dm-nav-link" data-primary href="https://www.stevenvallejo.com/es">Steven Vallejo <span aria-hidden="true">↗</span></a>
         </nav>
-        <details className="dm-mobile-nav">
-          <summary aria-label="Abrir menú">≡</summary>
-          <nav className="dm-mobile-panel" aria-label="Navegación móvil">
-            {links.map(({ href, label }) => <Link key={href} href={href}>{label}<span aria-hidden="true">↗</span></Link>)}
-            <a href="https://www.stevenvallejo.com/es">Steven Vallejo <span aria-hidden="true">↗</span></a>
-          </nav>
-        </details>
+        <MobileNav links={links} />
       </div>
     </header>
   );
