@@ -6,6 +6,7 @@ export interface AIComponent {
   description: string;
   longDescription: string;
   repo: string;
+  sourceAccess?: "private"; // Omitted for public repositories
   runtime: "gpu-local" | "api" | "local-cpu" | "service";
   runtimeLabel: string;
   status: "live-local" | "demo-pending" | "available";
@@ -625,6 +626,42 @@ export const components: AIComponent[] = [
     color: "cyan",
   },
   {
+    key: "agora-ai-agent",
+    name: "Ágora AI Agent",
+    category: "assistants",
+    tagline: "Agente conversacional integrado en el backend de Ágora",
+    description:
+      "Módulo de AgoraBack que ofrece conversaciones con respuestas en streaming y herramientas para trabajar con documentos y lógica formal dentro de Ágora.",
+    longDescription:
+      "Ágora AI Agent forma parte de AgoraBack, el backend general de la plataforma Ágora; no es una aplicación independiente. Su API incluye chats persistidos y respuestas en streaming. El agente ejecuta herramientas de la plataforma, entre ellas consultas al grafo de citas y operaciones de lógica ST. Cada instalación necesita sus propios servicios de Ágora y proveedores de modelos configurados; el repositorio público documenta el módulo, pero Daímon no aloja una demo separada.",
+    repo: "https://github.com/stevenvo780/agora-backend",
+    runtime: "service",
+    runtimeLabel: "Módulo de AgoraBack; requiere Ágora y proveedores configurados",
+    status: "available",
+    statusLabel: "Código público; módulo de Ágora",
+    stack: ["TypeScript", "Express", "Firebase", "Firestore", "ST"],
+    capabilities: [
+      "Conversaciones persistidas en Ágora",
+      "Respuestas del agente en streaming",
+      "Herramientas para consultar el grafo de citas de documentos",
+      "Comprobación y derivación mediante el lenguaje lógico ST",
+      "Configuración de claves de proveedores por usuario",
+    ],
+    hardwareRequirements: "Instalación de Ágora con AgoraBack, Firebase/Firestore y un proveedor de modelos configurado",
+    architectureDescription:
+      "La interfaz de Ágora consulta AgoraBack; su módulo de agente transmite respuestas, usa proveedores de modelos y ejecuta herramientas de la plataforma. Los chats se guardan en Firestore.",
+    mermaidDiagram: `graph LR
+    User[Usuario de Ágora] --> UI[Interfaz de Ágora]
+    UI -->|Chat y streaming| Backend[AgoraBack]
+    Backend --> Agent[Ágora AI Agent]
+    Agent --> Models[Proveedores de modelos]
+    Agent --> Tools[Herramientas de Ágora]
+    Tools --> Citations[Grafo de citas]
+    Tools --> ST[Lógica ST]
+    Backend --> Chats[(Chats en Firestore)]`,
+    color: "teal",
+  },
+  {
     key: "cloud-delegate",
     name: "Cloud Delegate",
     category: "infrastructure",
@@ -658,21 +695,22 @@ export const components: AIComponent[] = [
     category: "infrastructure",
     tagline: "Automatizaciones empresariales con agentes y verificación",
     description:
-      "Harness para automatizaciones con Claude Code. Aporta checkpoints, idempotencia, revisión humana y auditoría; incluye ejemplos de facturas, CRM, RPA y correos.",
+      "Referencia de un harness privado para automatizaciones con Claude Code. Aporta checkpoints, idempotencia, revisión humana y auditoría en flujos de facturas, CRM, RPA y correos.",
     longDescription:
-      "El repositorio prizma-talos contiene un núcleo de harness, un CLI y cuatro automatizaciones de referencia. El modelo toma decisiones, mientras el harness limita herramientas, conserva checkpoints, registra decisiones y permite pausas para revisión humana. Los ejemplos cubren extracción de datos de facturas, sincronización CRM, descarga de extractos y clasificación de correos. El panel web se construye por separado.",
+      "Talos reúne un núcleo de harness, un CLI y automatizaciones de referencia. El modelo toma decisiones, mientras el harness limita herramientas, conserva checkpoints, registra decisiones y permite pausas para revisión humana. Los ejemplos abarcan extracción de datos de facturas, sincronización CRM, descarga de extractos y clasificación de correos. Su repositorio es privado: esta ficha describe el proyecto, pero no ofrece acceso al código ni a una demo pública.",
     repo: "https://github.com/stevenvo780/prizma-talos",
+    sourceAccess: "private",
     runtime: "api",
     runtimeLabel: "Node.js local + Claude Code",
     status: "available",
-    statusLabel: "Código y demos de referencia",
+    statusLabel: "Referencia descriptiva; repositorio privado",
     stack: ["TypeScript", "Node.js", "Claude Code", "Playwright", "Next.js"],
     capabilities: [
       "Ejecutar automatizaciones registradas desde un CLI",
       "Checkpoints e idempotencia para reintentos",
       "Revisión humana en casos de baja confianza",
       "Auditoría de decisiones y resultados",
-      "Demos de facturas, CRM, RPA y correos",
+      "Ejemplos de facturas, CRM, RPA y correos",
     ],
     hardwareRequirements: "Node.js 20+ y Claude Code configurado para las automatizaciones con modelo",
     architectureDescription:

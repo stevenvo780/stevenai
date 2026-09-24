@@ -5,8 +5,8 @@ export const catalogGroups: {
   title: string;
   description: string;
 }[] = [
-  { id: "assistants", title: "Asistentes y voz", description: "Asistentes personales y la interfaz de escritorio para conversar con ellos." },
+  { id: "assistants", title: "Asistentes y voz", description: "Asistentes conversacionales y sus interfaces de voz o escritorio." },
   { id: "infrastructure", title: "Infraestructura para agentes", description: "Buses, servidores MCP y harnesses que conectan o coordinan agentes." },
-  { id: "models", title: "Modelos y laboratorios", description: "Inferencia local y experimentos de entrenamiento de redes neuronales." },
+  { id: "models", title: "Inferencia y experimentos", description: "Aplicaciones de inferencia local y experimentos de entrenamiento de redes neuronales." },
   { id: "tools", title: "Herramientas y creación", description: "Documentos, seguimiento de cuotas y producción visual asistida por IA." },
 ];
