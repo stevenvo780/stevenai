@@ -15,7 +15,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 1.0,
     },
     {
-      url: BASE + "/architecture",
+      url: BASE + "/architecture/",
       lastModified,
       changeFrequency: "monthly",
       priority: 0.8,
@@ -23,7 +23,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   ];
 
   const componentRoutes: MetadataRoute.Sitemap = components.map((c) => ({
-    url: `${BASE}/components/${c.key}`,
+    url: `${BASE}/components/${c.key}/`,
     lastModified,
     changeFrequency: "monthly" as const,
     priority: 0.7,

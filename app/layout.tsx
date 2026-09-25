@@ -33,8 +33,9 @@ export const metadata: Metadata = {
   creator: "Steven Vallejo",
   publisher: "Steven Vallejo",
   alternates: {
-    // WAVE3 P1: match final URL trailing slash.
-    canonical: CANONICAL_BASE + "/",
+    // WAVE3 tip+1: trailingSlash:true makes Metadata emit origin+/ for home.
+    // Relative "/" resolves via metadataBase → https://daimon.stevenvallejo.com/
+    canonical: "/",
   },
   // WAVE3 soft-P1 SEO P2: explicit index/follow (was absent in live HTML).
   robots: {
