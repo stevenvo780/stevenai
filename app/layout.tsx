@@ -7,9 +7,28 @@ import SiteFooter from "@/components/SiteFooter";
 const CANONICAL_BASE = "https://daimon.stevenvallejo.com";
 const AUTHOR_URL = "https://www.stevenvallejo.com";
 const ECOSYSTEM_NAME = "Mouseîon";
-const manrope = Manrope({ subsets: ["latin"], variable: "--font-manrope", display: "swap" });
-const newsreader = Newsreader({ subsets: ["latin"], variable: "--font-newsreader", display: "swap" });
-const plexMono = IBM_Plex_Mono({ subsets: ["latin"], weight: ["400", "500", "600"], variable: "--font-plex-mono", display: "swap" });
+// WAVE3 tip+2 LCP: h1#dm-home-title render-delay was ~74% (text LCP).
+// Manrope = LCP face → font-display:optional (paint fallback at t0; no late swap LCP).
+// Newsreader/Plex = non-critical above-fold → preload:false so they do not contend
+// with Manrope on the critical path (Mouseîon pattern: only LCP face preloads).
+const manrope = Manrope({
+  subsets: ["latin"],
+  variable: "--font-manrope",
+  display: "optional",
+});
+const newsreader = Newsreader({
+  subsets: ["latin"],
+  variable: "--font-newsreader",
+  display: "swap",
+  preload: false,
+});
+const plexMono = IBM_Plex_Mono({
+  subsets: ["latin"],
+  weight: ["400", "500", "600"],
+  variable: "--font-plex-mono",
+  display: "swap",
+  preload: false,
+});
 
 // themeColor moved out of metadata (deprecated in Next 14+) into the viewport export.
 // Next.js 16 viewport API auto-renders <meta name="viewport"> + <meta name="theme-color">.

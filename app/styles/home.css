@@ -111,14 +111,20 @@
   box-shadow: 0 0 1.1rem rgba(142, 233, 212, .7);
 }
 
-.dm-home-hero h1 {
+/* WAVE3 tip+2: LCP node is h1#dm-home-title — keep SSR-visible at t0.
+   Pin to display/Manrope (+ metric-adjusted Arial fallback from next/font).
+   Do not gate on opacity/visibility; editorial em loads without preload. */
+.dm-home-hero h1,
+.dm-home-hero h1#dm-home-title {
   margin: clamp(1.4rem, 3.4vw, 3rem) 0 0;
-  font-family: var(--font-display, sans-serif);
+  font-family: var(--font-display, var(--font-manrope), Arial, sans-serif);
   font-size: clamp(5rem, 6.65vw, 7.5rem);
   font-weight: 650;
   letter-spacing: -.083em;
   line-height: .96;
   text-wrap: balance;
+  opacity: 1;
+  visibility: visible;
 }
 
 .dm-home-hero h1 em,
