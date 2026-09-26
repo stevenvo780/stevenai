@@ -17,6 +17,10 @@ export default function MermaidDiagram({ chart, id, ariaLabel }: MermaidDiagramP
       const mermaid = (await import("mermaid")).default;
       mermaid.initialize({
         startOnLoad: false,
+        // Native SVG labels survive the SVG sanitizer and remain readable in
+        // horizontally scrollable diagrams on narrow screens.
+        htmlLabels: false,
+        flowchart: { useMaxWidth: false },
         // "base" theme gives full control over themeVariables without dark-theme CSS
         // overrides that silently kill node label contrast.
         theme: "base",
@@ -60,13 +64,11 @@ export default function MermaidDiagram({ chart, id, ariaLabel }: MermaidDiagramP
       try {
         const { svg: svgString } = await mermaid.render(`mermaid-${id}`, chart);
         if (!cancelled && ref.current) {
-          // Sanitize SVG with DOMPurify to prevent XSS while preserving <foreignObject>
-          // for Mermaid v11 labels. Config allows SVG tags and common elements.
+          // Keep SVG text labels while removing embedded HTML and unsafe SVG.
           const sanitized = DOMPurify.sanitize(svgString, {
             ALLOWED_TAGS: [
               "svg", "g", "path", "text", "tspan", "rect", "circle", "line", "polyline",
-              "polygon", "ellipse", "defs", "style", "marker", "foreignObject", "div",
-              "span", "p", "a", "strong", "em", "br",
+              "polygon", "ellipse", "defs", "style", "marker",
             ],
             ALLOWED_ATTR: [
               "id", "class", "style", "width", "height", "viewBox", "xmlns",

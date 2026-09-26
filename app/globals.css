@@ -103,7 +103,8 @@ h1, h2, h3, h4, h5, h6 { font-family: var(--font-display); letter-spacing: -.055
 .badge-api, .badge-service { color: var(--primary); border-color: rgba(142,233,212,.32); }
 .badge-local { color: var(--success); border-color: rgba(134,223,172,.3); }
 .mermaid-wrapper { overflow-x: auto; padding: 1.5rem; border: 1px solid var(--border); border-radius: 12px; background: var(--surface); }
-.mermaid-wrapper svg { max-width: none; width: auto; height: auto; }
+.mermaid-wrapper > div { justify-content: flex-start; }
+.mermaid-wrapper svg { flex: none; max-width: none; width: auto; height: auto; margin-inline: auto; }
 .tag { display: inline-block; padding: .3rem .52rem; border: 1px solid var(--border); border-radius: 5px; background: var(--surface-2); color: var(--text-muted); font: 400 .68rem/1.3 var(--font-mono); }
 .gradient-teal { background: linear-gradient(135deg, var(--primary-strong), #247a6e); }
 .gradient-gold { background: linear-gradient(135deg, var(--accent-strong), #a85428); }
