@@ -1,6 +1,7 @@
 import Link from "next/link";
 import ComponentCard from "@/components/ComponentCard";
 import CatalogFormSync from "@/components/CatalogFormSync";
+import HomeChoreography from "@/components/HomeChoreography";
 import IntelligenceScene from "@/components/visual/IntelligenceScene";
 import { GroupMotif } from "@/components/visual/ProjectMotif";
 import { catalogGroups } from "@/lib/catalog-groups";
@@ -77,6 +78,7 @@ export default async function Home({ searchParams }: { searchParams: Promise<Sea
 
   return (
     <main className="dm-home">
+      <HomeChoreography />
       <section className="dm-home-hero" aria-labelledby="dm-home-title">
         <div className="dm-home-shell dm-home-hero-inner">
           <div className="dm-home-hero-copy">
@@ -99,7 +101,7 @@ export default async function Home({ searchParams }: { searchParams: Promise<Sea
             </div>
           </div>
           <div className="dm-home-hero-scene">
-            <p className="dm-home-hero-scene-hint">Desliza el esquema <span aria-hidden="true">↔</span></p>
+            <p className="dm-home-hero-scene-hint">Explora las etapas <span aria-hidden="true">↓</span></p>
             <IntelligenceScene variant="hero" />
           </div>
         </div>
@@ -192,7 +194,49 @@ export default async function Home({ searchParams }: { searchParams: Promise<Sea
             <div className="dm-home-featured-grid">
               <Link href={"/components/" + featured[0].key} className="dm-home-feature-lead">
                 <span className="dm-home-feature-meta">01 / {String(featured.length).padStart(2, "0")} · INFRAESTRUCTURA</span>
-                <span className="dm-home-feature-glyph" aria-hidden="true">C<span>V</span>3</span>
+                <span className="dm-home-feature-art" aria-hidden="true">
+                  <svg viewBox="0 0 660 370" preserveAspectRatio="xMidYMid slice" focusable="false">
+                    <defs>
+                      <linearGradient id="dm-feature-flow" x1="0" y1="0" x2="1" y2="1">
+                        <stop offset="0" stopColor="#8ee9d4" stopOpacity=".18" />
+                        <stop offset=".5" stopColor="#8ee9d4" />
+                        <stop offset="1" stopColor="#f1bb7c" stopOpacity=".72" />
+                      </linearGradient>
+                      <radialGradient id="dm-feature-core">
+                        <stop offset="0" stopColor="#8ee9d4" stopOpacity=".38" />
+                        <stop offset=".55" stopColor="#8ee9d4" stopOpacity=".08" />
+                        <stop offset="1" stopColor="#8ee9d4" stopOpacity="0" />
+                      </radialGradient>
+                    </defs>
+                    <circle cx="342" cy="184" r="172" fill="url(#dm-feature-core)" />
+                    <g className="dm-home-feature-orbits" fill="none" stroke="#8ee9d4">
+                      <ellipse cx="342" cy="184" rx="244" ry="94" transform="rotate(-18 342 184)" />
+                      <ellipse cx="342" cy="184" rx="244" ry="94" transform="rotate(43 342 184)" />
+                      <circle cx="342" cy="184" r="117" strokeDasharray="2 12" />
+                    </g>
+                    <g className="dm-home-feature-routes" fill="none" stroke="url(#dm-feature-flow)" strokeWidth="2">
+                      <path d="M32 84C168 84 183 163 279 163H356C451 163 454 72 635 72" />
+                      <path d="M20 185H279C319 185 326 185 356 185H642" />
+                      <path d="M32 285C168 285 183 207 279 207H356C451 207 454 298 635 298" />
+                    </g>
+                    <g className="dm-home-feature-routes dm-home-feature-routes-active" fill="none" stroke="#b6fff0" strokeWidth="2.5" strokeLinecap="round">
+                      <path d="M32 84C168 84 183 163 279 163H356C451 163 454 72 635 72" />
+                      <path d="M20 185H279C319 185 326 185 356 185H642" />
+                      <path d="M32 285C168 285 183 207 279 207H356C451 207 454 298 635 298" />
+                    </g>
+                    <g className="dm-home-feature-hub">
+                      <rect x="280" y="128" width="76" height="114" rx="20" fill="#15383b" stroke="#a7f4dd" />
+                      <rect x="292" y="140" width="52" height="90" rx="12" fill="#1d4546" stroke="#8ee9d4" strokeOpacity=".55" />
+                      <path d="M304 163H332M304 184H332M304 205H332" stroke="#d1fff0" strokeWidth="2" strokeLinecap="round" />
+                    </g>
+                    <g fill="#d0fff0">
+                      <circle cx="32" cy="84" r="4" /><circle cx="20" cy="185" r="4" /><circle cx="32" cy="285" r="4" />
+                      <circle cx="635" cy="72" r="4" /><circle cx="642" cy="185" r="4" /><circle cx="635" cy="298" r="4" />
+                    </g>
+                    <g fill="#f1bb7c"><circle cx="183" cy="129" r="4" /><circle cx="454" cy="112" r="4" /><circle cx="454" cy="258" r="4" /></g>
+                  </svg>
+                  <span className="dm-home-feature-art-label">FIG. 02 / RUTAS Y RELEVOS</span>
+                </span>
                 <div className="dm-home-feature-lead-copy">
                   <h3>{featured[0].name}</h3>
                   <p>{featured[0].description}</p>
