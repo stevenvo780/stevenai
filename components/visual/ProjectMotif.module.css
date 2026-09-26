@@ -1,14 +1,189 @@
 .motif {
+  --shift-x: 0px;
+  --shift-y: 0px;
+  --subject-scale: .91;
+  --subject-tilt: 0deg;
+  --mark-x: 293px;
+  --mark-y: 183px;
   display: block;
   width: 100%;
   height: auto;
-  overflow: visible;
+  overflow: hidden;
+  isolation: isolate;
 }
 
-.field { opacity: .55; }
-.glyph { filter: drop-shadow(0 0 14px rgba(142, 233, 212, .1)); }
+.motif[data-category="assistants"] { --scene-surface: #12373b; --scene-floor: #0d3033; }
+.motif[data-category="infrastructure"] { --scene-surface: #352c27; --scene-floor: #241f1d; }
+.motif[data-category="models"] { --scene-surface: #2b3043; --scene-floor: #1c263b; }
+.motif[data-category="tools"] { --scene-surface: #1e3535; --scene-floor: #152b2d; }
+
+.motif[data-composition="left"] {
+  --shift-x: -32px;
+  --shift-y: 3px;
+  --subject-scale: .85;
+  --subject-tilt: -2deg;
+  --mark-x: 305px;
+  --mark-y: 153px;
+}
+
+.motif[data-composition="right"] {
+  --shift-x: 31px;
+  --shift-y: -2px;
+  --subject-scale: .85;
+  --subject-tilt: 2deg;
+  --mark-x: 45px;
+  --mark-y: 174px;
+}
+
+.motif[data-composition="rise"] {
+  --shift-x: 7px;
+  --shift-y: -11px;
+  --subject-scale: .86;
+  --subject-tilt: 3deg;
+  --mark-x: 41px;
+  --mark-y: 164px;
+}
+
+.motif[data-composition="drop"] {
+  --shift-x: -9px;
+  --shift-y: 10px;
+  --subject-scale: .86;
+  --subject-tilt: -3deg;
+  --mark-x: 305px;
+  --mark-y: 46px;
+}
+
+.ambient {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: .7;
+  opacity: .1;
+}
+
+.field { opacity: .58; }
+
+.subject {
+  transform: translate(var(--shift-x), var(--shift-y)) scale(var(--subject-scale)) rotate(var(--subject-tilt));
+  transform-box: view-box;
+  transform-origin: 200px 110px;
+}
+
+.scene .glow {
+  fill: currentColor;
+  opacity: .065;
+  filter: blur(17px);
+}
+
+.scene .floor {
+  fill: var(--scene-floor);
+  stroke: currentColor;
+  stroke-width: 1;
+  stroke-opacity: .19;
+}
+
+.scene .surface {
+  fill: var(--scene-surface);
+  stroke: currentColor;
+  stroke-width: 1.15;
+  stroke-opacity: .49;
+}
+
+.scene .edge {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: .9;
+  stroke-opacity: .29;
+}
+
+.scene .etch {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.1;
+  stroke-opacity: .39;
+}
+
+.scene .pin { fill: currentColor; opacity: .84; }
+
+.glyphLift { transform-origin: 200px 110px; }
+.glyphShadow { opacity: .22; filter: blur(8px); }
+.glyph { filter: drop-shadow(0 2px 1px rgba(0, 0, 0, .48)); }
+
+.countermark {
+  transform: translate(var(--mark-x), var(--mark-y));
+  stroke-width: 1.1;
+  opacity: .5;
+}
+
+.glint { stroke-width: 1.3; opacity: .5; }
+
+.motif[data-composition="right"] .glint,
+.motif[data-composition="rise"] .glint { transform: rotate(180deg); transform-origin: center; }
+
+:global(.component-card:is(:hover, :focus-visible)) .glint,
+:global(.detail-hero-art:hover) .glint,
+:global(.dm-home-area:is(:hover, :focus-within)) .glint,
+:global(.atlas-group:is(:hover, :focus-within)) .glint { opacity: .95; }
 
 @media (prefers-reduced-motion: no-preference) {
-  .motif .glyph { transition: transform .3s ease, opacity .3s ease; transform-origin: center; }
-  .motif:hover .glyph { transform: translateY(-3px); }
+  .motif[data-category="assistants"] .ambient,
+  .motif[data-category="models"] .ambient { animation: ambientTurn 38s linear infinite; transform-origin: 200px 110px; }
+  .motif[data-category="infrastructure"] .ambient,
+  .motif[data-category="tools"] .ambient { animation: ambientDrift 17s ease-in-out infinite; }
+  .glyph { animation: glyphBreathe 9s ease-in-out infinite; }
+  .scene .glow { animation: lightBreathe 11s ease-in-out infinite; }
+  .glint { animation: glintBreathe 13s ease-in-out infinite; }
+
+  .subject { transition: transform .8s cubic-bezier(.2, .75, .25, 1); }
+  .glyphLift { transition: transform .65s cubic-bezier(.2, .75, .25, 1); }
+  .glint { transition: opacity .45s ease; }
+
+  :global(.component-card:is(:hover, :focus-visible)) .glint,
+  :global(.detail-hero-art:hover) .glint,
+  :global(.dm-home-area:is(:hover, :focus-within)) .glint,
+  :global(.atlas-group:is(:hover, :focus-within)) .glint { animation: none; }
+
+  :global(.component-card:is(:hover, :focus-visible)) .subject,
+  :global(.detail-hero-art:hover) .subject,
+  :global(.dm-home-area:is(:hover, :focus-within)) .subject,
+  :global(.atlas-group:is(:hover, :focus-within)) .subject {
+    transform: translate(var(--shift-x), calc(var(--shift-y) - 5px)) scale(calc(var(--subject-scale) + .035)) rotate(var(--subject-tilt));
+  }
+
+  :global(.component-card:is(:hover, :focus-visible)) .glyphLift,
+  :global(.detail-hero-art:hover) .glyphLift,
+  :global(.dm-home-area:is(:hover, :focus-within)) .glyphLift,
+  :global(.atlas-group:is(:hover, :focus-within)) .glyphLift { transform: translateY(-3px); }
+}
+
+@keyframes ambientTurn { to { transform: rotate(360deg); } }
+
+@keyframes ambientDrift {
+  0%, 100% { transform: translateX(0); }
+  50% { transform: translateX(3px); }
+}
+
+@keyframes glyphBreathe {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-3px); }
+}
+
+@keyframes lightBreathe {
+  0%, 100% { opacity: .055; }
+  50% { opacity: .12; }
+}
+
+@keyframes glintBreathe {
+  0%, 100% { opacity: .32; }
+  50% { opacity: .72; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ambient,
+  .glyph,
+  .scene .glow,
+  .glint { animation: none; }
+
+  .subject,
+  .glyphLift,
+  .glint { transition: none; }
 }

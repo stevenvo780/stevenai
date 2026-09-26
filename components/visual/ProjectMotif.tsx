@@ -1,4 +1,5 @@
 import type { AIComponent } from "@/lib/components-data";
+import type { ReactNode } from "react";
 import styles from "./ProjectMotif.module.css";
 
 type Category = AIComponent["category"];
@@ -34,31 +35,32 @@ type ProjectKey =
   | "neuronal-learning"
   | "agora-ai-agent";
 
-type MotifSpec = { category: Category; accent: string };
+type Composition = "left" | "right" | "center" | "rise" | "drop";
+type MotifSpec = { category: Category; accent: string; composition: Composition };
 
 // Explicit editorial treatment for every catalogue key. These shapes carry no runtime data.
 const PROJECT_MOTIFS: Record<ProjectKey, MotifSpec> = {
-  "jarvis-v1": { category: "assistants", accent: "#8ee9d4" },
-  "jarvis-v2": { category: "assistants", accent: "#b8a9dd" },
-  "ia-gguf": { category: "models", accent: "#b8a9dd" },
-  "mcp-swarm": { category: "infrastructure", accent: "#f1bb7c" },
-  "mcp-agents": { category: "infrastructure", accent: "#8ee9d4" },
-  "pdf-converter": { category: "tools", accent: "#f1bb7c" },
-  "kratos-jarvis": { category: "assistants", accent: "#f1bb7c" },
-  "clawbar": { category: "assistants", accent: "#8ee9d4" },
-  "night-harness": { category: "infrastructure", accent: "#b8a9dd" },
-  "ai-usage-live": { category: "tools", accent: "#8ee9d4" },
-  "reel-forge": { category: "tools", accent: "#f1bb7c" },
-  "cauce-v3": { category: "infrastructure", accent: "#8ee9d4" },
-  "clawbus": { category: "infrastructure", accent: "#f1bb7c" },
-  "prizma-agent-stack": { category: "infrastructure", accent: "#b8a9dd" },
-  "agora-mcp": { category: "infrastructure", accent: "#8ee9d4" },
-  "cloud-delegate": { category: "infrastructure", accent: "#b8a9dd" },
-  "talos-harness": { category: "infrastructure", accent: "#f1bb7c" },
-  "minimax-h3": { category: "tools", accent: "#b8a9dd" },
-  "pixel-art-replicate": { category: "tools", accent: "#8ee9d4" },
-  "neuronal-learning": { category: "models", accent: "#f1bb7c" },
-  "agora-ai-agent": { category: "assistants", accent: "#b8a9dd" },
+  "jarvis-v1": { category: "assistants", accent: "#8ee9d4", composition: "left" },
+  "jarvis-v2": { category: "assistants", accent: "#b8a9dd", composition: "right" },
+  "ia-gguf": { category: "models", accent: "#b8a9dd", composition: "left" },
+  "mcp-swarm": { category: "infrastructure", accent: "#f1bb7c", composition: "left" },
+  "mcp-agents": { category: "infrastructure", accent: "#8ee9d4", composition: "right" },
+  "pdf-converter": { category: "tools", accent: "#f1bb7c", composition: "left" },
+  "kratos-jarvis": { category: "assistants", accent: "#f1bb7c", composition: "center" },
+  "clawbar": { category: "assistants", accent: "#8ee9d4", composition: "drop" },
+  "night-harness": { category: "infrastructure", accent: "#b8a9dd", composition: "rise" },
+  "ai-usage-live": { category: "tools", accent: "#8ee9d4", composition: "right" },
+  "reel-forge": { category: "tools", accent: "#f1bb7c", composition: "center" },
+  "cauce-v3": { category: "infrastructure", accent: "#8ee9d4", composition: "drop" },
+  "clawbus": { category: "infrastructure", accent: "#f1bb7c", composition: "center" },
+  "prizma-agent-stack": { category: "infrastructure", accent: "#b8a9dd", composition: "left" },
+  "agora-mcp": { category: "infrastructure", accent: "#8ee9d4", composition: "right" },
+  "cloud-delegate": { category: "infrastructure", accent: "#b8a9dd", composition: "rise" },
+  "talos-harness": { category: "infrastructure", accent: "#f1bb7c", composition: "drop" },
+  "minimax-h3": { category: "tools", accent: "#b8a9dd", composition: "rise" },
+  "pixel-art-replicate": { category: "tools", accent: "#8ee9d4", composition: "drop" },
+  "neuronal-learning": { category: "models", accent: "#f1bb7c", composition: "right" },
+  "agora-ai-agent": { category: "assistants", accent: "#b8a9dd", composition: "rise" },
 };
 
 const GROUP_ACCENTS: Record<Category, string> = {
@@ -104,6 +106,87 @@ function Field({ category }: { category: Category }) {
           <path d="M27 36h36M27 47h25M337 173h36M348 184h25" />
         </g>
       );
+  }
+}
+
+// Four abstract materials: conversation, construction, study, and making.
+// Their lines are ornamental and deliberately do not describe a running system.
+function Scene({ category }: { category: Category }) {
+  switch (category) {
+    case "assistants":
+      return (
+        <g className={styles.scene}>
+          <ellipse className={styles.glow} cx="200" cy="111" rx="116" ry="87" />
+          <ellipse className={styles.surface} cx="200" cy="111" rx="133" ry="78" />
+          <ellipse className={styles.edge} cx="200" cy="111" rx="119" ry="68" />
+          <path className={styles.etch} d="M66 110c28-41 65-67 113-76m42 152c48-9 85-35 113-76M79 68c-12 15-19 29-22 43m264 41c10-12 17-26 21-42" />
+          <circle className={styles.pin} cx="73" cy="110" r="3" />
+          <circle className={styles.pin} cx="327" cy="110" r="3" />
+        </g>
+      );
+    case "infrastructure":
+      return (
+        <g className={styles.scene}>
+          <path className={styles.glow} d="M58 165 200 205l142-40-142-41Z" />
+          <path className={styles.floor} d="m71 163 129 34 129-34-129-33z" />
+          <path className={styles.surface} d="M90 43h220l22 23v91l-22 23H90l-22-23V66z" />
+          <path className={styles.edge} d="M98 53h204l19 19v79l-19 19H98l-19-19V72z" />
+          <path className={styles.etch} d="M68 66h31M68 157h31m202-91h31m-31 91h31M90 180l110 29 110-29" />
+          <path className={styles.pin} d="m200 17 7 7-7 7-7-7z" />
+        </g>
+      );
+    case "models":
+      return (
+        <g className={styles.scene}>
+          <ellipse className={styles.glow} cx="204" cy="111" rx="148" ry="83" />
+          <path className={styles.floor} d="m91 58 192-18 31 114-191 23z" />
+          <path className={styles.surface} d="m100 48 195 16-10 118-195-16z" />
+          <path className={styles.edge} d="m113 58 171 14-9 97-171-14z" />
+          <path className={styles.etch} d="m74 46 32 3M296 64l32 3M90 166l-31-2m226 18 31 3M46 107h38m234 5h36" />
+          <circle className={styles.pin} cx="56" cy="107" r="3" />
+          <circle className={styles.pin} cx="344" cy="112" r="3" />
+        </g>
+      );
+    case "tools":
+      return (
+        <g className={styles.scene}>
+          <path className={styles.glow} d="M45 54h310v134H45z" />
+          <path className={styles.floor} d="M55 176h290l-21 18H76z" />
+          <path className={styles.surface} d="M72 43h256l27 26v101l-27 20H72l-27-20V69z" />
+          <path className={styles.edge} d="M85 56h230l25 22v82l-25 17H85l-25-17V78z" />
+          <path className={styles.etch} d="M60 78h24m232 0h24M60 160h24m232 0h24M86 190h228" />
+          <circle className={styles.pin} cx="59" cy="56" r="3" />
+          <circle className={styles.pin} cx="341" cy="177" r="3" />
+        </g>
+      );
+  }
+}
+
+function Ambient({ category }: { category: Category }) {
+  switch (category) {
+    case "assistants":
+      return <g className={styles.ambient}><circle cx="200" cy="110" r="91" /><circle cx="200" cy="110" r="103" /><path d="M19 35h82m198 150h82" /></g>;
+    case "infrastructure":
+      return <g className={styles.ambient}><path d="M42 27h316v166H42zM29 42h44m254 136h44M29 178h44M327 42h44" /><path d="m42 27 27-17m289 17-27-17M42 193l27 17m289-17-27 17" /></g>;
+    case "models":
+      return <g className={styles.ambient}><ellipse cx="200" cy="110" rx="149" ry="91" /><ellipse cx="200" cy="110" rx="132" ry="105" /><path d="M12 110h51m274 0h51M200 10v26m0 148v26" /></g>;
+    case "tools":
+      return <g className={styles.ambient}><path d="M23 33h72m-72 0v45m354-45h-72m72 0v45M23 187h72m-72 0v-45m354 45h-72m72 0v-45" /><path d="M36 43h22m284 0h22M36 177h22m284 0h22" /></g>;
+  }
+}
+
+function Countermark({ composition }: { composition: Composition }) {
+  switch (composition) {
+    case "left":
+      return <g className={styles.countermark} fill="none" stroke="currentColor" strokeLinecap="round"><path d="M0 0h42m-42 9h25m-25 9h34" /><circle cx="49" cy="0" r="2" fill="currentColor" stroke="none" /></g>;
+    case "right":
+      return <g className={styles.countermark} fill="none" stroke="currentColor" strokeLinecap="round"><circle cx="15" cy="11" r="10" /><path d="M15-4v-8m0 46v-8M0 11h-8m46 0h-8m-15-5v10" /></g>;
+    case "center":
+      return <g className={styles.countermark} fill="none" stroke="currentColor"><path d="m4 10 8-8 8 8-8 8zM30 10l5-5 5 5-5 5z" /><path d="M0 26h44" /></g>;
+    case "rise":
+      return <g className={styles.countermark} fill="none" stroke="currentColor"><path d="M0 20h10V10h10V0h10m-30 29h40" /><circle cx="35" cy="0" r="2" fill="currentColor" stroke="none" /></g>;
+    case "drop":
+      return <g className={styles.countermark} fill="none" stroke="currentColor"><path d="M0 0h11v10h11v10h11m-33 9h42" /><circle cx="38" cy="20" r="2" fill="currentColor" stroke="none" /></g>;
   }
 }
 
@@ -167,31 +250,68 @@ function GroupGlyph({ category }: { category: Category }) {
   }
 }
 
-/** Decorative and deterministic; pair with visible "Esquema conceptual" copy in the page. */
-export function ProjectMotif({ projectKey, category, className }: ProjectMotifProps) {
-  const knownKey = Object.prototype.hasOwnProperty.call(PROJECT_MOTIFS, projectKey)
-    ? (projectKey as ProjectKey)
-    : null;
-  const spec = knownKey ? PROJECT_MOTIFS[knownKey] : { category, accent: GROUP_ACCENTS[category] };
-
+function MotifFrame({ category, accent, composition, className, children }: {
+  category: Category;
+  accent: string;
+  composition: Composition;
+  className?: string;
+  children: ReactNode;
+}) {
   return (
-    <svg className={`${styles.motif} ${className ?? ""}`} viewBox="0 0 400 220" aria-hidden="true" focusable="false" style={{ color: spec.accent }}>
-      <Field category={spec.category} />
-      <g className={styles.glyph} fill="none" stroke="currentColor" strokeWidth="2.3" strokeLinecap="round" strokeLinejoin="round">
-        {knownKey ? <ProjectGlyph projectKey={knownKey} /> : <GroupGlyph category={category} />}
+    <svg
+      className={`${styles.motif} ${className ?? ""}`}
+      data-category={category}
+      data-composition={composition}
+      viewBox="0 0 400 220"
+      aria-hidden="true"
+      focusable="false"
+      style={{ color: accent }}
+    >
+      <Ambient category={category} />
+      <Field category={category} />
+      <g className={styles.subject}>
+        <Scene category={category} />
+        <g className={styles.glyphLift}>
+          <g className={styles.glyphShadow} fill="none" stroke="currentColor" strokeWidth="6" strokeLinecap="round" strokeLinejoin="round">
+            {children}
+          </g>
+          <g className={styles.glyph} fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+            {children}
+          </g>
+        </g>
+      </g>
+      <Countermark composition={composition} />
+      <g className={styles.glint} fill="none" stroke="currentColor" strokeLinecap="round">
+        <path d="m46 111 5-11 5 11 11 5-11 5-5 11-5-11-11-5z" />
+        <path d="m348 60 3-7 3 7 7 3-7 3-3 7-3-7-7-3z" />
       </g>
     </svg>
   );
 }
 
-/** Four distinct visual families for catalogue sections; decorative, not a data diagram. */
+/** Decorative and deterministic; project shapes do not claim runtime topology or data. */
+export function ProjectMotif({ projectKey, category, className }: ProjectMotifProps) {
+  const knownKey = Object.prototype.hasOwnProperty.call(PROJECT_MOTIFS, projectKey)
+    ? (projectKey as ProjectKey)
+    : null;
+  const spec = knownKey ? PROJECT_MOTIFS[knownKey] : {
+    category,
+    accent: GROUP_ACCENTS[category],
+    composition: "center" as Composition,
+  };
+
+  return (
+    <MotifFrame category={spec.category} accent={spec.accent} composition={spec.composition} className={className}>
+      {knownKey ? <ProjectGlyph projectKey={knownKey} /> : <GroupGlyph category={category} />}
+    </MotifFrame>
+  );
+}
+
+/** Four visual families for catalogue sections, with the same ornamental treatment. */
 export function GroupMotif({ category, className }: GroupMotifProps) {
   return (
-    <svg className={`${styles.motif} ${className ?? ""}`} viewBox="0 0 400 220" aria-hidden="true" focusable="false" style={{ color: GROUP_ACCENTS[category] }}>
-      <Field category={category} />
-      <g className={styles.glyph} fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round">
-        <GroupGlyph category={category} />
-      </g>
-    </svg>
+    <MotifFrame category={category} accent={GROUP_ACCENTS[category]} composition="center" className={className}>
+      <GroupGlyph category={category} />
+    </MotifFrame>
   );
 }
