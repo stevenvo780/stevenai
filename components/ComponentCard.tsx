@@ -6,9 +6,10 @@ import "@/app/styles/detail.css";
 
 interface ComponentCardProps {
   component: AIComponent;
+  compact?: boolean;
 }
 
-export default function ComponentCard({ component }: ComponentCardProps) {
+export default function ComponentCard({ component, compact = false }: ComponentCardProps) {
   const number = components.findIndex((item) => item.key === component.key) + 1;
   const group = catalogGroups.find((item) => item.id === component.category);
 
@@ -17,13 +18,14 @@ export default function ComponentCard({ component }: ComponentCardProps) {
       href={`/components/${component.key}`}
       className="component-card"
       data-category={component.category}
+      data-layout={compact ? "compact" : "feature"}
     >
       <div className="component-card-visual">
         <div className="component-card-visual-top">
           <span>{String(number).padStart(2, "0")}</span>
           <span>Motivo conceptual</span>
         </div>
-        <ProjectMotif projectKey={component.key} category={component.category} />
+        <ProjectMotif projectKey={component.key} category={component.category} compact />
       </div>
       <div className="component-card-body">
         <p className="component-card-category">{group?.title ?? "Proyecto"}</p>

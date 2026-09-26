@@ -33,106 +33,251 @@ const stages = [
   },
 ] as const;
 
+const stars = [
+  [43, 77, 1.6], [100, 135, 1], [154, 55, 1.4], [218, 242, 1.2],
+  [276, 51, 1], [449, 77, 1.8], [497, 134, 1], [523, 57, 1.2],
+  [641, 62, 1.8], [720, 286, 1], [667, 347, 1.4], [590, 292, 1],
+  [73, 242, 1], [94, 475, 1.6], [223, 504, 1.2], [350, 478, 1],
+  [479, 506, 1.6], [715, 553, 1.1],
+] as const;
+
 /**
- * Ilustración didáctica general. No describe la arquitectura de los proyectos del catálogo.
- * Los radios y el CSS cambian el foco y el texto sin JavaScript.
+ * Ilustración didáctica general. No describe la arquitectura de los proyectos.
+ * El póster se renderiza en HTML y los radios cambian el foco sin JavaScript.
  */
 export function IntelligenceScene({ variant = "hero", className }: IntelligenceSceneProps) {
-  const instanceId = useId();
+  const instanceId = useId().replace(/:/g, "");
   const radioName = `${instanceId}-stage`;
 
   return (
     <figure className={`${styles.scene} ${variant === "compact" ? styles.compact : ""} ${className ?? ""}`}>
       <div className={styles.visual}>
-        <svg
-          className={styles.svg}
-          viewBox="0 0 960 500"
-          preserveAspectRatio="xMidYMid meet"
-          aria-hidden="true"
-          focusable="false"
-        >
+        <div className={styles.visualTopline} aria-hidden="true">
+          <span><span className={styles.liveDot} /> OBSERVATORIO / IA</span>
+          <span>FIG. 01 <span className={styles.toplineSeparator}>/</span> 04 ETAPAS</span>
+        </div>
+        <svg className={styles.svg} viewBox="0 0 760 570" preserveAspectRatio="xMidYMid slice" role="presentation" focusable="false" aria-hidden="true">
           <defs>
-            <radialGradient id={`${instanceId}-wash`} cx="52%" cy="47%" r="60%">
-              <stop offset="0%" stopColor="#14393d" stopOpacity=".76" />
-              <stop offset="68%" stopColor="#0a2026" stopOpacity=".34" />
-              <stop offset="100%" stopColor="#071519" stopOpacity="0" />
-            </radialGradient>
-            <linearGradient id={`${instanceId}-flow`} x1="0" y1="0" x2="1" y2="0">
-              <stop stopColor="#8ee9d4" />
-              <stop offset=".55" stopColor="#b6abde" />
-              <stop offset="1" stopColor="#f1bb7c" />
+            <linearGradient id={`${instanceId}-night`} x1="0" y1="0" x2="1" y2="1">
+              <stop stopColor="#0b2029" />
+              <stop offset=".51" stopColor="#07171d" />
+              <stop offset="1" stopColor="#102a2c" />
             </linearGradient>
+            <radialGradient id={`${instanceId}-atmosphere`} cx="52%" cy="53%" r="64%">
+              <stop stopColor="#326d70" stopOpacity=".49" />
+              <stop offset=".48" stopColor="#163b42" stopOpacity=".32" />
+              <stop offset="1" stopColor="#07171d" stopOpacity="0" />
+            </radialGradient>
+            <radialGradient id={`${instanceId}-halo`}>
+              <stop stopColor="#9df0db" stopOpacity=".43" />
+              <stop offset=".42" stopColor="#65c5be" stopOpacity=".15" />
+              <stop offset="1" stopColor="#65c5be" stopOpacity="0" />
+            </radialGradient>
+            <radialGradient id={`${instanceId}-core`} cx="45%" cy="40%" r="73%">
+              <stop stopColor="#27585b" />
+              <stop offset=".58" stopColor="#12343c" />
+              <stop offset="1" stopColor="#0a2029" />
+            </radialGradient>
+            <linearGradient id={`${instanceId}-route`} x1="0" y1="0" x2="1" y2="1">
+              <stop stopColor="#83e4d4" />
+              <stop offset=".35" stopColor="#b9b7e7" />
+              <stop offset=".7" stopColor="#90e3d2" />
+              <stop offset="1" stopColor="#eebd88" />
+            </linearGradient>
+            <linearGradient id={`${instanceId}-panel`} x1="0" y1="0" x2="1" y2="1">
+              <stop stopColor="#17353b" />
+              <stop offset="1" stopColor="#0a222b" />
+            </linearGradient>
+            <pattern id={`${instanceId}-grid`} width="38" height="38" patternUnits="userSpaceOnUse">
+              <path d="M38 0H0V38" fill="none" stroke="#b2d9d3" strokeOpacity=".075" strokeWidth=".8" />
+              <circle cx="0" cy="0" r="1" fill="#b2d9d3" fillOpacity=".22" />
+            </pattern>
           </defs>
 
-          <rect width="960" height="500" fill="#071519" />
-          <rect width="960" height="500" fill={`url(#${instanceId}-wash)`} />
+          <rect width="760" height="570" fill={`url(#${instanceId}-night)`} />
+          <rect width="760" height="570" fill={`url(#${instanceId}-atmosphere)`} />
+          <rect width="760" height="570" fill={`url(#${instanceId}-grid)`} />
+          <path d="M0 443C144 389 268 478 410 444S641 355 760 427V570H0Z" fill="#102d34" opacity=".3" />
+          <path d="M0 504C140 461 237 506 380 494S624 462 760 503" fill="none" stroke="#9ed9cb" strokeOpacity=".12" />
 
-          <g className={styles.grid} stroke="#54727a" strokeWidth="1" opacity=".12">
-            <path d="M0 86H960M0 166H960M0 246H960M0 326H960M0 406H960" />
-            <path d="M80 0V500M240 0V500M400 0V500M560 0V500M720 0V500M880 0V500" />
+          <g className={styles.starfield} fill="#b6e9dc">
+            {stars.map(([x, y, radius]) => <circle key={`${x}-${y}`} cx={x} cy={y} r={radius} />)}
+          </g>
+          <g className={styles.depthRings} fill="none" stroke="#8ecbc4">
+            <circle cx="401" cy="314" r="155" strokeOpacity=".17" />
+            <circle cx="401" cy="314" r="190" strokeOpacity=".11" strokeDasharray="2 10" />
+            <circle cx="401" cy="314" r="236" strokeOpacity=".08" />
+            <path d="M51 459C233 544 547 512 710 357" strokeOpacity=".13" />
+            <path d="M53 267C201 85 522 40 724 304" strokeOpacity=".11" />
+          </g>
+          <g className={styles.orbit} fill="none" stroke="#a5d9d0">
+            <ellipse cx="401" cy="314" rx="178" ry="75" transform="rotate(-27 401 314)" strokeOpacity=".28" strokeDasharray="3 9" />
+            <circle cx="242" cy="388" r="3" fill="#a5d9d0" stroke="none" />
+            <circle cx="557" cy="245" r="2.5" fill="#eab987" stroke="none" />
           </g>
 
-          <g fill="none" stroke="#6b9599" strokeWidth="1.5" opacity=".38">
-            <path d="M195 244H249Q267 244 267 226V158Q267 137 289 137H316" />
-            <path d="M196 256H351Q372 256 391 256H421" />
-            <path d="M430 155Q430 179 447 187" />
-            <path d="M626 237H664Q682 237 682 218V156Q682 138 701 138H720" />
-            <path d="M626 276H676Q698 276 698 302V353Q698 371 718 371H738" />
-            <path d="M786 213V284Q786 303 799 318" />
-          </g>
+          <path className={styles.flowGlow} d="M222 357C259 348 238 241 284 190C311 160 359 166 388 208C416 248 386 281 401 314C419 354 474 334 510 375C541 410 541 454 564 464" fill="none" stroke={`url(#${instanceId}-route)`} />
+          <path className={styles.flowLine} d="M222 357C259 348 238 241 284 190C311 160 359 166 388 208C416 248 386 281 401 314C419 354 474 334 510 375C541 410 541 454 564 464" fill="none" stroke={`url(#${instanceId}-route)`} />
+          <path className={styles.flowCurrent} d="M222 357C259 348 238 241 284 190C311 160 359 166 388 208C416 248 386 281 401 314C419 354 474 334 510 375C541 410 541 454 564 464" fill="none" stroke="#eafff4" />
+          <path d="M468 245C512 210 527 166 563 163" fill="none" stroke="#e9bd8b" strokeOpacity=".55" strokeWidth="1.5" />
+          <path d="M468 245C512 210 527 166 563 163" fill="none" stroke="#e9bd8b" strokeOpacity=".78" strokeWidth="2" strokeDasharray="2 10" />
 
           <g className={`${styles.focus} ${styles.focusInput}`}>
-            <path d="M195 256H420" fill="none" stroke="#8ee9d4" strokeWidth="2.5" strokeDasharray="4 8" className={styles.trace} />
-            <rect x="57" y="174" width="139" height="141" rx="22" fill="#10272b" stroke="#8ee9d4" strokeWidth="1.7" />
-            <path d="M79 211L92 225L79 239M104 239H133" stroke="#8ee9d4" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" fill="none" />
-            <path d="M79 262H173M79 278H145" stroke="#8ee9d4" strokeWidth="2" opacity=".52" strokeLinecap="round" />
-            <circle cx="195" cy="256" r="5" fill="#8ee9d4" />
-            <text x="57" y="156" className={styles.nodeLabel}>01 / ENTRADA</text>
+            <circle className={styles.nodeHalo} cx="135" cy="361" r="110" fill={`url(#${instanceId}-halo)`} />
+            <rect className={styles.nodeFrame} x="37" y="307" width="185" height="111" rx="13" fill={`url(#${instanceId}-panel)`} stroke="#77d8c7" />
+            <path d="M37 342H222" stroke="#77d8c7" strokeOpacity=".23" />
+            <circle cx="57" cy="325" r="3.5" fill="#83e4d4" />
+            <text x="69" y="329" className={styles.nodeMeta}>01 / SEÑAL</text>
+            <text x="56" y="374" className={styles.nodeTitle}>ENTRADA</text>
+            <text x="56" y="397" className={styles.nodeSub}>pregunta · instrucción</text>
+            <path d="M186 366L197 376L186 386M173 386H197" fill="none" stroke="#83e4d4" strokeWidth="2.3" strokeLinecap="round" strokeLinejoin="round" />
+            <circle cx="222" cy="357" r="4.5" fill="#83e4d4" />
           </g>
 
           <g className={`${styles.focus} ${styles.focusContext}`}>
-            <path d="M195 244H249Q267 244 267 226V158Q267 137 289 137H315" fill="none" stroke="#b6abde" strokeWidth="2.5" strokeDasharray="4 8" className={styles.trace} />
-            <path d="M430 155Q430 179 447 187" fill="none" stroke="#b6abde" strokeWidth="2.5" strokeDasharray="4 8" className={styles.trace} />
-            <rect x="310" y="62" width="138" height="101" rx="17" fill="#111f2e" stroke="#b6abde" strokeWidth="1.5" />
-            <rect x="322" y="74" width="138" height="101" rx="17" fill="#162b37" stroke="#b6abde" strokeWidth="1.5" />
-            <path d="M344 106H426M344 124H415M344 142H393" stroke="#b6abde" strokeWidth="2" strokeLinecap="round" opacity=".85" />
-            <circle cx="428" cy="143" r="5" fill="#b6abde" />
-            <text x="322" y="50" className={styles.nodeLabel}>02 / CONTEXTO</text>
+            <circle className={styles.nodeHalo} cx="324" cy="143" r="115" fill={`url(#${instanceId}-halo)`} />
+            <rect className={styles.nodeFrame} x="269" y="80" width="177" height="111" rx="13" fill={`url(#${instanceId}-panel)`} stroke="#b7b8e6" />
+            <path d="M269 114H446" stroke="#b7b8e6" strokeOpacity=".29" />
+            <circle cx="289" cy="98" r="3.5" fill="#b7b8e6" />
+            <text x="301" y="102" className={styles.nodeMeta}>02 / MEMORIA</text>
+            <text x="289" y="145" className={styles.nodeTitle}>CONTEXTO</text>
+            <path d="M289 161H390M289 173H359" stroke="#b7b8e6" strokeOpacity=".58" strokeLinecap="round" strokeWidth="2" />
+            <path d="M411 157H428M411 166H423M411 175H432" stroke="#b7b8e6" strokeOpacity=".85" strokeLinecap="round" strokeWidth="2" />
+            <circle cx="284" cy="190" r="4.5" fill="#b7b8e6" />
           </g>
 
           <g className={`${styles.focus} ${styles.focusModel}`}>
-            <path d="M626 237H664Q682 237 682 218V156Q682 138 701 138H720" fill="none" stroke="#f1bb7c" strokeWidth="2.5" strokeDasharray="4 8" className={styles.trace} />
-            <path d="M626 276H676Q698 276 698 302V353Q698 371 718 371H738" fill="none" stroke="#f1bb7c" strokeWidth="2.5" strokeDasharray="4 8" className={styles.trace} />
-            <rect x="419" y="186" width="209" height="163" rx="27" fill="#102b30" stroke="#8ee9d4" strokeWidth="1.8" />
-            <rect x="439" y="205" width="169" height="124" rx="18" fill="#17373a" stroke="#457e82" strokeWidth="1" />
-            <path d="M459 228H588M459 309H588" stroke="#8ee9d4" strokeWidth="1" opacity=".46" />
-            <path d="M464 265H487L500 244L518 286L535 253L550 272H582" stroke="#8ee9d4" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" fill="none" />
-            <circle cx="467" cy="228" r="3" fill="#f1bb7c" />
-            <circle cx="580" cy="309" r="3" fill="#f1bb7c" />
-            <rect x="715" y="91" width="160" height="122" rx="20" fill="#2b2424" stroke="#f1bb7c" strokeWidth="1.5" />
-            <path d="M740 139H850M740 164H824" stroke="#f1bb7c" strokeWidth="2" strokeLinecap="round" opacity=".74" />
-            <circle cx="747" cy="113" r="6" fill="#f1bb7c" />
-            <circle cx="768" cy="113" r="6" fill="#f1bb7c" opacity=".5" />
-            <text x="419" y="173" className={styles.nodeLabel}>03 / MODELO</text>
-            <text x="715" y="79" className={styles.nodeLabel}>HERRAMIENTAS</text>
+            <circle className={styles.coreHalo} cx="401" cy="314" r="173" fill={`url(#${instanceId}-halo)`} />
+            <circle cx="401" cy="314" r="116" fill="none" stroke="#a8e3da" strokeOpacity=".2" strokeWidth="1" />
+            <circle className={styles.coreRim} cx="401" cy="314" r="103" fill={`url(#${instanceId}-core)`} stroke="#8ce4d3" strokeOpacity=".72" strokeWidth="1.5" />
+            <circle cx="401" cy="314" r="87" fill="none" stroke="#b5eee0" strokeOpacity=".25" strokeDasharray="3 8" />
+            <circle cx="401" cy="314" r="72" fill="none" stroke="#b5eee0" strokeOpacity=".22" />
+            <path d="M337 321L359 283L391 300L419 268L453 292L469 328L439 357L398 344L368 362Z" fill="none" stroke="#a7e9da" strokeOpacity=".51" strokeWidth="1.2" />
+            <path d="M359 283L398 344L419 268M391 300L439 357M337 321L469 328M368 362L453 292" fill="none" stroke="#a7e9da" strokeOpacity=".29" />
+            <circle cx="359" cy="283" r="3" fill="#a4e9da" /><circle cx="419" cy="268" r="3" fill="#a4e9da" />
+            <circle cx="469" cy="328" r="3" fill="#eebd88" /><circle cx="368" cy="362" r="3" fill="#b8b8e6" />
+            <circle className={styles.coreCenter} cx="401" cy="314" r="48" fill="#0e2b32" stroke="#a6ead9" strokeOpacity=".59" />
+            <circle cx="401" cy="314" r="40" fill="#153a3d" fillOpacity=".78" />
+            <text x="401" y="308" textAnchor="middle" className={styles.coreNumber}>03</text>
+            <text x="401" y="332" textAnchor="middle" className={styles.coreTitle}>MODELO</text>
+            <path d="M401 205V216M401 412V423M292 314H303M499 314H510" stroke="#b3eadc" strokeOpacity=".65" />
+            <circle cx="401" cy="205" r="3" fill="#b3eadc" />
+
+            <circle className={styles.nodeHalo} cx="641" cy="168" r="97" fill={`url(#${instanceId}-halo)`} />
+            <rect className={styles.nodeFrame} x="563" y="116" width="168" height="107" rx="13" fill={`url(#${instanceId}-panel)`} stroke="#eebd88" />
+            <path d="M563 149H731" stroke="#eebd88" strokeOpacity=".26" />
+            <circle cx="583" cy="133" r="3.5" fill="#eebd88" />
+            <text x="595" y="137" className={styles.nodeMeta}>EXTENSIÓN</text>
+            <text x="582" y="178" className={styles.nodeTitleSmall}>HERRAMIENTAS</text>
+            <path d="M582 197H611M620 197H648M657 197H684" stroke="#eebd88" strokeWidth="2" strokeLinecap="round" opacity=".7" />
+            <circle cx="563" cy="163" r="4.5" fill="#eebd88" />
           </g>
 
           <g className={`${styles.focus} ${styles.focusReview}`}>
-            <path d="M786 213V284Q786 303 799 318" fill="none" stroke="#f1bb7c" strokeWidth="2.5" strokeDasharray="4 8" className={styles.trace} />
-            <rect x="738" y="318" width="164" height="105" rx="20" fill="#23302c" stroke="#f1bb7c" strokeWidth="1.7" />
-            <circle cx="779" cy="368" r="21" fill="none" stroke="#f1bb7c" strokeWidth="2.5" />
-            <path d="M768 368L776 376L791 358" fill="none" stroke="#f1bb7c" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
-            <path d="M816 351H878M816 368H867M816 385H854" stroke="#f1bb7c" strokeWidth="2" opacity=".7" strokeLinecap="round" />
-            <text x="738" y="306" className={styles.nodeLabel}>04 / VERIFICACIÓN</text>
+            <circle className={styles.nodeHalo} cx="649" cy="471" r="106" fill={`url(#${instanceId}-halo)`} />
+            <rect className={styles.nodeFrame} x="564" y="417" width="168" height="105" rx="13" fill={`url(#${instanceId}-panel)`} stroke="#eebd88" />
+            <path d="M564 450H732" stroke="#eebd88" strokeOpacity=".26" />
+            <circle cx="584" cy="434" r="3.5" fill="#eebd88" />
+            <text x="596" y="438" className={styles.nodeMeta}>04 / CRITERIO</text>
+            <text x="583" y="480" className={styles.nodeTitleSmall}>VERIFICACIÓN</text>
+            <path d="M584 499H673" stroke="#eebd88" strokeOpacity=".6" strokeWidth="2" strokeLinecap="round" />
+            <circle cx="706" cy="484" r="12" fill="none" stroke="#eebd88" strokeWidth="1.5" />
+            <path d="M700 484L705 489L713 479" fill="none" stroke="#eebd88" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+            <circle cx="564" cy="464" r="4.5" fill="#eebd88" />
           </g>
 
-          <g fill="none" opacity=".38">
-            <path d="M56 388H335" stroke={`url(#${instanceId}-flow)`} strokeWidth="1" />
-            <path d="M56 392H233" stroke="#8ee9d4" strokeWidth="1" />
-            <circle cx="56" cy="390" r="3" fill="#8ee9d4" />
-            <circle cx="335" cy="388" r="3" fill="#f1bb7c" />
+          <g className={styles.diagramAnnotations}>
+            <text x="36" y="71">ENTRADA → CONTEXTO → MODELO → VERIFICACIÓN</text>
+            <text x="36" y="548">UNA SECUENCIA POSIBLE / NO UNA ARQUITECTURA REAL</text>
+            <text x="724" y="548" textAnchor="end">DAÍMON · MOUSEÎON</text>
           </g>
-          <text x="57" y="449" className={styles.canvasNote}>INTELIGENCIA / LECTURA DE UNA POSIBLE SECUENCIA</text>
+        </svg>
+        <svg className={styles.mobileSvg} viewBox="0 0 320 440" role="presentation" focusable="false" aria-hidden="true">
+          <defs>
+            <linearGradient id={`${instanceId}-mobile-night`} x1="0" y1="0" x2="1" y2="1">
+              <stop stopColor="#0c222b" />
+              <stop offset=".6" stopColor="#07191f" />
+              <stop offset="1" stopColor="#102b2f" />
+            </linearGradient>
+            <radialGradient id={`${instanceId}-mobile-halo`}>
+              <stop stopColor="#8ce8d3" stopOpacity=".39" />
+              <stop offset="1" stopColor="#8ce8d3" stopOpacity="0" />
+            </radialGradient>
+            <linearGradient id={`${instanceId}-mobile-route`} x1="0" y1="0" x2="1" y2="1">
+              <stop stopColor="#83e4d4" />
+              <stop offset=".35" stopColor="#b9b7e7" />
+              <stop offset=".7" stopColor="#91e2d0" />
+              <stop offset="1" stopColor="#eebd88" />
+            </linearGradient>
+            <pattern id={`${instanceId}-mobile-grid`} width="25" height="25" patternUnits="userSpaceOnUse">
+              <path d="M25 0H0V25" fill="none" stroke="#a3d2c9" strokeOpacity=".09" />
+            </pattern>
+          </defs>
+          <rect width="320" height="440" fill={`url(#${instanceId}-mobile-night)`} />
+          <rect width="320" height="440" fill={`url(#${instanceId}-mobile-grid)`} />
+          <circle cx="133" cy="268" r="149" fill={`url(#${instanceId}-mobile-halo)`} opacity=".6" />
+          <g fill="none" stroke="#9bd4c9" strokeOpacity=".2">
+            <circle cx="129" cy="267" r="94" />
+            <circle cx="129" cy="267" r="116" strokeDasharray="2 8" />
+            <path d="M12 29H308M12 429H308" />
+          </g>
+          <g fill="#a7ded2" opacity=".65">
+            <circle cx="37" cy="26" r="1.5" /><circle cx="277" cy="39" r="1" />
+            <circle cx="306" cy="213" r="1.5" /><circle cx="27" cy="214" r="1" />
+            <circle cx="34" cy="393" r="1.5" /><circle cx="91" cy="416" r="1" />
+          </g>
+          <path className={styles.flowGlow} d="M150 80C180 98 152 130 167 155C182 180 221 175 236 201C251 229 202 214 159 225C126 234 119 249 124 278C130 312 164 316 176 345C182 359 170 371 166 385" fill="none" stroke={`url(#${instanceId}-mobile-route)`} />
+          <path className={styles.flowLine} d="M150 80C180 98 152 130 167 155C182 180 221 175 236 201C251 229 202 214 159 225C126 234 119 249 124 278C130 312 164 316 176 345C182 359 170 371 166 385" fill="none" stroke={`url(#${instanceId}-mobile-route)`} />
+          <path className={styles.flowCurrent} d="M150 80C180 98 152 130 167 155C182 180 221 175 236 201C251 229 202 214 159 225C126 234 119 249 124 278C130 312 164 316 176 345C182 359 170 371 166 385" fill="none" stroke="#eafff4" />
+          <path d="M187 266C195 264 200 264 208 269" fill="none" stroke="#eebd88" strokeWidth="2" strokeOpacity=".8" />
+
+          <g className={`${styles.focus} ${styles.focusInput}`}>
+            <circle className={styles.nodeHalo} cx="84" cy="82" r="88" fill={`url(#${instanceId}-mobile-halo)`} />
+            <rect className={styles.nodeFrame} x="17" y="42" width="133" height="78" rx="10" fill="#102c34" stroke="#83e4d4" />
+            <path d="M17 69H150" stroke="#83e4d4" strokeOpacity=".29" />
+            <circle cx="31" cy="56" r="3" fill="#83e4d4" />
+            <text x="41" y="61" className={styles.mobileMeta}>01 / SEÑAL</text>
+            <text x="29" y="98" className={styles.mobileTitle}>ENTRADA</text>
+            <circle cx="150" cy="80" r="4" fill="#83e4d4" />
+          </g>
+
+          <g className={`${styles.focus} ${styles.focusContext}`}>
+            <circle className={styles.nodeHalo} cx="234" cy="160" r="85" fill={`url(#${instanceId}-mobile-halo)`} />
+            <rect className={styles.nodeFrame} x="167" y="119" width="136" height="82" rx="10" fill="#142b39" stroke="#b9b7e7" />
+            <path d="M167 146H303" stroke="#b9b7e7" strokeOpacity=".29" />
+            <circle cx="181" cy="133" r="3" fill="#b9b7e7" />
+            <text x="191" y="138" className={styles.mobileMeta}>02 / REFERENCIA</text>
+            <text x="179" y="176" className={styles.mobileTitle}>CONTEXTO</text>
+            <circle cx="167" cy="155" r="4" fill="#b9b7e7" />
+          </g>
+
+          <g className={`${styles.focus} ${styles.focusModel}`}>
+            <circle className={styles.coreHalo} cx="127" cy="274" r="103" fill={`url(#${instanceId}-mobile-halo)`} />
+            <circle className={styles.coreRim} cx="127" cy="274" r="70" fill="#133a3f" stroke="#8ce4d3" strokeWidth="1.6" />
+            <circle cx="127" cy="274" r="58" fill="none" stroke="#b5eee0" strokeOpacity=".48" strokeDasharray="3 7" />
+            <circle cx="127" cy="274" r="46" fill="none" stroke="#b5eee0" strokeOpacity=".28" />
+            <path d="M84 274L106 241L138 255L165 237L177 281L144 309L106 306Z" fill="none" stroke="#b5eee0" strokeOpacity=".55" />
+            <circle cx="106" cy="241" r="2.5" fill="#b5eee0" /><circle cx="177" cy="281" r="2.5" fill="#eebd88" />
+            <circle className={styles.coreCenter} cx="127" cy="274" r="36" fill="#0e2b32" stroke="#a6ead9" />
+            <text x="127" y="270" textAnchor="middle" className={styles.mobileCoreNumber}>03</text>
+            <text x="127" y="289" textAnchor="middle" className={styles.mobileCoreTitle}>MODELO</text>
+            <circle className={styles.nodeHalo} cx="256" cy="282" r="63" fill={`url(#${instanceId}-mobile-halo)`} />
+            <rect className={styles.nodeFrame} x="208" y="247" width="97" height="69" rx="10" fill="#25312f" stroke="#eebd88" />
+            <path d="M208 273H305" stroke="#eebd88" strokeOpacity=".29" />
+            <circle cx="220" cy="260" r="3" fill="#eebd88" />
+            <text x="230" y="265" className={styles.mobileMeta}>EXTENSIÓN</text>
+            <text x="216" y="297" className={styles.mobileToolTitle}>HERRAMIENTAS</text>
+          </g>
+
+          <g className={`${styles.focus} ${styles.focusReview}`}>
+            <circle className={styles.nodeHalo} cx="235" cy="381" r="78" fill={`url(#${instanceId}-mobile-halo)`} />
+            <rect className={styles.nodeFrame} x="166" y="351" width="138" height="68" rx="10" fill="#24312e" stroke="#eebd88" />
+            <path d="M166 376H304" stroke="#eebd88" strokeOpacity=".29" />
+            <circle cx="180" cy="363" r="3" fill="#eebd88" />
+            <text x="190" y="368" className={styles.mobileMeta}>04 / CRITERIO</text>
+            <text x="178" y="401" className={styles.mobileReviewTitle}>VERIFICACIÓN</text>
+            <circle cx="166" cy="385" r="4" fill="#eebd88" />
+          </g>
         </svg>
       </div>
 
@@ -150,6 +295,7 @@ export function IntelligenceScene({ variant = "hero", className }: IntelligenceS
             />
             <span className={styles.stageNumber}>{stage.number}</span>
             <span className={styles.stageTitle}>{stage.title}</span>
+            <span className={styles.stageArrow} aria-hidden="true">↗</span>
           </label>
         ))}
       </fieldset>

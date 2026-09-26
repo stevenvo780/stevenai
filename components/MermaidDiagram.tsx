@@ -13,10 +13,16 @@ export default function MermaidDiagram({ chart, id, ariaLabel }: MermaidDiagramP
 
   useEffect(() => {
     let cancelled = false;
+    let frame = 0;
+    let resizeObserver: ResizeObserver | undefined;
     async function render() {
       const mermaid = (await import("mermaid")).default;
       mermaid.initialize({
         startOnLoad: false,
+        // Native SVG labels survive the SVG sanitizer and remain readable in
+        // horizontally scrollable diagrams on narrow screens.
+        htmlLabels: false,
+        flowchart: { useMaxWidth: false },
         // "base" theme gives full control over themeVariables without dark-theme CSS
         // overrides that silently kill node label contrast.
         theme: "base",
@@ -60,21 +66,12 @@ export default function MermaidDiagram({ chart, id, ariaLabel }: MermaidDiagramP
       try {
         const { svg: svgString } = await mermaid.render(`mermaid-${id}`, chart);
         if (!cancelled && ref.current) {
-          // Sanitize SVG with DOMPurify to prevent XSS while preserving <foreignObject>
-          // for Mermaid v11 labels. Config allows SVG tags and common elements.
+          // Mermaid necesita atributos SVG de posición y forma (dy, points,
+          // marcadores). El perfil SVG conserva su geometría segura y excluye
+          // los puntos de integración con HTML.
           const sanitized = DOMPurify.sanitize(svgString, {
-            ALLOWED_TAGS: [
-              "svg", "g", "path", "text", "tspan", "rect", "circle", "line", "polyline",
-              "polygon", "ellipse", "defs", "style", "marker", "foreignObject", "div",
-              "span", "p", "a", "strong", "em", "br",
-            ],
-            ALLOWED_ATTR: [
-              "id", "class", "style", "width", "height", "viewBox", "xmlns",
-              "x", "y", "d", "cx", "cy", "r", "x1", "y1", "x2", "y2",
-              "fill", "stroke", "stroke-width", "opacity", "font-size",
-              "text-anchor", "dominant-baseline", "transform", "data-id",
-              "href", "target", "rel", "role", "aria-label",
-            ],
+            USE_PROFILES: { svg: true, svgFilters: true },
+            FORBID_TAGS: ["foreignObject"],
           });
           ref.current.innerHTML = sanitized;
           // Ensure SVG inside has proper accessibility attributes
@@ -82,6 +79,26 @@ export default function MermaidDiagram({ chart, id, ariaLabel }: MermaidDiagramP
           if (svgElement && !svgElement.getAttribute("role")) {
             svgElement.setAttribute("role", "img");
             svgElement.setAttribute("aria-label", ariaLabel || `Diagrama: ${id}`);
+          }
+          const wrapper = ref.current.closest<HTMLElement>(".mermaid-wrapper");
+          const hint = wrapper?.parentElement?.querySelector<HTMLElement>(".detail-diagram-scroll-hint");
+          if (svgElement && wrapper && hint) {
+            const isScrollable = () => wrapper.scrollWidth > wrapper.clientWidth + 2;
+            const updateHint = () => hint.toggleAttribute("data-visible", isScrollable());
+            resizeObserver = new ResizeObserver(updateHint);
+            resizeObserver.observe(wrapper);
+            resizeObserver.observe(svgElement);
+            frame = requestAnimationFrame(() => {
+              updateHint();
+              if (window.innerWidth > 720 || !isScrollable()) return;
+              // En diagramas anchos, el nodo inicial debe verse al abrir la ficha.
+              const root = svgElement.querySelector<SVGGraphicsElement>(".node");
+              if (!root) return;
+              const viewport = wrapper.getBoundingClientRect();
+              const node = root.getBoundingClientRect();
+              const center = node.left - viewport.left + wrapper.scrollLeft + node.width / 2;
+              wrapper.scrollLeft = Math.max(0, center - wrapper.clientWidth / 2);
+            });
           }
         }
       } catch (e) {
@@ -101,6 +118,8 @@ export default function MermaidDiagram({ chart, id, ariaLabel }: MermaidDiagramP
     render();
     return () => {
       cancelled = true;
+      if (frame) cancelAnimationFrame(frame);
+      resizeObserver?.disconnect();
     };
   }, [chart, id, ariaLabel]);
 

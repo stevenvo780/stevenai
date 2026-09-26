@@ -214,6 +214,7 @@ export default async function ComponentPage({ params }: PageProps) {
           <p className="detail-architecture-intro">{component.architectureDescription}</p>
           <div className="detail-diagram">
             <p className="detail-diagram-label">Síntesis editorial del proyecto · no representa un despliegue en vivo</p>
+            <p className="detail-diagram-scroll-hint">Desplaza horizontalmente para leer todo el diagrama <span aria-hidden="true">↔</span></p>
             <MermaidDiagram
               chart={component.mermaidDiagram}
               id={component.key}

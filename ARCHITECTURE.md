@@ -11,6 +11,7 @@ Daímon es un catálogo Next.js 16. No ejecuta los modelos, agentes ni servicios
 - `app/components/[key]/page.tsx`: ficha individual con metadatos y diagrama.
 - `app/sitemap.ts`: rutas públicas generadas desde la misma lista.
 - `components/visual/`: escena conceptual de IA y motivos decorativos por área y proyecto. No representan una arquitectura compartida ni datos operativos.
+- `components/HomeChoreography.tsx`: activa trazos de entrada y pausa las animaciones decorativas fuera de pantalla. El contenido y las ilustraciones se entregan desde HTML, incluso sin JavaScript.
 - `app/opengraph-image.tsx` y `app/twitter-image.tsx`: imágenes sociales generadas desde código.
 
 `components/RuntimeBadge.tsx` distingue GPU local, CPU local, API externa y servicio propio. La etiqueta completa de cada ficha concreta qué requiere realmente; el tipo de ejecución no promete disponibilidad pública. `sourceAccess: "private"` identifica la ficha de Talos: se muestra como referencia sin exponer ni enlazar su repositorio. La ficha de Ágora AI Agent aclara que es un módulo de AgoraBack. `components/MermaidDiagram.tsx` renderiza en el navegador y sanea el SVG generado.
