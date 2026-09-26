@@ -318,7 +318,7 @@ export default async function Home({ searchParams }: { searchParams: Promise<Sea
                       <span>{String(projects.length).padStart(2, "0")} / {String(components.filter((component) => component.category === group.id).length).padStart(2, "0")}</span>
                     </div>
                     <div className="dm-home-card-grid">
-                      {projects.map((component) => <ComponentCard key={component.key} component={component} />)}
+                      {projects.map((component, index) => <ComponentCard key={component.key} component={component} compact={index > 0} />)}
                     </div>
                   </section>
                 );

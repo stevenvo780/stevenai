@@ -29,7 +29,7 @@ export default function HomeChoreography() {
     }, { threshold: 0.01 });
 
     // El póster existe en SSR; sus bucles decorativos solo consumen frames cerca
-    // del viewport. La misma regla cubre las 21 fichas sin un observer por tarjeta.
+    // del viewport. Las miniaturas del catálogo son estáticas y ligeras.
     const animated = new IntersectionObserver((entries) => {
       for (const entry of entries) {
         entry.target.toggleAttribute("data-dm-visible", entry.isIntersecting);
@@ -48,7 +48,7 @@ export default function HomeChoreography() {
         activeTargets.add(element);
         active.observe(element);
       });
-      home.querySelectorAll(".dm-home-hero-scene figure, .dm-home-area-motif svg, .component-card-visual svg")
+      home.querySelectorAll(".dm-home-hero-scene figure, .dm-home-area-motif svg")
         .forEach((element) => {
           if (animatedTargets.has(element)) return;
           animatedTargets.add(element);

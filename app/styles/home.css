@@ -1253,6 +1253,52 @@
     grid-template-columns: 1fr;
   }
 
+  .dm-home-card-grid .component-card[data-layout="compact"] {
+    display: grid;
+    grid-template-columns: minmax(108px, 38%) minmax(0, 1fr);
+    min-height: 196px;
+    height: auto;
+  }
+
+  .dm-home-card-grid .component-card[data-layout="compact"] .component-card-visual {
+    height: 100%;
+    border-right: 1px solid rgba(16, 35, 39, .16);
+    border-bottom: 0;
+  }
+
+  .dm-home-card-grid .component-card[data-layout="compact"] .component-card-visual > svg {
+    --shift-x: 0px;
+    --shift-y: 0px;
+    --subject-scale: .52;
+    --subject-tilt: 0deg;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .dm-home-card-grid .component-card[data-layout="compact"] .component-card-visual-top span:last-child,
+  .dm-home-card-grid .component-card[data-layout="compact"] .component-card-description {
+    display: none;
+  }
+
+  .dm-home-card-grid .component-card[data-layout="compact"] .component-card-body {
+    padding: .95rem .9rem;
+  }
+
+  .dm-home-card-grid .component-card[data-layout="compact"] h4 {
+    margin-top: .35rem;
+    font-size: clamp(1.22rem, 5vw, 1.5rem);
+  }
+
+  .dm-home-card-grid .component-card[data-layout="compact"] .component-card-tagline {
+    margin-top: .5rem;
+    font-size: .9rem;
+  }
+
+  .dm-home-card-grid .component-card[data-layout="compact"] .component-card-footer {
+    padding-top: .6rem;
+  }
+
   .dm-home-outro-grid {
     grid-template-columns: 1fr;
   }
@@ -1285,8 +1331,7 @@
 
 @media (prefers-reduced-motion: no-preference) {
   .dm-home-hero-scene figure:not([data-dm-visible]) *,
-  .dm-home-area-motif svg:not([data-dm-visible]) *,
-  .dm-home .component-card-visual svg:not([data-dm-visible]) * {
+  .dm-home-area-motif svg:not([data-dm-visible]) * {
     animation-play-state: paused !important;
   }
 

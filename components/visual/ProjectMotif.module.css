@@ -133,6 +133,9 @@
   .scene .glow { animation: lightBreathe 11s ease-in-out infinite; }
   .glint { animation: glintBreathe 13s ease-in-out infinite; }
 
+  .motif[data-compact="true"] .scene .glow,
+  .motif[data-compact="true"] .glyph { animation: none; }
+
   .subject { transition: transform .8s cubic-bezier(.2, .75, .25, 1); }
   .glyphLift { transition: transform .65s cubic-bezier(.2, .75, .25, 1); }
   .glint { transition: opacity .45s ease; }

@@ -8,6 +8,7 @@ type MotifProps = { className?: string };
 export type ProjectMotifProps = MotifProps & {
   projectKey: string;
   category: Category;
+  compact?: boolean;
 };
 
 export type GroupMotifProps = MotifProps & { category: Category };
@@ -250,11 +251,12 @@ function GroupGlyph({ category }: { category: Category }) {
   }
 }
 
-function MotifFrame({ category, accent, composition, className, children }: {
+function MotifFrame({ category, accent, composition, className, compact = false, children }: {
   category: Category;
   accent: string;
   composition: Composition;
   className?: string;
+  compact?: boolean;
   children: ReactNode;
 }) {
   return (
@@ -262,35 +264,43 @@ function MotifFrame({ category, accent, composition, className, children }: {
       className={`${styles.motif} ${className ?? ""}`}
       data-category={category}
       data-composition={composition}
+      data-compact={compact ? "true" : undefined}
       viewBox="0 0 400 220"
+      preserveAspectRatio={compact ? "xMidYMid slice" : undefined}
       aria-hidden="true"
       focusable="false"
       style={{ color: accent }}
     >
-      <Ambient category={category} />
+      {!compact && <Ambient category={category} />}
       <Field category={category} />
       <g className={styles.subject}>
         <Scene category={category} />
-        <g className={styles.glyphLift}>
-          <g className={styles.glyphShadow} fill="none" stroke="currentColor" strokeWidth="6" strokeLinecap="round" strokeLinejoin="round">
-            {children}
-          </g>
+        {compact ? (
           <g className={styles.glyph} fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
             {children}
           </g>
-        </g>
+        ) : (
+          <g className={styles.glyphLift}>
+            <g className={styles.glyphShadow} fill="none" stroke="currentColor" strokeWidth="6" strokeLinecap="round" strokeLinejoin="round">
+              {children}
+            </g>
+            <g className={styles.glyph} fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              {children}
+            </g>
+          </g>
+        )}
       </g>
-      <Countermark composition={composition} />
-      <g className={styles.glint} fill="none" stroke="currentColor" strokeLinecap="round">
+      {!compact && <Countermark composition={composition} />}
+      {!compact && <g className={styles.glint} fill="none" stroke="currentColor" strokeLinecap="round">
         <path d="m46 111 5-11 5 11 11 5-11 5-5 11-5-11-11-5z" />
         <path d="m348 60 3-7 3 7 7 3-7 3-3 7-3-7-7-3z" />
-      </g>
+      </g>}
     </svg>
   );
 }
 
 /** Decorative and deterministic; project shapes do not claim runtime topology or data. */
-export function ProjectMotif({ projectKey, category, className }: ProjectMotifProps) {
+export function ProjectMotif({ projectKey, category, className, compact }: ProjectMotifProps) {
   const knownKey = Object.prototype.hasOwnProperty.call(PROJECT_MOTIFS, projectKey)
     ? (projectKey as ProjectKey)
     : null;
@@ -301,7 +311,7 @@ export function ProjectMotif({ projectKey, category, className }: ProjectMotifPr
   };
 
   return (
-    <MotifFrame category={spec.category} accent={spec.accent} composition={spec.composition} className={className}>
+    <MotifFrame category={spec.category} accent={spec.accent} composition={spec.composition} className={className} compact={compact}>
       {knownKey ? <ProjectGlyph projectKey={knownKey} /> : <GroupGlyph category={category} />}
     </MotifFrame>
   );
