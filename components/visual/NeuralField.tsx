@@ -272,7 +272,7 @@ export function AtlasEcho({ counts }: { counts: FamilyCounts }) {
   const id = useId().replace(/:/g, "");
   const families = layout(1440, 900);
   const pointer = { x: 0, y: 0 };
-  const paperColors = ["#216b60", "#276979", "#6b5b91", "#8c5b34"];
+  const paperColors = ["#17564d", "#19546a", "#514175", "#704823"];
 
   return (
     <svg className="dm-home-atlas-echo-art" viewBox="0 0 1440 900" preserveAspectRatio="none" focusable="false" aria-hidden="true">
@@ -295,26 +295,38 @@ export function AtlasEcho({ counts }: { counts: FamilyCounts }) {
               const d = `${svgPath(points)} Z`;
               return (
                 <g key={layer}>
-                  <path d={d} strokeWidth={index === 0 ? 3.2 : 2.2} opacity=".5" />
+                  <path d={d} strokeWidth={index === 0 ? 3.9 : 2.8} opacity=".62" />
                   {index === 1 && (
-                    <path
-                      className="dm-home-atlas-echo-trace"
-                      d={d}
-                      pathLength={100}
-                      strokeWidth="4.5"
-                      strokeLinecap="round"
-                      strokeDasharray="7 93"
-                      opacity=".65"
-                      style={{ animationDelay: `${-familyIndex * 1.4}s` }}
-                    />
+                    <>
+                      <path
+                        className="dm-home-atlas-echo-trace"
+                        d={d}
+                        pathLength={100}
+                        strokeWidth="19"
+                        strokeLinecap="round"
+                        strokeDasharray="9 91"
+                        opacity=".19"
+                        style={{ animationDelay: `${-familyIndex * 1.4}s` }}
+                      />
+                      <path
+                        className="dm-home-atlas-echo-trace"
+                        d={d}
+                        pathLength={100}
+                        strokeWidth="6.5"
+                        strokeLinecap="round"
+                        strokeDasharray="6 94"
+                        opacity=".88"
+                        style={{ animationDelay: `${-familyIndex * 1.4}s` }}
+                      />
+                    </>
                   )}
                 </g>
               );
             })}
             {focus.map((point, index) => (
               <g key={index}>
-                <circle cx={svgValue(point.x)} cy={svgValue(point.y)} r="8" opacity=".34" strokeWidth="1.5" />
-                <circle cx={svgValue(point.x)} cy={svgValue(point.y)} r="3" fill={ink} stroke="none" opacity=".88" />
+                <circle cx={svgValue(point.x)} cy={svgValue(point.y)} r="11" opacity=".44" strokeWidth="2.3" />
+                <circle cx={svgValue(point.x)} cy={svgValue(point.y)} r="4" fill={ink} stroke="none" opacity=".92" />
               </g>
             ))}
           </g>
@@ -514,17 +526,36 @@ function renderAnimatedAccents(
     // La trama completa permanece cacheada. Esta luz recorre cada familia sin
     // trazar relaciones entre los focos, que siguen siendo obras independientes.
     const arrival = smoothstep((time - familyIndex * 0.13) / 1.55);
-    const orbit = time * 0.62 + family.phase;
-    const lightX = family.x + Math.cos(orbit) * family.radius * 0.27 + pointer.x * 6;
-    const lightY = family.y + Math.sin(orbit * 0.82) * family.radius * 0.16 + scrollProgress * family.radius * 0.23 + pointer.y * 5;
-    const glow = context.createRadialGradient(lightX, lightY, family.radius * 0.04, lightX, lightY, family.radius * 1.42);
-    glow.addColorStop(0, rgba(family.color, arrival * (0.34 + scrollProgress * 0.045)));
-    glow.addColorStop(0.44, rgba(family.color, arrival * 0.15));
+    const orbit = time * 0.94 + family.phase;
+    const lightX = family.x + Math.cos(orbit) * family.radius * 0.66 + pointer.x * 6;
+    const lightY = family.y + Math.sin(orbit) * family.radius * 0.48 + scrollProgress * family.radius * 0.19 + pointer.y * 5;
+    const glow = context.createRadialGradient(lightX, lightY, family.radius * 0.04, lightX, lightY, family.radius * 1.24);
+    glow.addColorStop(0, rgba(family.color, arrival * (0.29 + scrollProgress * 0.07)));
+    glow.addColorStop(0.44, rgba(family.color, arrival * 0.11));
     glow.addColorStop(1, rgba(family.color, 0));
     context.fillStyle = glow;
     context.beginPath();
     context.ellipse(family.x, family.y + scrollProgress * family.radius * 0.11, family.radius * 1.65, family.radius * 1.5, family.tilt, 0, TAU);
     context.fill();
+
+    // Una marea de luz pasa por el interior de cada contorno. El recorte
+    // conserva cuatro superficies separadas incluso donde sus halos se cruzan.
+    context.save();
+    context.beginPath();
+    for (let step = 0; step <= 64; step++) {
+      const point = contourPoint(family, step / 64 * TAU, 12, 0, pointer);
+      if (step === 0) context.moveTo(point.x, point.y);
+      else context.lineTo(point.x, point.y);
+    }
+    context.closePath();
+    context.clip();
+    const tide = context.createRadialGradient(lightX, lightY, 0, lightX, lightY, family.radius * 0.93);
+    tide.addColorStop(0, rgba(family.color, arrival * 0.56));
+    tide.addColorStop(0.38, rgba(family.color, arrival * 0.31));
+    tide.addColorStop(1, rgba(family.color, 0));
+    context.fillStyle = tide;
+    context.fillRect(family.x - family.radius * 1.5, family.y - family.radius * 1.5, family.radius * 3, family.radius * 3);
+    context.restore();
 
     // Los anillos se activan en secuencia durante la entrada y luego respiran
     // sobre el atlas inmóvil. Al avanzar hacia el índice, crecen los focos.
@@ -537,24 +568,27 @@ function renderAnimatedAccents(
         else context.lineTo(point.x, point.y);
       }
       context.closePath();
-      context.lineWidth = layer === 11 ? 1.25 : 0.9;
-      context.strokeStyle = rgba(family.color, arrival * (layer === 11 ? 0.39 : 0.22));
+      context.lineWidth = layer === 11 ? 1.4 : 1;
+      context.strokeStyle = rgba(family.color, arrival * (layer === 11 ? 0.48 : 0.28));
       context.stroke();
     }
 
-    for (let arc = 0; arc < 2; arc++) {
-      const start = time * (arc === 0 ? 0.8 : -0.49) + family.phase + arc * Math.PI;
-      const span = arc === 0 ? 1.18 : 0.77;
+    // Tres crestas próximas hacen legible el avance de la marea sobre la
+    // topografía, sin dibujar rutas entre proyectos.
+    for (let arc = 0; arc < 3; arc++) {
+      const layer = [6, 9, 12][arc];
+      const start = orbit - 0.58 - arc * 0.13;
+      const span = 1.28 + arc * 0.12;
       context.beginPath();
-      for (let step = 0; step <= 22; step++) {
-        const point = contourPoint(family, start + step / 22 * span, arc === 0 ? 11 : 5, time * 2.9, pointer);
+      for (let step = 0; step <= 26; step++) {
+        const point = contourPoint(family, start + step / 26 * span, layer, time * 2.3, pointer);
         if (step === 0) context.moveTo(point.x, point.y);
         else context.lineTo(point.x, point.y);
       }
-      context.lineWidth = arc === 0 ? 2.15 : 1.45;
-      context.strokeStyle = rgba(family.color, arrival * (arc === 0 ? 0.65 : 0.42));
-      context.shadowColor = rgba(family.color, 0.7);
-      context.shadowBlur = arc === 0 ? 12 : 7;
+      context.lineWidth = arc === 2 ? 2.65 : 1.45;
+      context.strokeStyle = rgba(family.color, arrival * (arc === 2 ? 0.85 : 0.47));
+      context.shadowColor = rgba(family.color, 0.85);
+      context.shadowBlur = arc === 2 ? 17 : 9;
       context.stroke();
       context.shadowBlur = 0;
     }
@@ -589,19 +623,30 @@ function renderAnimatedAccents(
 
     const focus = projectPoints(family, counts[family.key], 0, pointer);
     focus.forEach((point, index) => {
-      const pulse = arrival * (0.19 + 0.23 * (0.5 + 0.5 * Math.sin(time * 1.12 + index * 1.43 + family.phase)));
-      context.fillStyle = rgba(family.color, pulse);
+      const distance = Math.hypot(point.x - lightX, point.y - lightY);
+      const nearLight = Math.max(0, 1 - distance / (family.radius * 0.93));
+      const pulse = arrival * (0.16 + 0.18 * (0.5 + 0.5 * Math.sin(time * 1.12 + index * 1.43 + family.phase)) + nearLight * 0.58);
+      if (nearLight > 0.16) {
+        const focusGlow = context.createRadialGradient(point.x, point.y, 0, point.x, point.y, 11 + nearLight * 18);
+        focusGlow.addColorStop(0, rgba(family.color, arrival * nearLight * 0.63));
+        focusGlow.addColorStop(1, rgba(family.color, 0));
+        context.fillStyle = focusGlow;
+        context.beginPath();
+        context.arc(point.x, point.y, 11 + nearLight * 18, 0, TAU);
+        context.fill();
+      }
+      context.fillStyle = rgba(family.color, pulse * 0.66);
       context.beginPath();
-      context.arc(point.x, point.y, 3.2 + pulse * 4.6 + scrollProgress * 2.4, 0, TAU);
+      context.arc(point.x, point.y, 3.2 + pulse * 5.4 + scrollProgress * 2.4, 0, TAU);
       context.fill();
-      if (scrollProgress > 0.01) {
-        context.strokeStyle = rgba(family.color, scrollProgress * 0.37);
+      if (nearLight > 0.15 || scrollProgress > 0.01) {
+        context.strokeStyle = rgba(family.color, Math.max(nearLight * 0.58, scrollProgress * 0.37));
         context.lineWidth = 0.8;
         context.beginPath();
-        context.arc(point.x, point.y, 6.5 + scrollProgress * 3.4, 0, TAU);
+        context.arc(point.x, point.y, 6.5 + nearLight * 6 + scrollProgress * 3.4, 0, TAU);
         context.stroke();
       }
-      context.fillStyle = `rgba(241, 255, 250, ${pulse * 0.7})`;
+      context.fillStyle = `rgba(241, 255, 250, ${Math.min(1, pulse * 0.75)})`;
       context.beginPath();
       context.arc(point.x, point.y, 1.25, 0, TAU);
       context.fill();

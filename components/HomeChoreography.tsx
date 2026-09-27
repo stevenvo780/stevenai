@@ -63,7 +63,7 @@ export default function HomeChoreography() {
     }, { rootMargin: "150px 0px 150px 0px", threshold: 0 });
 
     const scan = () => {
-      home.querySelectorAll<HTMLElement>(".dm-home-section-heading:not([data-dm-in]), .dm-home-guide-item:not([data-dm-in]), .dm-home-area:not([data-dm-in]), .dm-home-catalog-group:not([data-dm-in])")
+      home.querySelectorAll<HTMLElement>(".dm-home-index-projects a:not([data-dm-in]), .dm-home-section-heading:not([data-dm-in]), .dm-home-guide-item:not([data-dm-in]), .dm-home-area:not([data-dm-in]), .dm-home-catalog-group:not([data-dm-in])")
         .forEach((element) => {
           if (onceTargets.has(element)) return;
           onceTargets.add(element);
