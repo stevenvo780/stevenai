@@ -1,12 +1,91 @@
 import puppeteer from 'puppeteer-core';
+
 const urls = process.argv.slice(2);
 if (urls.length === 0) {
   console.error('Usage: npm run test:contrast -- <url> [url...]');
   process.exit(2);
 }
-const SCAN = () => { const toRGB=c=>{const m=(c||'').match(/[\d.]+/g);return m?m.slice(0,3).map(Number):null;}; const lum=a=>{const x=a.map(v=>{v/=255;return v<=0.03928?v/12.92:Math.pow((v+0.055)/1.055,2.4);});return 0.2126*x[0]+0.7152*x[1]+0.0722*x[2];}; const ratio=(f,b)=>{const L1=lum(f),L2=lum(b),hi=Math.max(L1,L2),lo=Math.min(L1,L2);return (hi+0.05)/(lo+0.05);}; const bgOf=el=>{let e=el;while(e){const c=getComputedStyle(e).backgroundColor;const r=toRGB(c);if(r&&c!=='rgba(0, 0, 0, 0)')return r;e=e.parentElement;}return [255,255,255];}; const els=[...document.querySelectorAll('body *')].filter(el=>{const t=[...el.childNodes].some(n=>n.nodeType===3&&n.textContent.trim());const s=getComputedStyle(el);return t&&s.visibility!=='hidden'&&s.display!=='none';}); let low=[]; for(const el of els){const s=getComputedStyle(el);const fg=toRGB(s.color);if(!fg)continue;const bg=bgOf(el);const r=ratio(fg,bg);const fs=parseFloat(s.fontSize);const big=fs>=24||(fs>=18.66&&parseInt(s.fontWeight)>=700);if(r<(big?3:4.5))low.push({t:el.textContent.trim().slice(0,30),fg:s.color,bg:'rgb('+bg.join(', ')+')',r:+r.toFixed(2)});} return {low:low.length,worst:low.sort((a,b)=>a.r-b.r).slice(0,8)}; };
-let fail=0;
-const b=await puppeteer.launch({executablePath:'/usr/bin/google-chrome',headless:'new',args:['--no-sandbox','--disable-gpu']});
-for(const u of urls){const p=await b.newPage();await p.setViewport({width:1280,height:800});try{const response=await p.goto(u,{waitUntil:'networkidle2',timeout:60000});if(!response?.ok())throw new Error(`HTTP ${response?.status()??'unknown'}`);const r=await p.evaluate(SCAN);console.log(u,JSON.stringify(r));if(r.low>0)fail++;}catch(error){console.error(u,error instanceof Error?error.message:String(error));fail++;}finally{await p.close();}}
-await b.close();
-process.exit(fail>0?1:0);
+
+const scan = () => {
+  const colorOf = (value) => {
+    const values = (value || '').match(/[\d.]+/g)?.map(Number);
+    return values?.length >= 3 ? [...values.slice(0, 3), values[3] ?? 1] : null;
+  };
+  const luminance = (rgb) => {
+    const linear = rgb.map((channel) => {
+      const value = channel / 255;
+      return value <= 0.03928 ? value / 12.92 : ((value + 0.055) / 1.055) ** 2.4;
+    });
+    return 0.2126 * linear[0] + 0.7152 * linear[1] + 0.0722 * linear[2];
+  };
+  const contrast = (foreground, background) => {
+    const levels = [luminance(foreground), luminance(background)];
+    return (Math.max(...levels) + 0.05) / (Math.min(...levels) + 0.05);
+  };
+  const backgroundOf = (element) => {
+    const ancestors = [];
+    for (let node = element; node; node = node.parentElement) ancestors.push(node);
+    let background = [255, 255, 255];
+    // CSS background layers are translucent in several notes and badges.
+    // Composite each ancestor instead of treating a 9% tint as an opaque fill.
+    for (const node of ancestors.reverse()) {
+      const layer = colorOf(getComputedStyle(node).backgroundColor);
+      if (!layer) continue;
+      background = background.map((channel, index) =>
+        layer[index] * layer[3] + channel * (1 - layer[3]));
+    }
+    return background;
+  };
+
+  const low = [];
+  for (const element of document.querySelectorAll('body *')) {
+    const hasText = [...element.childNodes].some((node) => node.nodeType === 3 && node.textContent.trim());
+    if (!hasText) continue;
+    const style = getComputedStyle(element);
+    if (style.visibility === 'hidden' || style.display === 'none') continue;
+    const foreground = colorOf(style.color);
+    if (!foreground) continue;
+    const background = backgroundOf(element);
+    const ratio = contrast(foreground, background);
+    const size = parseFloat(style.fontSize);
+    const large = size >= 24 || (size >= 18.66 && parseInt(style.fontWeight, 10) >= 700);
+    if (ratio < (large ? 3 : 4.5)) {
+      low.push({
+        t: element.textContent.trim().slice(0, 30),
+        fg: style.color,
+        bg: `rgb(${background.map(Math.round).join(', ')})`,
+        r: Number(ratio.toFixed(2)),
+      });
+    }
+  }
+  return { low: low.length, worst: low.sort((a, b) => a.r - b.r).slice(0, 8) };
+};
+
+let failures = 0;
+const browser = await puppeteer.launch({
+  executablePath: process.env.CHROME_BIN || '/usr/bin/google-chrome',
+  headless: true,
+  args: ['--no-sandbox', '--disable-gpu'],
+});
+try {
+  for (const url of urls) {
+    const page = await browser.newPage();
+    await page.setViewport({ width: 1280, height: 800 });
+    try {
+      const response = await page.goto(url, { waitUntil: 'networkidle2', timeout: 60000 });
+      if (!response?.ok()) throw new Error(`HTTP ${response?.status() ?? 'unknown'}`);
+      const result = await page.evaluate(scan);
+      console.log(url, JSON.stringify(result));
+      if (result.low > 0) failures++;
+    } catch (error) {
+      console.error(url, error instanceof Error ? error.message : String(error));
+      failures++;
+    } finally {
+      await page.close();
+    }
+  }
+} finally {
+  await browser.close();
+}
+
+process.exit(failures > 0 ? 1 : 0);

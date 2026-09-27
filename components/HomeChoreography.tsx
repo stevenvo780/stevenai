@@ -5,10 +5,18 @@ import { useEffect } from "react";
 /** Activa únicamente trazos decorativos visibles; el contenido siempre se pinta en SSR. */
 export default function HomeChoreography() {
   useEffect(() => {
-    if (!("IntersectionObserver" in window) || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const updateHeader = () => document.body.toggleAttribute("data-dm-home-scrolled", window.scrollY > 28);
+    updateHeader();
+    window.addEventListener("scroll", updateHeader, { passive: true });
+    const clearHeader = () => {
+      window.removeEventListener("scroll", updateHeader);
+      document.body.removeAttribute("data-dm-home-scrolled");
+    };
+
+    if (!("IntersectionObserver" in window) || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return clearHeader;
 
     const home = document.querySelector<HTMLElement>(".dm-home");
-    if (!home) return;
+    if (!home) return clearHeader;
 
     const onceTargets = new Set<Element>();
     const animatedTargets = new Set<Element>();
@@ -48,7 +56,7 @@ export default function HomeChoreography() {
         activeTargets.add(element);
         active.observe(element);
       });
-      home.querySelectorAll(".dm-home-hero-scene figure, .dm-home-area-motif svg")
+      home.querySelectorAll(".dm-home-area-motif svg")
         .forEach((element) => {
           if (animatedTargets.has(element)) return;
           animatedTargets.add(element);
@@ -85,6 +93,7 @@ export default function HomeChoreography() {
     mutations.observe(home, { childList: true, subtree: true });
 
     return () => {
+      clearHeader();
       mutations.disconnect();
       if (frame) cancelAnimationFrame(frame);
       once.disconnect();

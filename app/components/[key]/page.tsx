@@ -117,7 +117,7 @@ export default async function ComponentPage({ params }: PageProps) {
   const jsonLd = JSON.stringify(structuredData(component)).replace(/</g, "\\u003c");
 
   return (
-    <main className="detail-page" data-category={component.category}>
+    <main className="detail-page" data-category={component.category} data-tone={component.color}>
       <script
         id={`json-ld-component-${component.key}`}
         type="application/ld+json"
@@ -133,47 +133,47 @@ export default async function ComponentPage({ params }: PageProps) {
           <span aria-current="page">{component.name}</span>
         </nav>
 
-        <header className="detail-hero">
-          <div className="detail-hero-copy">
-            <p className="detail-overline">
-              <span>Archivo de IA</span>
-              <span aria-hidden="true">·</span>
-              <span>Ficha {String(currentIndex + 1).padStart(2, "0")}</span>
-            </p>
-            <h1 className="detail-title">{component.name}</h1>
-            <p className="detail-deck">{component.tagline}</p>
-            <p className="detail-lead">{component.description}</p>
-            <div className="detail-actions">
-              {isPrivate ? (
-                <p className="detail-private-callout">
-                  El repositorio es privado. Esta ficha presenta el proyecto sin ofrecer acceso al código.
-                </p>
-              ) : (
-                <a className="detail-primary-link" href={component.repo} target="_blank" rel="noopener noreferrer">
-                  Explorar repositorio <span aria-hidden="true">↗</span>
-                </a>
-              )}
-              <Link className="detail-secondary-link" href="/architecture">Ver mapa de proyectos <span aria-hidden="true">→</span></Link>
+        <header className="detail-hero" data-index={String(currentIndex + 1).padStart(2, "0")}>
+          <p className="detail-overline">
+            <span>Archivo de IA</span>
+            <span aria-hidden="true">/</span>
+            <span>Ficha {String(currentIndex + 1).padStart(2, "0")}</span>
+            <span className="detail-overline-category">{group?.title ?? "Catálogo"}</span>
+          </p>
+          <h1 className="detail-title">{component.name}</h1>
+          <p className="detail-deck">{component.tagline}</p>
+          <dl className="detail-hero-state">
+            <div>
+              <dt>Estado documentado</dt>
+              <dd>{component.statusLabel}</dd>
             </div>
-          </div>
-
+          </dl>
           <figure className="detail-hero-art">
             <ProjectMotif projectKey={component.key} category={component.category} className="detail-project-motif" />
             <figcaption>
               <span>Motivo conceptual</span>
-              <span>{group?.title ?? "Proyecto"}</span>
+              <span>Fig. {String(currentIndex + 1).padStart(2, "0")}</span>
             </figcaption>
           </figure>
+          <p className="detail-lead">{component.description}</p>
+          <div className="detail-actions">
+            {isPrivate ? (
+              <p className="detail-private-callout">
+                El repositorio es privado. Esta ficha presenta el proyecto sin ofrecer acceso al código.
+              </p>
+            ) : (
+              <a className="detail-primary-link" href={component.repo} target="_blank" rel="noopener noreferrer">
+                Explorar repositorio <span aria-hidden="true">↗</span>
+              </a>
+            )}
+            <Link className="detail-secondary-link" href="/architecture">Ver mapa de proyectos <span aria-hidden="true">→</span></Link>
+          </div>
         </header>
 
-        <dl className="detail-facts" aria-label="Estado y ejecución">
+        <dl className="detail-facts" aria-label="Acceso y ejecución">
           <div className="detail-fact">
             <dt>Acceso al código</dt>
             <dd>{isPrivate ? "Repositorio privado" : "Repositorio público"}</dd>
-          </div>
-          <div className="detail-fact">
-            <dt>Estado</dt>
-            <dd>{component.statusLabel}</dd>
           </div>
           <div className="detail-fact">
             <dt>Ejecución</dt>

@@ -1,0 +1,49 @@
+.field {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  isolation: isolate;
+  pointer-events: none;
+  background: #06151c;
+}
+
+.wideFallback,
+.narrowFallback,
+.canvas {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.narrowFallback {
+  display: none;
+}
+
+.canvas {
+  opacity: 0;
+  transition: opacity 700ms ease;
+}
+
+.canvasReady {
+  opacity: 1;
+}
+
+@media (max-width: 719px) {
+  .wideFallback {
+    display: none;
+  }
+
+  .narrowFallback {
+    display: block;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .canvas {
+    transition: none;
+  }
+}
