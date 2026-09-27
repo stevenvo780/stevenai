@@ -267,6 +267,63 @@ function StaticAtlas({
   );
 }
 
+/** A sparse, static continuation of the same four atlas surfaces and real project foci. */
+export function AtlasEcho({ counts }: { counts: FamilyCounts }) {
+  const id = useId().replace(/:/g, "");
+  const families = layout(1440, 900);
+  const pointer = { x: 0, y: 0 };
+  const paperColors = ["#216b60", "#276979", "#6b5b91", "#8c5b34"];
+
+  return (
+    <svg className="dm-home-atlas-echo-art" viewBox="0 0 1440 900" preserveAspectRatio="none" focusable="false" aria-hidden="true">
+      <defs>
+        {families.map((family, index) => (
+          <linearGradient key={family.key} id={`${id}-${family.key}-ink`} gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="0" y2="900">
+            <stop offset="49.9%" stopColor={rgba(family.color, 1)} />
+            <stop offset="50.1%" stopColor={paperColors[index]} />
+          </linearGradient>
+        ))}
+      </defs>
+      {families.map((family, familyIndex) => {
+        const ink = `url(#${id}-${family.key}-ink)`;
+        const focus = projectPoints(family, counts[family.key], 0, pointer);
+        return (
+          <g key={family.key} fill="none" stroke={ink}>
+            {STATIC_LAYERS.map((layer, index) => {
+              const points = Array.from({ length: 32 }, (_, step) =>
+                contourPoint(family, step / 31 * TAU, layer, 0, pointer));
+              const d = `${svgPath(points)} Z`;
+              return (
+                <g key={layer}>
+                  <path d={d} strokeWidth={index === 0 ? 3.2 : 2.2} opacity=".5" />
+                  {index === 1 && (
+                    <path
+                      className="dm-home-atlas-echo-trace"
+                      d={d}
+                      pathLength={100}
+                      strokeWidth="4.5"
+                      strokeLinecap="round"
+                      strokeDasharray="7 93"
+                      opacity=".65"
+                      style={{ animationDelay: `${-familyIndex * 1.4}s` }}
+                    />
+                  )}
+                </g>
+              );
+            })}
+            {focus.map((point, index) => (
+              <g key={index}>
+                <circle cx={svgValue(point.x)} cy={svgValue(point.y)} r="8" opacity=".34" strokeWidth="1.5" />
+                <circle cx={svgValue(point.x)} cy={svgValue(point.y)} r="3" fill={ink} stroke="none" opacity=".88" />
+              </g>
+            ))}
+          </g>
+        );
+      })}
+    </svg>
+  );
+}
+
 function renderCanvas(
   context: CanvasRenderingContext2D,
   width: number,

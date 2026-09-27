@@ -2,7 +2,7 @@ import Link from "next/link";
 import ComponentCard from "@/components/ComponentCard";
 import CatalogFormSync from "@/components/CatalogFormSync";
 import HomeChoreography from "@/components/HomeChoreography";
-import NeuralField from "@/components/visual/NeuralField";
+import NeuralField, { AtlasEcho } from "@/components/visual/NeuralField";
 import { GroupMotif } from "@/components/visual/ProjectMotif";
 import { catalogGroups } from "@/lib/catalog-groups";
 import { components, type AIComponent } from "@/lib/components-data";
@@ -159,6 +159,7 @@ export default async function Home({ searchParams }: { searchParams: Promise<Sea
       </div>
 
       <section className="dm-home-guide dm-home-paper" aria-labelledby="dm-home-guide-title">
+        <div className="dm-home-atlas-echo" aria-hidden="true"><AtlasEcho counts={categoryCounts} /></div>
         <div className="dm-home-shell">
           <div id="guia" className="dm-home-section-heading">
             <p className="dm-home-eyebrow"><span>01 / 04</span> CRITERIO DE LECTURA</p>
