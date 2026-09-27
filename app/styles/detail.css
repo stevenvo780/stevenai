@@ -771,6 +771,20 @@
   .component-card-visual { height: 172px; }
 }
 
+/* The Talos title contains a word longer than the available headline column. */
+.detail-title--long {
+  font-size: clamp(3.6rem, 6.4vw, 6.4rem);
+  overflow-wrap: normal;
+}
+
+@media (max-width: 900px) {
+  .detail-title--long { font-size: clamp(2.5rem, 6.9vw, 4.8rem); }
+}
+
+@media (max-width: 480px) {
+  .detail-title--long { font-size: clamp(2.35rem, 10.3vw, 3.05rem); }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .component-card,
   .component-card-arrow,

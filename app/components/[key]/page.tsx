@@ -140,7 +140,7 @@ export default async function ComponentPage({ params }: PageProps) {
             <span>Ficha {String(currentIndex + 1).padStart(2, "0")}</span>
             <span className="detail-overline-category">{group?.title ?? "Catálogo"}</span>
           </p>
-          <h1 className="detail-title">{component.name}</h1>
+          <h1 className={`detail-title${component.key === "talos-harness" ? " detail-title--long" : ""}`}>{component.name}</h1>
           <p className="detail-deck">{component.tagline}</p>
           <dl className="detail-hero-state">
             <div>
