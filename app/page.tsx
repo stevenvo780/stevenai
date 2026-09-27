@@ -346,14 +346,16 @@ export default async function Home({ searchParams }: { searchParams: Promise<Sea
             </div>
           ) : (
             <div className="dm-home-catalog-groups">
-              {catalogGroups.map((group) => {
+              {catalogGroups.map((group, groupIndex) => {
                 const projects = visibleComponents.filter((component) => component.category === group.id);
                 if (projects.length === 0) return null;
                 return (
                   <section key={group.id} className="dm-home-catalog-group" aria-labelledby={"dm-home-catalog-" + group.id}>
                     <div className="dm-home-catalog-group-head">
+                      <span className="dm-home-catalog-group-index">ÁREA {String(groupIndex + 1).padStart(2, "0")} / 04</span>
                       <h3 id={"dm-home-catalog-" + group.id}>{group.title}</h3>
-                      <span>{String(projects.length).padStart(2, "0")} / {String(components.filter((component) => component.category === group.id).length).padStart(2, "0")}</span>
+                      <p>{group.description}</p>
+                      <span className="dm-home-catalog-group-count">{String(projects.length).padStart(2, "0")} / {String(components.filter((component) => component.category === group.id).length).padStart(2, "0")} PROYECTOS</span>
                     </div>
                     <div className="dm-home-card-grid">
                       {projects.map((component, index) => <ComponentCard key={component.key} component={component} compact={index > 0} />)}
