@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Manrope, Newsreader, IBM_Plex_Mono } from "next/font/google";
+import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 import NavBar from "@/components/NavBarServer";
 import SiteFooter from "@/components/SiteFooter";
@@ -211,6 +212,7 @@ export default function RootLayout({
         <NavBar />
         <div id="contenido" tabIndex={-1}>{children}</div>
         <SiteFooter />
+        <Analytics />
       </body>
     </html>
   );
