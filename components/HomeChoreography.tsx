@@ -38,6 +38,7 @@ export default function HomeChoreography() {
 
     const onceTargets = new Set<Element>();
     const animatedTargets = new Set<Element>();
+    const bridgeTargets = new Set<Element>();
     const activeTargets = new Set<Element>();
     const once = new IntersectionObserver((entries, observer) => {
       for (const entry of entries) {
@@ -61,6 +62,11 @@ export default function HomeChoreography() {
         entry.target.toggleAttribute("data-dm-visible", entry.isIntersecting);
       }
     }, { rootMargin: "150px 0px 150px 0px", threshold: 0 });
+    const bridgeAnimated = new IntersectionObserver((entries) => {
+      for (const entry of entries) {
+        entry.target.toggleAttribute("data-dm-visible", entry.isIntersecting);
+      }
+    }, { threshold: 0.01 });
 
     const scan = () => {
       home.querySelectorAll<HTMLElement>(".dm-home-index-projects a:not([data-dm-in]), .dm-home-section-heading:not([data-dm-in]), .dm-home-guide-item:not([data-dm-in]), .dm-home-area:not([data-dm-in]), .dm-home-catalog-group:not([data-dm-in])")
@@ -80,6 +86,11 @@ export default function HomeChoreography() {
           animatedTargets.add(element);
           animated.observe(element);
         });
+      home.querySelectorAll(".dm-home-atlas-bridge").forEach((element) => {
+        if (bridgeTargets.has(element)) return;
+        bridgeTargets.add(element);
+        bridgeAnimated.observe(element);
+      });
       for (const element of onceTargets) {
         if (element.isConnected) continue;
         once.unobserve(element);
@@ -94,6 +105,11 @@ export default function HomeChoreography() {
         if (element.isConnected) continue;
         animated.unobserve(element);
         animatedTargets.delete(element);
+      }
+      for (const element of bridgeTargets) {
+        if (element.isConnected) continue;
+        bridgeAnimated.unobserve(element);
+        bridgeTargets.delete(element);
       }
     };
     scan();
@@ -117,6 +133,7 @@ export default function HomeChoreography() {
       once.disconnect();
       active.disconnect();
       animated.disconnect();
+      bridgeAnimated.disconnect();
     };
   }, []);
 

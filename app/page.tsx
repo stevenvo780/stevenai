@@ -129,6 +129,7 @@ export default async function Home({ searchParams }: { searchParams: Promise<Sea
       </section>
 
       <div className="dm-home-index" aria-label="Resumen del catálogo">
+        <div className="dm-home-atlas-bridge" aria-hidden="true"><AtlasEcho counts={categoryCounts} variant="bridge" /></div>
         <div className="dm-home-shell dm-home-index-inner">
           <p><strong>{String(components.length).padStart(2, "0")}</strong><span>proyectos catalogados</span></p>
           <p><strong>{String(catalogGroups.length).padStart(2, "0")}</strong><span>áreas de trabajo</span></p>

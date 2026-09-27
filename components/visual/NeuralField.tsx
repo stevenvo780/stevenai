@@ -267,63 +267,65 @@ function StaticAtlas({
   );
 }
 
-/** A sparse, static continuation of the same four atlas surfaces and real project foci. */
-export function AtlasEcho({ counts }: { counts: FamilyCounts }) {
+/** The guide keeps all four surfaces; the bridge carries only the two at the hero's lower edge. */
+export function AtlasEcho({ counts, variant = "guide" }: { counts: FamilyCounts; variant?: "guide" | "bridge" }) {
   const id = useId().replace(/:/g, "");
   const families = layout(1440, 900);
   const pointer = { x: 0, y: 0 };
   const paperColors = ["#17564d", "#19546a", "#514175", "#704823"];
+  const bridge = variant === "bridge";
+  const visibleFamilies = bridge
+    ? families.filter(({ key }) => key === "models" || key === "tools")
+    : families;
 
   return (
-    <svg className="dm-home-atlas-echo-art" viewBox="0 0 1440 900" preserveAspectRatio="none" focusable="false" aria-hidden="true">
-      <defs>
+    <svg className="dm-home-atlas-echo-art" viewBox={bridge ? "0 450 1440 450" : "0 0 1440 900"} preserveAspectRatio="none" focusable="false" aria-hidden="true">
+      {!bridge && <defs>
         {families.map((family, index) => (
           <linearGradient key={family.key} id={`${id}-${family.key}-ink`} gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="0" y2="900">
             <stop offset="49.9%" stopColor={rgba(family.color, 1)} />
             <stop offset="50.1%" stopColor={paperColors[index]} />
           </linearGradient>
         ))}
-      </defs>
-      {families.map((family, familyIndex) => {
-        const ink = `url(#${id}-${family.key}-ink)`;
+      </defs>}
+      {visibleFamilies.map((family, familyIndex) => {
+        const ink = bridge ? rgba(family.color, 1) : `url(#${id}-${family.key}-ink)`;
         const focus = projectPoints(family, counts[family.key], 0, pointer);
         return (
           <g key={family.key} fill="none" stroke={ink}>
-            {STATIC_LAYERS.map((layer, index) => {
+            {(bridge ? [11] : STATIC_LAYERS).map((layer, index) => {
               const points = Array.from({ length: 32 }, (_, step) =>
                 contourPoint(family, step / 31 * TAU, layer, 0, pointer));
               const d = `${svgPath(points)} Z`;
               return (
                 <g key={layer}>
-                  <path d={d} strokeWidth={index === 0 ? 3.9 : 2.8} opacity=".62" />
-                  {index === 1 && (
-                    <>
-                      <path
-                        className="dm-home-atlas-echo-trace"
-                        d={d}
-                        pathLength={100}
-                        strokeWidth="19"
-                        strokeLinecap="round"
-                        strokeDasharray="9 91"
-                        opacity=".19"
-                        style={{ animationDelay: `${-familyIndex * 1.4}s` }}
-                      />
-                      <path
-                        className="dm-home-atlas-echo-trace"
-                        d={d}
-                        pathLength={100}
-                        strokeWidth="6.5"
-                        strokeLinecap="round"
-                        strokeDasharray="6 94"
-                        opacity=".88"
-                        style={{ animationDelay: `${-familyIndex * 1.4}s` }}
-                      />
-                    </>
-                  )}
+                  <path d={d} strokeWidth={bridge ? 2.5 : index === 0 ? 3.9 : 2.8} opacity={bridge ? ".58" : ".62"} />
+                  {!bridge && index === 1 && <path
+                    className="dm-home-atlas-echo-trace"
+                    d={d}
+                    pathLength={100}
+                    strokeWidth="19"
+                    strokeLinecap="round"
+                    strokeDasharray="9 91"
+                    opacity=".19"
+                    style={{ animationDelay: `${-familyIndex * 1.4}s` }}
+                  />}
+                  {(bridge || index === 1) && <path
+                    className="dm-home-atlas-echo-trace"
+                    d={d}
+                    pathLength={100}
+                    strokeWidth={bridge ? "4.5" : "6.5"}
+                    strokeLinecap="round"
+                    strokeDasharray="6 94"
+                    opacity={bridge ? ".7" : ".88"}
+                    style={{ animationDelay: `${-familyIndex * 1.4}s` }}
+                  />}
                 </g>
               );
             })}
-            {focus.map((point, index) => (
+            {focus.map((point, index) => bridge ? (
+              <circle key={index} cx={svgValue(point.x)} cy={svgValue(point.y)} r="4" fill={ink} stroke="none" opacity=".82" />
+            ) : (
               <g key={index}>
                 <circle cx={svgValue(point.x)} cy={svgValue(point.y)} r="11" opacity=".44" strokeWidth="2.3" />
                 <circle cx={svgValue(point.x)} cy={svgValue(point.y)} r="4" fill={ink} stroke="none" opacity=".92" />
