@@ -2,7 +2,7 @@ import Link from "next/link";
 import ComponentCard from "@/components/ComponentCard";
 import CatalogFormSync from "@/components/CatalogFormSync";
 import HomeChoreography from "@/components/HomeChoreography";
-import IntelligenceScene from "@/components/visual/IntelligenceScene";
+import NeuralField, { AtlasEcho } from "@/components/visual/NeuralField";
 import { GroupMotif } from "@/components/visual/ProjectMotif";
 import { catalogGroups } from "@/lib/catalog-groups";
 import { components, type AIComponent } from "@/lib/components-data";
@@ -71,6 +71,12 @@ export default async function Home({ searchParams }: { searchParams: Promise<Sea
 
   const privateCount = components.filter((component) => component.sourceAccess === "private").length;
   const publicCount = components.length - privateCount;
+  const categoryCounts: Record<AIComponent["category"], number> = {
+    assistants: components.filter((component) => component.category === "assistants").length,
+    infrastructure: components.filter((component) => component.category === "infrastructure").length,
+    models: components.filter((component) => component.category === "models").length,
+    tools: components.filter((component) => component.category === "tools").length,
+  };
   const featured = featuredKeys
     .map((key) => components.find((component) => component.key === key))
     .filter((component): component is AIComponent => Boolean(component));
@@ -80,47 +86,81 @@ export default async function Home({ searchParams }: { searchParams: Promise<Sea
     <main className="dm-home">
       <HomeChoreography />
       <section className="dm-home-hero" aria-labelledby="dm-home-title">
+        <NeuralField counts={categoryCounts} />
+        <div className="dm-home-hero-vignette" aria-hidden="true" />
         <div className="dm-home-shell dm-home-hero-inner">
           <div className="dm-home-hero-copy">
             <p className="dm-home-eyebrow dm-home-hero-eyebrow">
               <span className="dm-home-signal" aria-hidden="true" />
-              DAÍMON <span aria-hidden="true">/</span> MOUSEÎON · ATLAS DE IA
+              MOUSEÎON <span aria-hidden="true">/</span> ATLAS DE INTELIGENCIA ARTIFICIAL
             </p>
-            <h1 id="dm-home-title">La inteligencia<br />{" "}se <em>construye.</em></h1>
+            <h1 id="dm-home-title">Da<em>í</em>mon</h1>
+            <p className="dm-home-hero-deck">La inteligencia <em>se construye.</em></p>
             <p className="dm-home-hero-intro">
-              Proyectos de inteligencia artificial hechos para leerse por dentro:
-              qué hacen, cómo funcionan y qué necesitan para existir.
+              {components.length} proyectos, cuatro territorios. Un atlas para entrar
+              en sus ideas, su código y las condiciones que los hacen posibles.
             </p>
             <div className="dm-home-hero-actions">
               <a className="dm-home-button dm-home-button-primary" href="#catalogo">
-                Explorar {components.length} proyectos <span aria-hidden="true">↗</span>
+                Explorar los proyectos <span aria-hidden="true">↗</span>
               </a>
               <a className="dm-home-hero-text-link" href="#guia">
-                Cómo leer este archivo <span aria-hidden="true">↓</span>
+                Cómo leer el atlas <span aria-hidden="true">↓</span>
               </a>
             </div>
           </div>
-          <div className="dm-home-hero-scene">
-            <p className="dm-home-hero-scene-hint">Explora las etapas <span aria-hidden="true">↓</span></p>
-            <IntelligenceScene variant="hero" />
-          </div>
+          <nav className="dm-home-hero-territories" aria-label="Explorar proyectos por territorio">
+            {catalogGroups.map((group, index) => (
+              <a key={group.id} href={"/?area=" + group.id + "#resultados"}>
+                <span className="dm-home-hero-territory-index">0{index + 1}</span>
+                <strong>{group.title}</strong>
+                <span className="dm-home-hero-territory-count">
+                  {String(categoryCounts[group.id]).padStart(2, "0")} proyectos
+                </span>
+                <span className="dm-home-hero-territory-arrow" aria-hidden="true">↗</span>
+              </a>
+            ))}
+          </nav>
         </div>
         <div className="dm-home-shell dm-home-hero-foot" aria-hidden="true">
-          <span>FIG. 01 / FLUJO CONCEPTUAL DE IA</span>
+          <span>DAÍMON / UN ATLAS VIVO</span>
           <span>DESLIZA PARA EXPLORAR ↓</span>
         </div>
       </section>
 
       <div className="dm-home-index" aria-label="Resumen del catálogo">
+        <div className="dm-home-atlas-bridge" aria-hidden="true"><AtlasEcho counts={categoryCounts} variant="bridge" /></div>
         <div className="dm-home-shell dm-home-index-inner">
           <p><strong>{String(components.length).padStart(2, "0")}</strong><span>proyectos catalogados</span></p>
           <p><strong>{String(catalogGroups.length).padStart(2, "0")}</strong><span>áreas de trabajo</span></p>
           <p><strong>{String(publicCount).padStart(2, "0")}</strong><span>con fuente pública</span></p>
           <p><strong>{String(privateCount).padStart(2, "0")}</strong><span>de acceso privado</span></p>
         </div>
+        <div className="dm-home-shell dm-home-index-projects">
+          <p>ENTRA POR UNA OBRA <span aria-hidden="true">/</span> CUATRO PUNTOS DE PARTIDA</p>
+          <div>
+            {featured.map((component, index) => (
+              <Link href={"/components/" + component.key} key={component.key}>
+                <span>{String(index + 1).padStart(2, "0")}</span>
+                <strong>{component.name}</strong>
+                <span aria-hidden="true">↗</span>
+              </Link>
+            ))}
+          </div>
+        </div>
+        <form className="dm-home-shell dm-home-index-search" action="/#resultados" method="get" role="search" aria-label="Búsqueda rápida de proyectos">
+          <label htmlFor="dm-home-quick-query">O BUSCA EN EL ARCHIVO</label>
+          <div>
+            <input id="dm-home-quick-query" name="q" type="search" defaultValue={query} placeholder="Proyecto, idea o tecnología" maxLength={120} />
+            {area !== "all" && <input type="hidden" name="area" value={area} />}
+            {runtime !== "all" && <input type="hidden" name="runtime" value={runtime} />}
+            <button type="submit" aria-label="Buscar proyectos">Buscar <span aria-hidden="true">↗</span></button>
+          </div>
+        </form>
       </div>
 
       <section className="dm-home-guide dm-home-paper" aria-labelledby="dm-home-guide-title">
+        <div className="dm-home-atlas-echo" aria-hidden="true"><AtlasEcho counts={categoryCounts} /></div>
         <div className="dm-home-shell">
           <div id="guia" className="dm-home-section-heading">
             <p className="dm-home-eyebrow"><span>01 / 04</span> CRITERIO DE LECTURA</p>
@@ -157,7 +197,7 @@ export default async function Home({ searchParams }: { searchParams: Promise<Sea
           </div>
           <div className="dm-home-area-grid">
             {catalogGroups.map((group, index) => {
-              const count = components.filter((component) => component.category === group.id).length;
+              const count = categoryCounts[group.id];
               return (
                 <article id={group.id} className={"dm-home-area dm-home-area-" + group.id} key={group.id} aria-labelledby={"dm-home-" + group.id + "-title"}>
                   <div className="dm-home-area-top">
@@ -308,14 +348,16 @@ export default async function Home({ searchParams }: { searchParams: Promise<Sea
             </div>
           ) : (
             <div className="dm-home-catalog-groups">
-              {catalogGroups.map((group) => {
+              {catalogGroups.map((group, groupIndex) => {
                 const projects = visibleComponents.filter((component) => component.category === group.id);
                 if (projects.length === 0) return null;
                 return (
                   <section key={group.id} className="dm-home-catalog-group" aria-labelledby={"dm-home-catalog-" + group.id}>
                     <div className="dm-home-catalog-group-head">
+                      <span className="dm-home-catalog-group-index">ÁREA {String(groupIndex + 1).padStart(2, "0")} / 04</span>
                       <h3 id={"dm-home-catalog-" + group.id}>{group.title}</h3>
-                      <span>{String(projects.length).padStart(2, "0")} / {String(components.filter((component) => component.category === group.id).length).padStart(2, "0")}</span>
+                      <p>{group.description}</p>
+                      <span className="dm-home-catalog-group-count">{String(projects.length).padStart(2, "0")} / {String(components.filter((component) => component.category === group.id).length).padStart(2, "0")} PROYECTOS</span>
                     </div>
                     <div className="dm-home-card-grid">
                       {projects.map((component, index) => <ComponentCard key={component.key} component={component} compact={index > 0} />)}

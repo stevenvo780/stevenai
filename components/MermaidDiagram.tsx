@@ -15,8 +15,15 @@ export default function MermaidDiagram({ chart, id, ariaLabel }: MermaidDiagramP
     let cancelled = false;
     let frame = 0;
     let resizeObserver: ResizeObserver | undefined;
+    let renderVersion = 0;
+    const narrowViewport = window.matchMedia("(max-width: 720px)");
+
     async function render() {
+      const version = ++renderVersion;
+      if (frame) cancelAnimationFrame(frame);
+      resizeObserver?.disconnect();
       const mermaid = (await import("mermaid")).default;
+      if (cancelled || version !== renderVersion) return;
       mermaid.initialize({
         startOnLoad: false,
         // Native SVG labels survive the SVG sanitizer and remain readable in
@@ -64,8 +71,13 @@ export default function MermaidDiagram({ chart, id, ariaLabel }: MermaidDiagramP
       });
       if (cancelled || !ref.current) return;
       try {
-        const { svg: svgString } = await mermaid.render(`mermaid-${id}`, chart);
-        if (!cancelled && ref.current) {
+        // A vertical reading order keeps the opening nodes and their next steps
+        // together on narrow screens. Edges and labels are unchanged.
+        const displayedChart = narrowViewport.matches
+          ? chart.replace(/^(\s*(?:graph|flowchart)\s+)LR\b/i, "$1TD")
+          : chart;
+        const { svg: svgString } = await mermaid.render(`mermaid-${id}-${version}`, displayedChart);
+        if (!cancelled && version === renderVersion && ref.current) {
           // Mermaid necesita atributos SVG de posición y forma (dy, points,
           // marcadores). El perfil SVG conserva su geometría segura y excluye
           // los puntos de integración con HTML.
@@ -84,7 +96,17 @@ export default function MermaidDiagram({ chart, id, ariaLabel }: MermaidDiagramP
           const hint = wrapper?.parentElement?.querySelector<HTMLElement>(".detail-diagram-scroll-hint");
           if (svgElement && wrapper && hint) {
             const isScrollable = () => wrapper.scrollWidth > wrapper.clientWidth + 2;
-            const updateHint = () => hint.toggleAttribute("data-visible", isScrollable());
+            const updateHint = () => {
+              const scrollable = isScrollable();
+              hint.toggleAttribute("data-visible", scrollable);
+              wrapper.tabIndex = scrollable ? 0 : -1;
+              if (scrollable) {
+                hint.id = `diagram-hint-${id}`;
+                wrapper.setAttribute("aria-describedby", hint.id);
+              } else {
+                wrapper.removeAttribute("aria-describedby");
+              }
+            };
             resizeObserver = new ResizeObserver(updateHint);
             resizeObserver.observe(wrapper);
             resizeObserver.observe(svgElement);
@@ -102,7 +124,7 @@ export default function MermaidDiagram({ chart, id, ariaLabel }: MermaidDiagramP
           }
         }
       } catch (e) {
-        if (!cancelled && ref.current) {
+        if (!cancelled && version === renderVersion && ref.current) {
           const errorMsg = e instanceof Error ? e.message : String(e);
           // Truncate long error messages and show user-friendly error
           const displayMsg = errorMsg.length > 100
@@ -116,8 +138,10 @@ export default function MermaidDiagram({ chart, id, ariaLabel }: MermaidDiagramP
       }
     }
     render();
+    narrowViewport.addEventListener("change", render);
     return () => {
       cancelled = true;
+      narrowViewport.removeEventListener("change", render);
       if (frame) cancelAnimationFrame(frame);
       resizeObserver?.disconnect();
     };
