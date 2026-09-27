@@ -32,6 +32,23 @@
   opacity: 1;
 }
 
+.ambient {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 29% 38% at 59% 33%, rgba(75, 201, 171, .24), transparent 78%),
+    radial-gradient(ellipse 29% 42% at 82% 42%, rgba(54, 168, 193, .26), transparent 78%),
+    radial-gradient(ellipse 22% 29% at 61% 73%, rgba(151, 113, 207, .18), transparent 80%),
+    radial-gradient(ellipse 25% 30% at 84% 73%, rgba(210, 137, 74, .18), transparent 80%);
+  opacity: 0;
+  transition: opacity 1700ms ease-out;
+}
+
+.ambientReady {
+  opacity: 1;
+}
+
 @media (max-width: 719px) {
   .wideFallback {
     display: none;
@@ -40,10 +57,22 @@
   .narrowFallback {
     display: block;
   }
+
+  .ambient {
+    background:
+      radial-gradient(ellipse 38% 18% at 27% 16%, rgba(75, 201, 171, .23), transparent 82%),
+      radial-gradient(ellipse 40% 19% at 73% 16%, rgba(54, 168, 193, .27), transparent 82%),
+      radial-gradient(ellipse 36% 14% at 30% 29%, rgba(151, 113, 207, .2), transparent 82%),
+      radial-gradient(ellipse 38% 15% at 74% 29%, rgba(210, 137, 74, .2), transparent 82%);
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .canvas {
     transition: none;
+  }
+
+  .ambient {
+    display: none;
   }
 }
