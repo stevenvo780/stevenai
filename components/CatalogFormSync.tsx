@@ -4,7 +4,7 @@ import { useEffect } from "react";
 
 type Props = { query: string; area: string; runtime: string };
 
-// El formulario principal cambia de key; la búsqueda rápida conserva su nodo.
+// Conserva la consulta aplicada mientras el formulario mantiene su nodo.
 const appliedFilters = new WeakMap<HTMLInputElement, string>();
 
 export default function CatalogFormSync({ query, area, runtime }: Props) {

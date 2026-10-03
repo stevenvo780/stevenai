@@ -55,12 +55,16 @@ try {
   async function navigate(action) {
     await Promise.all([page.waitForNavigation({ waitUntil: 'networkidle2' }), action()]);
   }
-  async function check(label, params) {
+  async function check(label, params, quickDraft) {
     const expectedURL = new URL(urlFor(params));
     assert.equal(new URL(page.url()).pathname, expectedURL.pathname, `${label}: route`);
     assert.deepEqual([...new URL(page.url()).searchParams].sort(), [...expectedURL.searchParams].sort(), `${label}: URL parameters`);
     await reference.goto(expectedURL.href, { waitUntil: 'load' });
     const expected = await reference.evaluate(catalog);
+    if (quickDraft !== undefined) {
+      expected.quick = quickDraft;
+      expected.submittedQuick.q = quickDraft;
+    }
     await page.waitForFunction((state) => {
       const q = document.querySelector('#dm-home-quick-query');
       const full = document.querySelector('#dm-home-query');
@@ -114,6 +118,38 @@ try {
   await preserveDraft('empty-state draft', 'last stale draft');
   await navigate(() => page.click('.dm-home-empty a'));
   await check('empty-state clear restores entire catalog', {});
+
+  // Reapplying an identical native GET URL with a fragment can leave an entry
+  // outside Next's history handling. Exercise both buttons and keyboard submits.
+  const repeated = { q: 'jarvis', area: 'assistants', runtime: 'gpu-local' };
+  for (const form of ['main', 'quick']) {
+    for (const keyboard of [false, true]) {
+      await page.goto(urlFor(repeated), { waitUntil: 'networkidle2' });
+      await check(`${form} repeated-submit initial state`, repeated);
+      for (let repetition = 0; repetition < 2; repetition++) {
+        const draft = form === 'main' ? `unsubmitted quick draft ${repetition}` : undefined;
+        if (draft !== undefined) await preserveDraft('unsubmitted edit before unchanged main submit', draft);
+        if (keyboard) {
+          await page.focus(form === 'main' ? full : quick);
+          await page.keyboard.press('Enter');
+        } else {
+          await page.click(`${form === 'main' ? '.dm-home-search' : '.dm-home-index-search'} button[type="submit"]`);
+        }
+        // Same-URL submissions need not produce a navigation event.
+        await page.waitForNetworkIdle({ timeout: 10000 });
+        await check(`${form} unchanged ${keyboard ? 'keyboard' : 'button'} submit ${repetition}`, repeated, draft);
+        assert.equal(await page.evaluate(() => Boolean(history.state?.__NA)), true, 'unchanged submission retains managed history');
+        await navigate(() => page.click('#resultados a'));
+        await check('clear after unchanged submission', {});
+        await page.goBack({ waitUntil: 'networkidle2' });
+        await check('Back after unchanged submission and clear', repeated);
+        await page.goForward({ waitUntil: 'networkidle2' });
+        await check('Forward after unchanged submission and clear', {});
+        await page.goBack({ waitUntil: 'networkidle2' });
+        await check('repeated Back restores filters and results', repeated);
+      }
+    }
+  }
 
   // A native GET form must still work when no client JavaScript is available.
   await reference.goto(urlFor({ q: 'cauce', area: 'infrastructure', runtime: 'local-cpu' }), { waitUntil: 'load' });

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Form from "next/form";
 import ComponentCard from "@/components/ComponentCard";
 import CatalogFormSync from "@/components/CatalogFormSync";
 import HomeChoreography from "@/components/HomeChoreography";
@@ -148,7 +149,7 @@ export default async function Home({ searchParams }: { searchParams: Promise<Sea
             ))}
           </div>
         </div>
-        <form className="dm-home-shell dm-home-index-search" action="/#resultados" method="get" role="search" aria-label="Búsqueda rápida de proyectos">
+        <Form className="dm-home-shell dm-home-index-search" action="/#resultados" prefetch={false} role="search" aria-label="Búsqueda rápida de proyectos">
           <label htmlFor="dm-home-quick-query">O BUSCA EN EL ARCHIVO</label>
           <div>
             <input id="dm-home-quick-query" name="q" type="search" defaultValue={query} placeholder="Proyecto, idea o tecnología" maxLength={120} />
@@ -156,7 +157,7 @@ export default async function Home({ searchParams }: { searchParams: Promise<Sea
             {runtime !== "all" && <input type="hidden" name="runtime" value={runtime} />}
             <button type="submit" aria-label="Buscar proyectos">Buscar <span aria-hidden="true">↗</span></button>
           </div>
-        </form>
+        </Form>
       </div>
 
       <section className="dm-home-guide dm-home-paper" aria-labelledby="dm-home-guide-title">
@@ -312,7 +313,7 @@ export default async function Home({ searchParams }: { searchParams: Promise<Sea
             </div>
           </div>
 
-          <form key={JSON.stringify([query, area, runtime])} className="dm-home-search" action="/#resultados" method="get" role="search" aria-label="Buscar y filtrar proyectos">
+          <Form className="dm-home-search" action="/#resultados" prefetch={false} role="search" aria-label="Buscar y filtrar proyectos">
             <div className="dm-home-search-field dm-home-search-query">
               <label htmlFor="dm-home-query">Buscar proyectos</label>
               <input id="dm-home-query" name="q" type="search" defaultValue={query} placeholder="Nombre, propósito o tecnología" maxLength={120} />
@@ -333,7 +334,7 @@ export default async function Home({ searchParams }: { searchParams: Promise<Sea
             </div>
             <button type="submit">Aplicar filtros <span aria-hidden="true">↗</span></button>
             <CatalogFormSync query={query} area={area} runtime={runtime} />
-          </form>
+          </Form>
 
           <div id="resultados" className="dm-home-results-heading">
             <p role="status">{visibleComponents.length} de {components.length} proyectos</p>
